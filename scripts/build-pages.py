@@ -35,7 +35,7 @@ head_assets={}
 for name in ['taxpowergst','taxpowertds','pricing','downloads','aboutus','support']:
     doc=html.fromstring((ROOT/f'_site-source/{name}.html').read_text())
     head_assets[name]=[(e.tag,(e.get('href') or e.get('src')).split('?')[0]) for e in doc.xpath('//head/link[@rel="stylesheet"][starts-with(@href,"css/")] | //head/script[starts-with(@src,"js/")]')]
-head_assets['home']=[('link','css/stylesheet.css'),('link','css/company-logos.css'),('link','css/support-cards.css'),('script','js/company-logos.js'),('script','js/form-backend.js'),('script','js/script.js'),('script','js/support-page.js')]
+head_assets['home']=[('link','css/stylesheet.css'),('link','css/company-logos.css'),('link','css/home-sections.css'),('link','css/support-cards.css'),('script','js/company-logos.js'),('script','js/form-backend.js'),('script','js/script.js'),('script','js/support-page.js')]
 DROP=('js/section-routes.js','js/nav-loader.js','js/page-loader.js')
 # Shared parts are present before JavaScript, so links are immediately crawlable.
 navdoc=html.fromstring((ROOT/'nav.html').read_text())
@@ -96,7 +96,7 @@ for route,meta in config.items():
     cont=doc.xpath('//*[@data-page-sections]')[0]
     if keep=='home':cont.getparent().remove(cont)
     else:
-        for node in doc.xpath('//main[@id="home"] | //section[contains(@class,"trusted-companies-section")]'):node.getparent().remove(node)
+        for node in doc.xpath('//main[@id="home"] | //section[contains(@class,"trusted-companies-section")] | //div[contains(@class,"home-extra")]'):node.getparent().remove(node)
         for node in list(cont):
             if node.get('id')!=keep:cont.remove(node)
         for node in cont:node.attrib.pop('data-loaded-page',None);node.set('class',node.get('class','').replace('loaded-page-section','').strip())

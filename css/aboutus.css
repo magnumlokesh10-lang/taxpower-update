@@ -381,3 +381,12 @@
 .se-about .se-intro .se-brand-services span { padding:9px 8px; gap:5px; white-space:nowrap; border:1px solid #dcecf3; border-radius:10px; background:#fff; font-size:10.5px; font-weight:600; color:#2f566a; line-height:1.3; transition:border-color .2s,box-shadow .2s,transform .2s; }
 .se-about .se-intro .se-brand-services span:hover { border-color:#8fcde0; box-shadow:0 6px 14px #1e6b8c1a; transform:translateY(-1px); }
 .se-about .se-intro .se-brand-services span::before { flex:0 0 16px; width:16px; height:16px; background-color:#0786ad; }
+
+.se-trust{max-width:1160px;margin:34px auto;padding:0 16px}
+.se-trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.se-trust-item{background:#fff;border:1px solid #dce7ed;border-radius:18px;padding:22px}
+.se-trust-item b{display:block;font:800 26px/1.15 "Plus Jakarta Sans",sans-serif;color:#0b6e99;margin-bottom:8px}
+.se-trust-item span{font:400 14.5px/1.55 "DM Sans",sans-serif;color:#42606e}
+.se-trust-credit{margin:16px 0 0;font:400 14px/1.6 "DM Sans",sans-serif;color:#42606e}
+.se-trust-credit a{color:#0b6e99}
+@media(max-width:900px){.se-trust-grid{grid-template-columns:1fr}}
