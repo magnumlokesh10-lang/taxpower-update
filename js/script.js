@@ -280,169 +280,44 @@ function initTaxPowerSite() {
   updateSliderView();
   startAutoSlide();
 
-  // module 02: premium navbar smooth sliding tracker background
-  const navbarLogo = document.querySelector('[data-logo-home-link]');
-  const navLinksContainer = document.getElementById('navLinksContainer');
-  const navSlidingBg = document.getElementById('navSlideBg');
+  // module 02: navigation for separate pages (each tab is its own page)
   const navItems = document.querySelectorAll('.nav-item');
   const navDropdowns = document.querySelectorAll('.nav-dropdown');
-  let currentActiveTab = document.querySelector('.nav-item.h-current');
-  let hasPositionedNavIndicator = false;
-  let hasInitializedScrollSpy = false;
+  const pageInfo = () => window.TaxPowerPage || { anchor: '', nav: 'index.html' };
+  const currentSectionHash = () => pageInfo().anchor || window.location.hash;
 
-  // Programmatic navigation lock state
-  let isNavClickScrolling = false;
-  let navClickTargetItem = null;
-  let navScrollEndTimer = null;
-  let navScrollSafetyTimer = null;
-  const mobileBreakpoint = 1100;
-
-  // Click guard: prevents mouseleave from snapping slider back immediately after a click
-  let navClickJustHappened = false;
-  let navClickGuardTimer = null;
-  let navClickStartTime = 0;
-
-  const sectionToNavPageMap = {
-    home: 'index.html',
-    taxpowergst: 'taxpowergst.html',
-    'gst-return': 'taxpowergst.html',
-    dashboard_bg: 'taxpowergst.html',
-    'gst-billing-intro': 'taxpowergst.html',
-    'gst-einvoice': 'taxpowergst.html',
-    taxpowertds: 'taxpowertds.html',
-    pricing: 'pricing.html',
-    'pricing-banner': 'pricing.html',
-    downloads: 'downloads.html',
-    'downloads-banner': 'downloads.html',
-    aboutus: 'aboutus.html',
-    support: 'support.html',
-    'technical-support': 'support.html',
-    'demo-enquiry': 'support.html'
-  };
-
-  // positions dynamic indicator block behind chosen targets element bounds
-  function moveIndicator(element, shouldAnimate = true) {
-    if (!navSlidingBg || !element || window.innerWidth <= mobileBreakpoint || navSlidingBg.offsetParent === null) return;
-
-    if (!shouldAnimate) {
-      navSlidingBg.classList.add('is-positioning-instantly');
-    }
-
-    const containerRect = navLinksContainer.getBoundingClientRect();
-    const elementRect = element.getBoundingClientRect();
-
-    // calculating offsets relative to wrapper boundaries coordinates
-    const leftOffset = elementRect.left - containerRect.left;
-    const topOffset = elementRect.top - containerRect.top;
-    const elementWidth = elementRect.width;
-    const elementHeight = elementRect.height;
-
-    // assigning structural dimension values directly inline smoothly
-    navSlidingBg.style.left = `${leftOffset}px`;
-    navSlidingBg.style.top = `${topOffset}px`;
-    navSlidingBg.style.width = `${elementWidth}px`;
-    navSlidingBg.style.height = `${elementHeight}px`;
-    navSlidingBg.style.opacity = '1';
-
-    if (!shouldAnimate) {
-      navSlidingBg.getBoundingClientRect();
-      navSlidingBg.classList.remove('is-positioning-instantly');
-    }
-  }
-
-  function setActiveNavItem(targetItem, shouldAnimate = true) {
+  function setActiveNavItem(targetItem) {
     if (!targetItem) return;
-
     navItems.forEach((item) => {
       const isActive = item === targetItem;
       item.classList.toggle('h-current', isActive);
-      if (isActive) {
-        item.setAttribute('aria-current', 'page');
-      } else {
-        item.removeAttribute('aria-current');
-      }
+      if (isActive) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
     });
-
     const activePage = targetItem.getAttribute('data-nav-page');
     const productPages = ['taxpowergst.html', 'taxpowertds.html'];
     navItems.forEach((item) => {
       const itemPage = item.getAttribute('data-nav-page');
       if (!productPages.includes(itemPage)) return;
-      // Home and other sections show both names; a product section keeps its own name.
-      item.classList.toggle('is-product-collapsed',
-        productPages.includes(activePage) && itemPage !== activePage);
+      // Home and other pages show both product names; a product page keeps only its own.
+      item.classList.toggle('is-product-collapsed', productPages.includes(activePage) && itemPage !== activePage);
     });
-    currentActiveTab = targetItem;
-    moveIndicator(currentActiveTab, shouldAnimate);
   }
 
-  const currentSectionHash = () => window.TaxPowerRoutes?.hash() || window.location.hash;
-
-  function getCurrentPageName() {
-    if (document.querySelector('[data-page-sections]')) return 'index.html';
-    const pageName = window.location.pathname.split('/').pop();
-    return pageName || 'index.html';
-  }
-
-  function getNavItemForCurrentLocation(hashValue = currentSectionHash()) {
-    const rawHash = (hashValue || '').trim();
-    const sectionId = rawHash.replace(/^#/, '');
-
-    // 1. Direct href match among navItems
-    if (rawHash) {
-      for (const item of navItems) {
-        const href = item.getAttribute('href') || '';
-        if (href.endsWith(rawHash) || href === rawHash) {
-          return item;
-        }
-      }
-    }
-
-    // 2. Map via sectionToNavPageMap
-    const mappedPage = sectionToNavPageMap[sectionId] || getCurrentPageName();
-    const matchedByPage = document.querySelector(`.nav-item[data-nav-page="${mappedPage}"]`);
-    if (matchedByPage) return matchedByPage;
-
-    // 3. Fallback to current page or home
-    return document.querySelector(`.nav-item[data-nav-page="${getCurrentPageName()}"]`) ||
+  function getNavItemForCurrentLocation() {
+    return document.querySelector(`.nav-item[data-nav-page="${pageInfo().nav}"]`) ||
            document.querySelector('.nav-item[data-nav-page="index.html"]');
   }
 
-  function setActiveNavFromLocation(hashValue) {
-    const shouldAnimate = hasPositionedNavIndicator;
-    setActiveNavItem(getNavItemForCurrentLocation(hashValue), shouldAnimate);
-    hasPositionedNavIndicator = true;
+  function getHeaderOffset() {
+    const headerEl = document.querySelector('.header');
+    return (headerEl ? headerEl.offsetHeight : 64) + 16;
   }
 
-  function isIndexPage() {
-    const pageName = getCurrentPageName();
-    return pageName === 'index.html' || pageName === '' || pageName === '/';
-  }
-
-  function getSamePageSectionHash(linkElement) {
-    const routedHash = window.TaxPowerRoutes?.hashForURL(linkElement.href);
-    if (routedHash && isIndexPage()) return routedHash;
-    const href = linkElement.getAttribute('href');
-    if (!href || href === '#') return '';
-
-    if (href.startsWith('#')) {
-      return href;
-    }
-
-    try {
-      const linkUrl = new URL(href, document.baseURI);
-      const currentUrl = new URL(window.location.href);
-      const isSameOrigin = linkUrl.origin === currentUrl.origin;
-      const isIndexTarget = linkUrl.pathname.endsWith('/index.html') || linkUrl.pathname === new URL(document.baseURI).pathname || linkUrl.pathname === currentUrl.pathname;
-
-      if (isSameOrigin && isIndexTarget && linkUrl.hash && isIndexPage()) {
-        return linkUrl.hash;
-      }
-    } catch (e) {
-      return '';
-    }
-
-    return '';
+  function getSectionScrollTop(targetElement) {
+    if (!targetElement) return 0;
+    const rect = targetElement.getBoundingClientRect();
+    return Math.max(0, Math.round(rect.top + window.scrollY - getHeaderOffset()));
   }
 
   function focusDemoFullNameField(options = {}) {
@@ -579,253 +454,6 @@ function initTaxPowerSite() {
     setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 850);
   }
 
-  function finishNavClickScroll() {
-    if (!isNavClickScrolling) return;
-    isNavClickScrolling = false;
-
-    if (navScrollEndTimer) {
-      clearTimeout(navScrollEndTimer);
-      navScrollEndTimer = null;
-    }
-    if (navScrollSafetyTimer) {
-      clearTimeout(navScrollSafetyTimer);
-      navScrollSafetyTimer = null;
-    }
-
-    if (navClickTargetItem) {
-      setActiveNavItem(navClickTargetItem, true);
-      navClickTargetItem = null;
-    } else if (currentActiveTab) {
-      moveIndicator(currentActiveTab, true);
-    }
-
-    if (currentSectionHash() === '#demo-enquiry') {
-      focusDemoFullNameField({ preventScroll: false });
-    }
-  }
-
-  function cancelNavClickScrollOnUserAction() {
-    // Only cancel if at least 400ms have passed since the user clicked,
-    // so trackpad or inertial wheel ticks don't prematurely abort the programmatic scroll!
-    if (isNavClickScrolling && (Date.now() - navClickStartTime > 400)) {
-      finishNavClickScroll();
-    }
-  }
-
-  window.addEventListener('wheel', cancelNavClickScrollOnUserAction, { passive: true });
-  window.addEventListener('touchstart', cancelNavClickScrollOnUserAction, { passive: true });
-
-  function getHeaderOffset() {
-    const headerEl = document.querySelector('.header');
-    const headerHeight = headerEl ? headerEl.offsetHeight : 64;
-    return headerHeight + 16;
-  }
-
-  function getSectionScrollTop(targetElement) {
-    if (!targetElement) return 0;
-    if (targetElement.id === 'home' || targetElement.tagName === 'BODY' || targetElement.tagName === 'HTML') {
-      return 0;
-    }
-
-    let effectiveElement = targetElement;
-    if (targetElement.id === 'pricing' || targetElement.id === 'pricing-banner') {
-      effectiveElement = document.getElementById('pricing-banner') || targetElement;
-    } else if (targetElement.id === 'downloads' || targetElement.id === 'downloads-banner') {
-      effectiveElement = document.getElementById('downloads-banner') || targetElement;
-    }
-
-    const elementRect = effectiveElement.getBoundingClientRect();
-    const absoluteTop = elementRect.top + window.scrollY;
-    const offset = getHeaderOffset();
-    return Math.max(0, Math.round(absoluteTop - offset));
-  }
-
-  function handleSamePageNavClick(event, linkElement, activeItem, fromHistory = false) {
-    if (event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
-    const sectionHash = getSamePageSectionHash(linkElement);
-    if (!sectionHash) return false;
-
-    let targetSection = document.querySelector(sectionHash);
-    if (!targetSection) {
-      if (sectionHash === '#gst-return' || sectionHash === '#gst-einvoice') {
-        targetSection = document.getElementById('taxpowergst');
-      } else if (sectionHash === '#pricing-banner') {
-        targetSection = document.getElementById('pricing');
-      } else if (sectionHash === '#downloads-banner') {
-        targetSection = document.getElementById('downloads');
-      }
-    }
-
-    if (!targetSection) {
-      event.preventDefault();
-      const onSectionsLoaded = () => {
-        document.removeEventListener('taxpower:sections-loaded', onSectionsLoaded);
-        handleSamePageNavClick(event, linkElement, activeItem, fromHistory);
-      };
-      document.addEventListener('taxpower:sections-loaded', onSectionsLoaded);
-      return true;
-    }
-
-    event.preventDefault();
-    resetDemoTriggerState();
-
-    // Immediately move slider directly to the clicked tab
-    setActiveNavItem(activeItem, true);
-
-    // Firmly lock ScrollSpy during smooth programmatic scroll
-    isNavClickScrolling = true;
-    navClickTargetItem = activeItem;
-    navClickStartTime = Date.now();
-
-    if (typeof showHeader === 'function') {
-      showHeader();
-    }
-
-    if (!fromHistory) {
-      if (window.TaxPowerRoutes) window.TaxPowerRoutes.write(sectionHash);
-      else history.pushState(null, '', sectionHash);
-    }
-
-    if (sectionHash === '#demo-enquiry') {
-      applyDemoContext(linkElement);
-      focusDemoFullNameField({ preventScroll: true });
-      setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 350);
-      setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 850);
-    }
-
-    const targetTop = getSectionScrollTop(targetSection);
-    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    const clampedTargetTop = Math.min(targetTop, maxScroll);
-    const currentScroll = Math.round(window.scrollY);
-
-    if (navScrollEndTimer) clearTimeout(navScrollEndTimer);
-    if (navScrollSafetyTimer) clearTimeout(navScrollSafetyTimer);
-
-    if (Math.abs(currentScroll - clampedTargetTop) <= 4) {
-      finishNavClickScroll();
-      return true;
-    }
-
-    navScrollSafetyTimer = setTimeout(finishNavClickScroll, 1600);
-
-    const onScrollCheck = () => {
-      if (!isNavClickScrolling) {
-        window.removeEventListener('scroll', onScrollCheck);
-        return;
-      }
-      const current = Math.round(window.scrollY);
-      if (Math.abs(current - clampedTargetTop) <= 6) {
-        window.removeEventListener('scroll', onScrollCheck);
-        finishNavClickScroll();
-        return;
-      }
-      if (navScrollEndTimer) clearTimeout(navScrollEndTimer);
-      navScrollEndTimer = setTimeout(() => {
-        if (Date.now() - navClickStartTime > 450) {
-          window.removeEventListener('scroll', onScrollCheck);
-          finishNavClickScroll();
-        }
-      }, 250);
-    };
-
-    const onScrollEnd = () => {
-      window.removeEventListener('scrollend', onScrollEnd);
-      window.removeEventListener('scroll', onScrollCheck);
-      finishNavClickScroll();
-    };
-
-    if ('onscrollend' in window) {
-      window.addEventListener('scrollend', onScrollEnd, { once: true });
-    }
-    window.addEventListener('scroll', onScrollCheck, { passive: true });
-
-    window.scrollTo({ top: clampedTargetTop, behavior: 'smooth' });
-    return true;
-  }
-
-  navbarLogo?.addEventListener('click', (event) => {
-    const homeNavItem = getNavItemForCurrentLocation('#home') || document.querySelector('.nav-item[data-nav-page="index.html"]');
-    if (handleSamePageNavClick(event, navbarLogo, homeNavItem)) {
-      return;
-    }
-  });
-
-  function getActiveSectionFromScrollPosition() {
-    const sectionIds = ['home', 'taxpowergst', 'taxpowertds', 'pricing', 'downloads', 'aboutus', 'support'];
-    const headerOffset = getHeaderOffset();
-    const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
-
-    if (window.scrollY <= 60) {
-      return 'home';
-    }
-
-    if (window.scrollY >= maxScrollY - 30) {
-      return 'support';
-    }
-
-    let activeSectionId = 'home';
-
-    for (const sectionId of sectionIds) {
-      const section = document.getElementById(sectionId);
-      if (!section) continue;
-
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= headerOffset + 30) {
-        activeSectionId = sectionId;
-      }
-    }
-
-    return activeSectionId;
-  }
-
-  function initSectionScrollSpy() {
-    if (!isIndexPage()) return;
-    if (hasInitializedScrollSpy) return;
-
-    const sectionIds = ['home', 'taxpowergst', 'taxpowertds', 'pricing', 'downloads', 'aboutus', 'support'];
-    const sections = sectionIds
-      .map((sectionId) => document.getElementById(sectionId))
-      .filter(Boolean);
-
-    if (sections.length < sectionIds.length) return;
-    hasInitializedScrollSpy = true;
-
-    let userScrolled = false;
-    let lastSpyId = null;
-    ['wheel', 'touchmove', 'keydown', 'pointerdown'].forEach((type) => window.addEventListener(type, () => { userScrolled = true; }, { passive: true }));
-
-    const updateActiveSectionFromScroll = () => {
-      if (isNavClickScrolling) return;
-
-      const activeSectionId = getActiveSectionFromScrollPosition();
-      if (!activeSectionId) return;
-      if (lastSpyId === null) lastSpyId = activeSectionId;
-      // Keep the address bar on the section being read, without adding history entries.
-      if (userScrolled && activeSectionId !== lastSpyId) {
-        lastSpyId = activeSectionId;
-        window.TaxPowerRoutes?.write('#' + activeSectionId, true);
-      }
-
-      const targetItem = getNavItemForCurrentLocation(`#${activeSectionId}`);
-      if (targetItem && targetItem !== currentActiveTab) {
-        setActiveNavItem(targetItem);
-      }
-    };
-
-    updateActiveSectionFromScroll();
-    window.addEventListener('scroll', updateActiveSectionFromScroll, { passive: true });
-    window.addEventListener('resize', updateActiveSectionFromScroll);
-  }
-
-  // Helper: set click guard so mouseleave doesn't snap slider back right after click
-  function setNavClickGuard() {
-    navClickJustHappened = true;
-    if (navClickGuardTimer) clearTimeout(navClickGuardTimer);
-    navClickGuardTimer = setTimeout(() => {
-      navClickJustHappened = false;
-      navClickGuardTimer = null;
-    }, 300);
-  }
 
   function setDropdownOpen(dropdown, open) {
     dropdown.classList.toggle('is-open', open);
@@ -834,37 +462,12 @@ function initTaxPowerSite() {
   function closeNavDropdowns() {
     navDropdowns.forEach(dropdown => setDropdownOpen(dropdown, false));
   }
+  const touchNav = () => window.innerWidth <= 1180 || window.matchMedia('(hover: none)').matches;
 
-  // loop layout triggers bindings over links groups array elements
   navItems.forEach((item) => {
-    item.addEventListener('mouseenter', () => {
-      moveIndicator(item);
-    });
-
-    item.addEventListener('mouseleave', (event) => {
-      // Ignore mouseleave briefly after a click or while click-scrolling
-      if (navClickJustHappened || isNavClickScrolling) {
-        if (currentActiveTab) moveIndicator(currentActiveTab);
-        return;
-      }
-
-      const parentDropdown = item.closest('.nav-dropdown');
-      if (parentDropdown && parentDropdown.contains(event.relatedTarget)) {
-        return;
-      }
-
-      const activeTabFallback = document.querySelector('.nav-item.h-current') || currentActiveTab;
-      if (activeTabFallback) {
-        moveIndicator(activeTabFallback);
-      } else {
-        if (navSlidingBg) navSlidingBg.style.opacity = '0';
-      }
-    });
-
     item.addEventListener('click', (event) => {
-      setNavClickGuard();
       const parentDropdown = item.closest('.nav-dropdown');
-      if (parentDropdown && (window.innerWidth <= 1180 || window.matchMedia('(hover: none)').matches)) {
+      if (parentDropdown && touchNav()) {
         event.preventDefault();
         const wasOpen = parentDropdown.classList.contains('is-open');
         closeNavDropdowns();
@@ -872,8 +475,6 @@ function initTaxPowerSite() {
         return;
       }
       closeNavDropdowns();
-      if (handleSamePageNavClick(event, item, item)) return;
-      setActiveNavItem(item);
     });
   });
 
@@ -909,127 +510,46 @@ function initTaxPowerSite() {
         closeNavDropdowns();
         setDropdownOpen(dropdown, true);
       }
-      moveIndicator(dropdownToggle);
     });
-
     dropdown.addEventListener('mouseleave', () => {
       if (window.matchMedia('(hover: hover)').matches && window.innerWidth > 1180) setDropdownOpen(dropdown, false);
-      // Ignore mouseleave briefly after a click or while click-scrolling
-      if (navClickJustHappened || isNavClickScrolling) {
-        if (currentActiveTab) moveIndicator(currentActiveTab);
-        return;
-      }
-
-      const activeTabFallback = document.querySelector('.nav-item.h-current') || currentActiveTab;
-      if (activeTabFallback) {
-        moveIndicator(activeTabFallback);
-      } else if (navSlidingBg) {
-        navSlidingBg.style.opacity = '0';
-      }
     });
-
     dropdownLinks.forEach((dropdownLink) => {
-      dropdownLink.addEventListener('click', (event) => {
-        setNavClickGuard();
-        setDropdownOpen(dropdown, false);
-        if (handleSamePageNavClick(event, dropdownLink, dropdownToggle)) return;
-        setActiveNavItem(dropdownToggle);
-      });
+      dropdownLink.addEventListener('click', () => setDropdownOpen(dropdown, false));
     });
   });
 
   document.addEventListener('click', (event) => {
-    if (!event.target.closest('.nav-dropdown')) {
-      closeNavDropdowns();
-    }
+    if (!event.target.closest('.nav-dropdown')) closeNavDropdowns();
   });
 
-  // Global handler for other in-page hash links (e.g. hero CTA buttons)
+  // Demo / trial buttons: remember what was chosen. On the enquiry page itself they scroll to the form;
+  // everywhere else they simply open the enquiry page, which reads the saved choice.
   document.addEventListener('click', (event) => {
     const demoTrigger = isDemoOrTrialTrigger(event.target);
-    if (demoTrigger) {
-      const purpose = demoTrigger.getAttribute('data-demo-purpose');
-      const product = demoTrigger.getAttribute('data-demo-product');
-      if (purpose || product) {
-        try {
-          sessionStorage.setItem('taxpower_demo_context', JSON.stringify({ purpose, product }));
-        } catch (e) {}
-      }
+    if (!demoTrigger) return;
+    const purpose = demoTrigger.getAttribute('data-demo-purpose');
+    const product = demoTrigger.getAttribute('data-demo-product');
+    if (purpose || product) {
+      try { sessionStorage.setItem('taxpower_demo_context', JSON.stringify({ purpose, product })); } catch (e) {}
     }
-
-    const anchor = event.target.closest('a[href]');
-    if (!anchor) {
-      if (demoTrigger) {
-        const form = document.getElementById('demoEnquiryForm');
-        if (form) {
-          event.preventDefault();
-          applyDemoContext(demoTrigger);
-          const targetSection = document.getElementById('demo-enquiry') || document.getElementById('demoEnquiryModal');
-          if (targetSection) {
-            const targetTop = getSectionScrollTop(targetSection);
-            window.scrollTo({ top: targetTop, behavior: 'smooth' });
-          }
-          focusDemoFullNameField({ preventScroll: true });
-          setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 400);
-          setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 850);
-        }
-      }
-      return;
-    }
-
-    if (anchor.closest('.navbar') || anchor.hasAttribute('data-logo-home-link')) return;
-
-    const hash = getSamePageSectionHash(anchor);
-    if (!hash) return;
-
-    const targetItem = getNavItemForCurrentLocation(hash);
-    if (targetItem) {
-      handleSamePageNavClick(event, anchor, targetItem);
-    } else if (hash === '#demo-enquiry') {
-      event.preventDefault();
-      applyDemoContext(anchor);
-      const targetSection = document.getElementById('demo-enquiry') || document.getElementById('demoEnquiryModal');
-      if (targetSection) {
-        const targetTop = getSectionScrollTop(targetSection);
-        window.scrollTo({ top: targetTop, behavior: 'smooth' });
-      }
-      focusDemoFullNameField({ preventScroll: true });
-      setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 400);
-      setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 850);
-    }
+    const form = document.getElementById('demoEnquiryForm');
+    if (!form || demoTrigger.closest('.navbar')) return;
+    event.preventDefault();
+    applyDemoContext(demoTrigger);
+    const targetSection = document.getElementById('demo-enquiry') || document.getElementById('demoEnquiryModal');
+    if (targetSection) window.scrollTo({ top: getSectionScrollTop(targetSection), behavior: 'smooth' });
+    focusDemoFullNameField({ preventScroll: true });
+    setTimeout(() => focusDemoFullNameField({ preventScroll: false }), 400);
   });
 
-  window.addEventListener('popstate', () => {
-    if (!isIndexPage()) return;
-    const hash = currentSectionHash() || '#home';
-    const link = document.createElement('a');
-    link.href = window.TaxPowerRoutes?.urlFor(hash) || hash;
-    handleSamePageNavClick({preventDefault() {}}, link, getNavItemForCurrentLocation(hash), true);
-  });
+  function showCurrentPage() {
+    setActiveNavItem(getNavItemForCurrentLocation());
+    if (currentSectionHash() === '#demo-enquiry') handlePendingDemoHashOrContext();
+  }
+  showCurrentPage();
+  document.addEventListener('taxpower:sections-loaded', showCurrentPage);
 
-  window.addEventListener('hashchange', () => {
-    resetDemoTriggerState();
-    setActiveNavFromLocation(currentSectionHash());
-    if (currentSectionHash() === '#demo-enquiry') {
-      handlePendingDemoHashOrContext();
-    }
-  });
-
-  requestAnimationFrame(() => {
-    setActiveNavFromLocation(currentSectionHash());
-    initSectionScrollSpy();
-    if (currentSectionHash() === '#demo-enquiry') {
-      handlePendingDemoHashOrContext();
-    }
-  });
-
-  document.addEventListener('taxpower:sections-loaded', () => {
-    initSectionScrollSpy();
-    setActiveNavFromLocation(currentSectionHash());
-    if (currentSectionHash() === '#demo-enquiry') {
-      handlePendingDemoHashOrContext();
-    }
-  });
 
   // module 02b: live demo enquiry modal
   // Note: DOM elements are queried dynamically because the form is loaded asynchronously
@@ -1863,81 +1383,11 @@ function initTaxPowerSite() {
   document.addEventListener('taxpower:sections-loaded', initPurposeDropdown);
 
 
-  // module 03: interactive responsive mobile hamburger trigger module
+  // module 03: responsive mobile hamburger menu
   const header = document.querySelector('.header');
-  const headerRevealHint = document.getElementById('headerRevealHint');
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const navbarMenu = document.getElementById('navbarMenu');
-  const headerRevealDelay = 2000;
-  let headerRevealTimer = null;
-  let lastScrollY = window.scrollY;
-  let isNavbarPinned = false;
-
-
-  function hideHeader() { /* The navigation always stays visible. */ }
-
-  function resetHeaderInactivityTimer() {
-    if (headerRevealTimer) {
-      clearTimeout(headerRevealTimer);
-    }
-
-    if (!isNavbarPinned) {
-      headerRevealTimer = setTimeout(() => {
-        if (window.scrollY > 80 && !navbarMenu?.classList.contains('active')) {
-          header?.classList.remove('navbar-scroll-hidden');
-        }
-      }, headerRevealDelay);
-    }
-  }
-
-  function showHeader() {
-    header?.classList.remove('navbar-scroll-hidden');
-    resetHeaderInactivityTimer();
-  }
-
-  function updateHeaderVisibility() {
-    if (!header) return;
-    header.classList.remove('navbar-scroll-hidden');
-    return;
-
-    if (isNavbarPinned || isNavClickScrolling) {
-      header.classList.remove('navbar-scroll-hidden');
-      lastScrollY = window.scrollY;
-      return;
-    }
-
-    const currentScrollY = window.scrollY;
-    const isMenuOpen = navbarMenu?.classList.contains('active');
-    const isScrollingUp = currentScrollY < lastScrollY;
-    const shouldShowHeader = currentScrollY <= 80 || isScrollingUp || isMenuOpen;
-
-    if (shouldShowHeader) {
-      header.classList.remove('navbar-scroll-hidden');
-    } else {
-      header.classList.add('navbar-scroll-hidden');
-    }
-    lastScrollY = currentScrollY;
-    resetHeaderInactivityTimer();
-  }
-
-  window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
-  headerRevealHint?.addEventListener('focus', showHeader);
-  headerRevealHint?.addEventListener('mouseleave', () => {
-    if (!isNavbarPinned) {
-      window.setTimeout(hideHeader, 220);
-    }
-  });
-  const pinHeaderFromRevealIcon = () => {
-    isNavbarPinned = true;
-    header?.classList.add('navbar-stay-visible');
-    header?.classList.remove('navbar-scroll-hidden');
-    headerRevealHint.setAttribute('aria-label', 'Header pinned');
-    headerRevealHint.setAttribute('title', 'Header pinned');
-    resetHeaderInactivityTimer();
-  };
-
-  headerRevealHint?.addEventListener('pointerdown', pinHeaderFromRevealIcon);
-  headerRevealHint?.addEventListener('click', pinHeaderFromRevealIcon);
+  const mobileBreakpoint = 1100;
 
   if (hamburgerBtn && navbarMenu) {
     const setMobileMenuState = (isOpen) => {
@@ -1946,8 +1396,6 @@ function initTaxPowerSite() {
       hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
       hamburgerBtn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
       document.body.classList.toggle('nav-menu-open', isOpen && window.innerWidth <= mobileBreakpoint);
-      header?.classList.remove('navbar-scroll-hidden');
-      resetHeaderInactivityTimer();
     };
 
     hamburgerBtn.addEventListener('click', (e) => {
@@ -1988,13 +1436,9 @@ function initTaxPowerSite() {
       hamburgerBtn?.setAttribute('aria-expanded', 'false');
       hamburgerBtn?.setAttribute('aria-label', 'Open navigation menu');
       document.body.classList.remove('nav-menu-open');
-      header?.classList.remove('navbar-scroll-hidden');
-      resetHeaderInactivityTimer();
-      moveIndicator(document.querySelector('.nav-item.h-current'));
     }
   });
 
-  resetHeaderInactivityTimer();
 }
 
 function bootTaxPowerSite() {
@@ -2003,12 +1447,7 @@ function bootTaxPowerSite() {
     return;
   }
 
-  if (window.taxPowerNavigationLoaded || !document.querySelector('[data-nav-slot]')) {
-    initTaxPowerSite();
-    return;
-  }
-
-  document.addEventListener('taxpower:navigation-loaded', initTaxPowerSite, { once: true });
+  initTaxPowerSite();
 }
 
 bootTaxPowerSite();

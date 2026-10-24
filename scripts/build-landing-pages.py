@@ -1,6 +1,6 @@
 """Build standalone Vidarbha city pages, the Vidarbha hub and software feature pages.
 Content lives in scripts/landing-pages.json; shared header/footer come from nav.html and footer.html.
-Run after scripts/build-section-routes.py (python scripts/build-landing-pages.py).
+Run after scripts/build-pages.py (python scripts/build-landing-pages.py).
 Set TAXPOWER_BASE_PATH=/repo-name/ to preview on a GitHub project page (default '/').
 """
 from pathlib import Path

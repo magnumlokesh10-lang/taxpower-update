@@ -1,6 +1,7 @@
-"""Build static, crawlable versions of the existing scrolling site.
+"""Build the site as real, separate pages (one HTML file per tab).
 Edit _site-source/*.html, footer.html, nav.html and scripts/seo-routes.json;
-then run python scripts/build-section-routes.py (requires lxml and Pillow).
+then run python scripts/build-pages.py (requires lxml and Pillow), then scripts/build-landing-pages.py.
+Each page carries only its own content, styles and scripts.
 """
 from pathlib import Path
 from copy import deepcopy
@@ -12,6 +13,10 @@ ROOT=Path(__file__).resolve().parents[1]
 BASE='https://taxpower.co/'
 # Site root for <base href>. '/' on taxpower.co; set TAXPOWER_BASE_PATH=/repo-name/ to preview a GitHub project page.
 BASE_PATH='/'+os.environ.get('TAXPOWER_BASE_PATH','/').strip('/')+'/' if os.environ.get('TAXPOWER_BASE_PATH','/').strip('/') else '/'
+BUILD=__import__('time').strftime('%Y%m%d-%H%M')
+NAV_PAGE={'home':'index.html','taxpowergst':'taxpowergst.html','taxpowertds':'taxpowertds.html','pricing':'pricing.html','downloads':'downloads.html','aboutus':'aboutus.html','support':'support.html'}
+PAGE_ANCHOR={'home':'home','demo-enquiry':'demo-enquiry'}
+SCROLL_TO={'gst-return':'dashboard_bg','gst-billing':'gst-billing-intro','technical-support':'technical-support','demo-enquiry':'demo-enquiry'}
 config=json.loads((ROOT/'scripts/seo-routes.json').read_text())
 variants=json.loads((ROOT/'scripts/image-variants.json').read_text())
 source=html.fromstring((ROOT/'_site-source/index.html').read_text())
@@ -22,8 +27,13 @@ for name in ['taxpowergst','taxpowertds','pricing','downloads','aboutus','suppor
     node.set('class',node.get('class','')+' loaded-page-section')
     node.set('data-loaded-page',name+'.html');sections[name]=node
 container=source.xpath('//*[@data-page-sections]')[0]
-container.set('data-prerendered','true')
 for node in sections.values():container.append(deepcopy(node))
+head_assets={}
+for name in ['taxpowergst','taxpowertds','pricing','downloads','aboutus','support']:
+    doc=html.fromstring((ROOT/f'_site-source/{name}.html').read_text())
+    head_assets[name]=[(e.tag,(e.get('href') or e.get('src')).split('?')[0]) for e in doc.xpath('//head/link[@rel="stylesheet"][starts-with(@href,"css/")] | //head/script[starts-with(@src,"js/")]')]
+head_assets['home']=[('link','css/stylesheet.css'),('link','css/company-logos.css'),('link','css/support-cards.css'),('script','js/company-logos.js'),('script','js/form-backend.js'),('script','js/script.js'),('script','js/support-page.js')]
+DROP=('js/section-routes.js','js/nav-loader.js','js/page-loader.js')
 # Shared parts are present before JavaScript, so links are immediately crawlable.
 navdoc=html.fromstring((ROOT/'nav.html').read_text())
 slot=source.xpath('//*[@data-nav-slot]')[0];parent=slot.getparent();pos=parent.index(slot)
@@ -78,6 +88,38 @@ for route,meta in config.items():
     doc.xpath('//link[@rel="canonical"]')[0].set('href',canonical)
     for prop,value in {'og:title':meta['title'],'og:description':meta['description'],'og:url':canonical,'og:type':'website','og:locale':'en_IN','og:site_name':'TaxPower','og:image':BASE+'asset/swt_icon/taxpower_icon.png'}.items():head.append(etree.Element('meta',{'property':prop,'content':value}))
     for name,value in {'twitter:card':'summary','twitter:title':meta['title'],'twitter:description':meta['description']}.items():head.append(etree.Element('meta',{'name':name,'content':value}))
+    keep=meta['section']
+    # Only this page's content stays: the other tabs are their own pages.
+    cont=doc.xpath('//*[@data-page-sections]')[0]
+    if keep=='home':cont.getparent().remove(cont)
+    else:
+        for node in doc.xpath('//main[@id="home"] | //section[contains(@class,"trusted-companies-section")]'):node.getparent().remove(node)
+        for node in list(cont):
+            if node.get('id')!=keep:cont.remove(node)
+        for node in cont:node.attrib.pop('data-loaded-page',None);node.set('class',node.get('class','').replace('loaded-page-section','').strip())
+        cont.attrib.pop('data-prerendered',None);cont.attrib.pop('data-page-sections',None)
+    # Per-page styles and scripts.
+    for el in doc.xpath('//head/script[@src] | //head/link[@rel="stylesheet"][starts-with(@href,"css/")] | //head/link[@rel="preload"][@href="nav.html"]'):el.getparent().remove(el)
+    VER='?v='+BUILD
+    for tag,url in head_assets[keep]:
+        if url in DROP or url=='js/page-init.js':continue
+        head.append(etree.Element('link',{'rel':'stylesheet','href':url+VER}) if tag=='link' else etree.Element('script',{'src':url+VER,'defer':''}))
+    head.append(etree.Element('script',{'src':'js/page-init.js'+VER,'defer':''}))
+    stub=etree.Element('script');stub.text='window.TaxPowerPage='+json.dumps({'anchor':'#'+PAGE_ANCHOR.get(route,keep) if route in('demo-enquiry','home') else '','nav':NAV_PAGE[keep],'scrollTo':SCROLL_TO.get(route,'')})+';'
+    head.insert(0,stub)
+    # Same-page '#links' must keep working under <base>; links to other tabs become real page links.
+    for a in doc.xpath('//a[@href]'):
+        h=a.get('href')
+        if h.startswith('#') and len(h)>1:
+            if doc.xpath('//*[@id=$i]',i=h[1:]):a.set('href',route+h)
+        elif h in anchors.values() or h.split('#')[0] in alias.values():pass
+    # Mark the current tab in the header before any script runs.
+    nav_item=doc.xpath('//a[contains(@class,"nav-item")][@data-nav-page=$p]',p=NAV_PAGE[keep])
+    if nav_item:
+        nav_item[0].set('class',nav_item[0].get('class','')+' h-current');nav_item[0].set('aria-current','page')
+        if keep in('taxpowergst','taxpowertds'):
+            for other in doc.xpath('//a[contains(@class,"nav-item")][@data-nav-page="taxpowergst.html" or @data-nav-page="taxpowertds.html"]'):
+                if other is not nav_item[0]:other.set('class',other.get('class','')+' is-product-collapsed')
     primary=doc.get_element_by_id(meta['section'])
     for node in doc.xpath('//main'):node.tag='section';node.set('data-route-section','true')
     primary.tag='main';primary.set('data-route-section','true')
@@ -98,11 +140,6 @@ for route,meta in config.items():
         output=deepcopy(doc);base=etree.Element('base',{'href':BASE_PATH});output.find('head').insert(0,base)
         path=ROOT/filename;path.parent.mkdir(exist_ok=True);rendered='<!DOCTYPE html>\n'+html.tostring(output,encoding='unicode',method='html')
         path.write_text('\n'.join(line.rstrip() for line in rendered.splitlines())+'\n')
-# Metadata for client-side navigation uses the same source as the static HTML.
-routing=ROOT/'js/section-routes.js';js=routing.read_text();js=re.sub(r'  const titles = \{.*?\};','  const titles = '+json.dumps({r:m['title'] for r,m in config.items()},indent=2)+';',js,flags=re.S)
-js=re.sub(r'  const routeMetadata = \{.*?\};\n','',js,flags=re.S)
-js=js.replace('  function updateTitle() {','  const routeMetadata = '+json.dumps(config,indent=2)+';\n  function updateTitle() {')
-routing.write_text(js)
 landing=json.loads((ROOT/'scripts/landing-pages.json').read_text())
 landing_slugs=[landing['hub']['slug']]+[c['slug'] for c in landing['cities']]+[f['slug'] for f in landing['features']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['pages']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['posts']]+['gst-tds-due-dates']
 canonical_routes=[r for r,m in config.items() if not m.get('canonical')]

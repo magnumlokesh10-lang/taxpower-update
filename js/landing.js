@@ -13,7 +13,6 @@
     burger.setAttribute('aria-expanded', String(open));
     burger.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
     document.body.classList.toggle('nav-menu-open', open && window.innerWidth <= 1100);
-    header?.classList.remove('navbar-scroll-hidden');
   }
   burger?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); setMenu(!menu.classList.contains('active')); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu?.classList.contains('active')) { setMenu(false); burger.focus(); } });

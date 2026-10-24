@@ -228,46 +228,13 @@ body {
   transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.header.navbar-scroll-hidden {
-  transform: translateY(calc(-100% - 20px));
-}
 
-.header.navbar-stay-visible {
-  transform: none;
-}
 
-.header-reveal-hint {
-  position: fixed;
-  top: 6px;
-  left: 50%;
-  display: flex;
-  width: 58px;
-  height: 58px;
-  padding: 0;
-  border: 0;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  box-shadow: none;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%) translateY(-58px);
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1103;
-  cursor: pointer;
-}
 
-.header-reveal-hint img {
-  display: block;
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-  filter: brightness(1.18) saturate(1.12);
-  box-shadow: 0 0 14px rgba(0, 180, 216, 0.42), 0 6px 24px rgba(244, 122, 34, 0.48);
-  animation: revealIconPulse 3.8s ease-in-out infinite;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s ease;
-}
+
+
+
+
 
 @keyframes revealIconPulse {
   0%,
@@ -282,39 +249,17 @@ body {
   }
 }
 
-.header.navbar-scroll-hidden + .header-reveal-hint {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-}
 
-.header-reveal-hint:hover,
-.header-reveal-hint:focus-visible {
-  outline: none;
-}
 
-.header-reveal-hint:hover img,
-.header-reveal-hint:focus-visible img {
-  filter: brightness(1.32) saturate(1.18);
-  transform: translateY(5px) scale(1.08);
-  box-shadow: 0 0 22px rgba(0, 180, 216, 0.58), 0 10px 34px rgba(244, 122, 34, 0.72);
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .header-reveal-hint img {
-    animation: none;
-  }
-}
 
-.header-reveal-hint::before {
-  content: '';
-  position: absolute;
-  inset: -5px -10px 0;
-}
 
-.header-reveal-hint:hover {
-  transform: translateX(-50%) translateY(4px);
-}
+
+
+
+
+
+
 
 .main-content {
   z-index: 1;
@@ -542,29 +487,9 @@ body {
   box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
-.nav-sliding-bg {
-  position: absolute;
-  top: 3.5px;
-  left: 5px;
-  height: 30px;
-  background: #ffffff;
-  border-radius: 999px;
-  box-shadow: 0 2px 8px -1px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(0, 180, 216, 0.14), 0 3px 12px rgba(0, 180, 216, 0.07);
-  z-index: -1;
-  opacity: 0;
-  transition:
-    left 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
-    top 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
-    width 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
-    height 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
-    opacity 0.2s ease,
-    box-shadow 0.2s ease;
-  pointer-events: none;
-}
 
-.nav-sliding-bg.is-positioning-instantly {
-  transition: none;
-}
+
+
 
 .nav-item {
   color: #475569;
@@ -3443,9 +3368,7 @@ body.demo-form-open {
     left: 16px;
   }
 
-  .nav-sliding-bg {
-    display: none;
-  }
+  
 
   .hero_heading {
     font-size: 28px;
@@ -3714,14 +3637,7 @@ body.demo-form-open {
   box-shadow: none;
 }
 
-.nav-sliding-bg {
-  top: auto;
-  bottom: -11px;
-  height: 3px !important;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(90deg, #00b4d8, #f47a22);
-  box-shadow: none;
-}
+
 
 .nav-item {
   padding: 12px 10px;
@@ -4020,9 +3936,7 @@ body.demo-form-open {
   box-shadow: 0 12px 28px rgba(15, 39, 68, 0.12);
 }
 
-.nav-sliding-bg {
-  display: none;
-}
+
 
 .nav-item,
 .navbar-demo.demo-mobile-only {
@@ -4836,7 +4750,7 @@ body.demo-form-open {
 .nav-gradient-depth [data-nav-page="aboutus.html"] { --nav-from:#FAE8EF; --nav-to:#F3E8FA; }
 .nav-gradient-depth [data-nav-page="support.html"] { --nav-from:#E1F5F7; --nav-to:#E5F4EB; }
 @media(min-width:1101px) {
- .nav-gradient-depth .nav-sliding-bg { display:none; }
+ 
  .nav-gradient-depth .navbar-links { gap:5px; flex-wrap:nowrap; padding:6px; overflow:visible; }
  .nav-gradient-depth .nav-item {
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
@@ -5219,8 +5133,8 @@ body.demo-form-open {
 @media(min-width:1101px) and (max-width:1250px) { .header.nav-gradient-depth .nav-item.is-pinned-open,.header.nav-gradient-depth .navbar-links .nav-item.h-current:not(.nav-item-always) { width:132px; } }
 
 /* Navigation never hides on scroll. */
-.header.navbar-scroll-hidden { transform:none !important; }
-.header-reveal-hint { display:none !important; }
+
+
 
 /* Lighter, smoother hover: no live blur behind the bar, own layer, contained layout. */
 .navbar { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(255,255,255,.92) !important; }
