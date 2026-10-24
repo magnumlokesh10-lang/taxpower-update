@@ -23,24 +23,3 @@
 function s(){if(!t){t=true;requestAnimationFrame(u)}}
 window.addEventListener('scroll',s,{passive:true});document.addEventListener('taxpower:sections-loaded',u);u()})();
 
-(function(){
-  var K='tp-nav-line',line;
-  function place(animate){
-    var wrap=document.getElementById('navLinksContainer');
-    if(!wrap||window.innerWidth<=1180)return;
-    var cur=wrap.querySelector('.nav-item.h-current');
-    if(!cur)return;
-    if(!line){line=document.createElement('span');line.className='nav-slide-line';line.setAttribute('aria-hidden','true');wrap.appendChild(line)}
-    var w=wrap.getBoundingClientRect(),c=cur.getBoundingClientRect();
-    var width=Math.max(24,Math.min(72,c.width*.6)),x=c.left-w.left+(c.width-width)/2;
-    var prev=null;try{prev=JSON.parse(sessionStorage.getItem(K)||'null')}catch(e){}
-    if(animate&&prev){line.style.transition='none';line.style.width=prev.w+'px';line.style.transform='translateX('+prev.x+'px)';line.classList.add('on');void line.offsetWidth;line.style.transition=''}
-    line.style.width=width+'px';line.style.transform='translateX('+x+'px)';line.classList.add('on');
-    try{sessionStorage.setItem(K,JSON.stringify({x:x,w:width}))}catch(e){}
-  }
-  function init(){requestAnimationFrame(function(){place(true);setTimeout(function(){place(false)},700)})}
-  document.addEventListener('taxpower:sections-loaded',init);
-  window.addEventListener('load',function(){setTimeout(function(){place(false)},300)});
-  window.addEventListener('resize',function(){place(false)});
-  if(document.readyState!=='loading')init();
-})();

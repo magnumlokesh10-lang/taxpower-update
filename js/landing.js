@@ -151,3 +151,12 @@ document.addEventListener('click', (e) => {
   update();
 })();
 
+
+(() => {
+  const h = document.querySelector('.header');
+  if (!h) return;
+  let t = false;
+  const u = () => { t = false; h.classList.toggle('is-scrolled', window.scrollY > 12); };
+  window.addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(u); } }, { passive: true });
+  u();
+})();
