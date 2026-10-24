@@ -64,7 +64,7 @@ body {
   position: absolute;
   inset: 0;
   background: var(--site-mouse-glow);
-  z-index: 1;
+  z-index: 4;
   pointer-events: none;
 }
 
@@ -75,8 +75,16 @@ body {
   width: 140%;
   height: 200%;
   transform: skewY(6deg);
-  -webkit-mask-image: radial-gradient(circle at center, white 15%, transparent 65%);
-  mask-image: radial-gradient(circle at center, white 15%, transparent 65%);
+}
+
+/* Fades the grid out toward the edges with a plain overlay instead of a mask, which is much cheaper to draw. */
+.global-site-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(circle hypot(70vw, 100vh) at 50% 50%, transparent 15%, var(--site-bg-color) 65%);
 }
 
 .grid-blueprint {
@@ -87,6 +95,7 @@ body {
 }
 
 .grid-squares-layer {
+  will-change: transform;
   display: grid;
   grid-template-columns: repeat(auto-fill, 44px);
   grid-template-rows: repeat(auto-fill, 44px);
@@ -103,120 +112,20 @@ body {
   background-color: transparent;
 }
 
-.dynamic-square.indigo-flash {
-  animation: singleFlashIndigo 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  box-shadow: 0 0 18px rgba(99, 102, 241, 0.45);
+.dynamic-square.indigo-flash,.dynamic-square.teal-flash,.dynamic-square.honey-flash,.dynamic-square.sky-flash {
+  animation: singleFlash 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+.dynamic-square.indigo-flash { background-color: rgba(99, 102, 241, 0.55); box-shadow: 0 0 18px rgba(99, 102, 241, 0.45); }
+.dynamic-square.teal-flash { background-color: rgba(20, 184, 166, 0.55); box-shadow: 0 0 18px rgba(20, 184, 166, 0.45); }
+.dynamic-square.honey-flash { background-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 18px rgba(245, 158, 11, 0.45); }
+.dynamic-square.sky-flash { background-color: rgba(56, 189, 248, 0.55); box-shadow: 0 0 18px rgba(56, 189, 248, 0.45); }
 
-.dynamic-square.teal-flash {
-  animation: singleFlashTeal 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  box-shadow: 0 0 18px rgba(20, 184, 166, 0.45);
-}
-
-.dynamic-square.honey-flash {
-  animation: singleFlashHoney 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  box-shadow: 0 0 18px rgba(245, 158, 11, 0.45);
-}
-
-.dynamic-square.sky-flash {
-  animation: singleFlashSky 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
-}
-
-@keyframes singleFlashIndigo {
-  0% {
-    opacity: 0;
-    background-color: transparent;
-  }
-
-  18% {
-    opacity: 1;
-    background-color: var(--site-flash-indigo);
-  }
-
-  35%,
-  60% {
-    opacity: 0.95;
-    background-color: rgba(99, 102, 241, 0.55);
-  }
-
-  100% {
-    opacity: 0;
-    background-color: transparent;
-    box-shadow: none;
-  }
-}
-
-@keyframes singleFlashTeal {
-  0% {
-    opacity: 0;
-    background-color: transparent;
-  }
-
-  18% {
-    opacity: 1;
-    background-color: var(--site-flash-teal);
-  }
-
-  35%,
-  60% {
-    opacity: 0.95;
-    background-color: rgba(20, 184, 166, 0.55);
-  }
-
-  100% {
-    opacity: 0;
-    background-color: transparent;
-    box-shadow: none;
-  }
-}
-
-@keyframes singleFlashHoney {
-  0% {
-    opacity: 0;
-    background-color: transparent;
-  }
-
-  18% {
-    opacity: 1;
-    background-color: var(--site-flash-honey);
-  }
-
-  35%,
-  60% {
-    opacity: 0.95;
-    background-color: rgba(245, 158, 11, 0.55);
-  }
-
-  100% {
-    opacity: 0;
-    background-color: transparent;
-    box-shadow: none;
-  }
-}
-
-@keyframes singleFlashSky {
-  0% {
-    opacity: 0;
-    background-color: transparent;
-  }
-
-  18% {
-    opacity: 1;
-    background-color: var(--site-flash-sky);
-  }
-
-  35%,
-  60% {
-    opacity: 0.95;
-    background-color: rgba(56, 189, 248, 0.55);
-  }
-
-  100% {
-    opacity: 0;
-    background-color: transparent;
-    box-shadow: none;
-  }
+/* Only opacity changes, so the page background is not repainted on every flash. */
+@keyframes singleFlash {
+  0% { opacity: 0; }
+  18% { opacity: 0.55; }
+  35%, 60% { opacity: 0.95; }
+  100% { opacity: 0; }
 }
 
 /* navbar layout alignment rules */
@@ -4521,8 +4430,8 @@ body.demo-form-open {
 .nav-dd-icon {flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#ff9a2e,#f0730a);box-shadow:0 4px 10px #f0730a30;}
 .nav-dd-icon svg {width:21px;height:21px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
 .nav-dd-text {display:flex;flex-direction:column;gap:2px;min-width:0;}
-.header.nav-gradient-depth .nav-dropdown .nav-dd-text strong {font-size:14.5px;font-weight:700;line-height:1.25;color:#103e50;}
-.header.nav-gradient-depth .nav-dropdown .nav-dd-text small {font-size:12.5px;font-weight:500;line-height:1.4;color:#5a7384;}
+.header.nav-gradient-depth .nav-dropdown .nav-dd-text strong {font-size:14px;font-weight:700;line-height:1.25;color:#103e50;}
+.header.nav-gradient-depth .nav-dropdown .nav-dd-text small {font-size:11.5px;font-weight:500;line-height:1.4;color:#5a7384;}
 @media(max-width:1180px) {.header.nav-gradient-depth .nav-dropdown .nav-dropdown-menu {min-width:0;width:auto;}}
 .header.nav-gradient-depth .nav-dropdown.resources-nav-dropdown .nav-dropdown-menu {min-width:410px;}
 @media(max-width:1180px) {.header.nav-gradient-depth .nav-dropdown.resources-nav-dropdown .nav-dropdown-menu {min-width:0;}}
@@ -4614,3 +4523,19 @@ body.nav-hovering section *::after { animation-play-state:paused !important; }
 @media(prefers-reduced-motion:reduce) {
  .header.nav-gradient-depth .navbar-links .nav-item:is(.h-current,.is-pinned-open)::before { animation:none; background-position:50% 50%; }
 }
+
+/* Dropdown open state (set by script.js) and Support menu position: one place for every page. */
+.header.nav-gradient-depth .support-nav-dropdown .nav-dropdown-menu {right:0;left:auto;}
+.header.nav-gradient-depth .nav-dropdown-managed:not(.is-open) > .nav-dropdown-menu {opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);}
+.header.nav-gradient-depth .nav-dropdown-managed.is-open > .nav-dropdown-menu {opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);}
+@media(max-width:1180px) {
+ .header.nav-gradient-depth .nav-dropdown .nav-dropdown-menu {min-width:0;width:auto;margin:4px 0 8px;padding:5px;}
+ .header.nav-gradient-depth .nav-dropdown-managed:not(.is-open) > .nav-dropdown-menu {display:none;}
+ .header.nav-gradient-depth .nav-dropdown-managed.is-open > .nav-dropdown-menu {display:block;}
+}
+@media(max-width:1180px) {
+ /* Pages that only use the light menu script (blog, guides): submenus stay closed until tapped. */
+ .header.nav-gradient-depth .nav-dropdown:not(.nav-dropdown-managed):not(.is-open) > .nav-dropdown-menu {display:none;}
+ .header.nav-gradient-depth .nav-dropdown:not(.nav-dropdown-managed).is-open > .nav-dropdown-menu {display:block;}
+}
+@media(prefers-reduced-motion:reduce) {.header.nav-gradient-depth .nav-dropdown-menu{transition:none;}}

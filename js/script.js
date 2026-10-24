@@ -122,6 +122,8 @@ function initTaxPowerSite() {
     }
 
     window.addEventListener('mousemove', (event) => {
+      // Moving over the menu must not repaint the whole background.
+      if (event.target.closest && event.target.closest('.header')) return;
       const rect = siteBackground.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -156,6 +158,10 @@ function initTaxPowerSite() {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) stopBackgroundFlash(); else startBackgroundFlash();
     });
+    // The background rests while the menu is in use.
+    const siteHeader = document.querySelector('.header');
+    siteHeader?.addEventListener('pointerenter', stopBackgroundFlash);
+    siteHeader?.addEventListener('pointerleave', startBackgroundFlash);
     backgroundReducedMotion.addEventListener('change', () => {
       stopBackgroundFlash();
       startBackgroundFlash();
@@ -1407,7 +1413,9 @@ function initTaxPowerSite() {
 
     // close navigation drawer drop tray dynamically when any anchor point link is selected
     navbarMenu.querySelectorAll('a').forEach(item => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (event) => {
+        // A tap that only opens a submenu keeps the drawer open.
+        if (event.defaultPrevented) return;
         setMobileMenuState(false);
       });
     });
