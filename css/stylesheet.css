@@ -4464,7 +4464,6 @@ body.demo-form-open {
 /* Lighter, smoother hover: no live blur behind the bar, own layer, contained layout. */
 .navbar { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(255,255,255,.92) !important; }
 .header.nav-gradient-depth .navbar { background:rgba(255,255,255,.94) !important; }
-.header { will-change:transform; }
 .navbar-links { contain:layout style; }
 @media(min-width:1101px) {
  .nav-gradient-depth .nav-item { transition:width .32s cubic-bezier(.22,1,.36,1),color .2s ease !important; }
@@ -4472,7 +4471,7 @@ body.demo-form-open {
  .nav-gradient-depth .nav-item .nav-item-icon { transition:transform .22s ease,opacity .18s ease !important; }
  .nav-gradient-depth .nav-item .nav-item-label { transition:opacity .2s ease,transform .26s cubic-bezier(.22,1,.36,1) !important; }
  .header.nav-gradient-depth .nav-item:is(:hover,:focus-visible) .nav-item-label { transition-delay:.05s !important; }
- .nav-dropdown-menu { transition:opacity .16s ease,visibility .16s ease,transform .2s cubic-bezier(.22,1,.36,1) !important; }
+ .nav-dropdown-menu { transition:opacity .14s ease,visibility .14s ease !important; }
 }
 
 /* Back to top. */
@@ -4540,11 +4539,14 @@ body.nav-hovering section *::after { animation-play-state:paused !important; }
   @view-transition { navigation: auto; }
   .header { view-transition-name: site-header; }
   ::view-transition-group(site-header),
-  ::view-transition-old(site-header),
   ::view-transition-new(site-header) { animation: none; }
+  ::view-transition-old(site-header) { display: none; }
   ::view-transition-old(root) { animation-duration: .14s; }
   ::view-transition-new(root) { animation-duration: .2s; }
 }
 
 /* The menu panel is solid white: no backdrop blur behind it, so its text stays sharp. */
 .header .nav-dropdown-menu { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+
+/* Menus only fade (no sliding), so text is drawn the same way every time and never looks soft. */
+.header .nav-dropdown-menu { transform: none !important; will-change: auto !important; }
