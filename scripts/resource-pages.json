@@ -4,7 +4,7 @@
     {
       "slug": "free-trial",
       "title": "TaxPower Free Trial: 30 Days for GST, Billing & TDS",
-      "description": "Try TaxPower GST, Billing and TDS software free for 30 days. Request a trial and get installation help and training in Hindi, Marathi or English.",
+      "description": "Try TaxPower GST, Billing and TDS software free for 30 days. Request a trial and get installation help and training in Marathi, Hindi or English.",
       "h1": "30-day free trial of TaxPower GST, Billing and TDS",
       "kicker": "FREE TRIAL",
       "lead": "Try TaxPower on your own system for 30 days before you buy. Request the trial, and the Siddharth Enterprises team will help you install it and show you the workflows you use most.",
@@ -14,7 +14,7 @@
         {"t": "h2", "v": "What you can try"},
         {"t": "list", "v": ["TaxPower GST: prepare and upload GST returns, download GSTR-1, 2A and 2B data, reconcile ITC and track filing status", "TaxPower GST Billing: invoices, e-invoices, e-way bills, masters and reports", "TaxPower TDS: 24Q, 26Q, 27Q and 27EQ returns (Forms 138, 140, 144 and 143), PAN and FVU validation, challans, TRACES and Form 16/16A certificates"]},
         {"t": "h2", "v": "How the trial works"},
-        {"t": "steps", "v": ["Request the trial from the form. Tell us which product you want to try and the kind of work you do.", "Check the system requirements page so that your computer is ready.", "We call you, help with installation and show you how to start. Help is available in Hindi, Marathi or English.", "Use TaxPower for 30 days. Call or message us if you get stuck.", "If it suits your work, choose an edition and buy. Prices are on the pricing page."]},
+        {"t": "steps", "v": ["Request the trial from the form. Tell us which product you want to try and the kind of work you do.", "Check the system requirements page so that your computer is ready.", "We call you, help with installation and show you how to start. Help is available in Marathi, Hindi or English.", "Use TaxPower for 30 days. Call or message us if you get stuck.", "If it suits your work, choose an edition and buy. Prices are on the pricing page."]},
         {"t": "note", "v": "Trial terms such as the number of GSTINs or TANs that can be used are confirmed when you request the trial."},
         {"t": "faq", "v": [
           {"q": "Is the trial really free?", "a": "Yes. TaxPower GST, Billing and TDS each have a 30-day free trial."},
