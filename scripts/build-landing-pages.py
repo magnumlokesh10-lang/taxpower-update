@@ -59,8 +59,12 @@ def shared(xpath_root, source_file, selector):
     return '\n'.join(out)
 
 
+RESOURCE_SLUGS = set()
 NAV = shared(None, 'nav.html', '//header | //button[@id="backToTop"]')
 FOOTER = shared(None, 'footer.html', None)
+_RES_TAB = 'class="nav-item nav-dropdown-toggle" data-nav-page="resources.html"'
+assert _RES_TAB in NAV
+NAV_RESOURCES = NAV.replace(_RES_TAB, 'class="nav-item nav-dropdown-toggle h-current" data-nav-page="resources.html" aria-current="page"')
 
 
 def li(items):
@@ -242,7 +246,7 @@ def render(slug, body, meta, trail, extra):
 </head>
 <body>
 <div class="global-site-bg site-grid-background" data-site-background aria-hidden="true"><div class="grid-blueprint"></div><div class="grid-squares-layer" data-site-background-squares></div></div>
-{NAV}
+{NAV_RESOURCES if slug in RESOURCE_SLUGS else NAV}
 <main class="lp" id="main">
 {body}
 </main>
@@ -441,10 +445,6 @@ def due_page():
                 ['TCS statement (Form 143)', 'Check the Income Tax portal for the current due date'], ['Form 16 (Form 130)', '15 June after the financial year'],
                 ['Form 16A (Form 131)', 'Usually 15 August, 15 November, 15 February and 15 June']]
     body = (breadcrumb([('Home', 'home'), ('GST & TDS due dates', None)]) +
-            '<section class="lp-panel lp-hero"><span class="lp-kicker">FY 2026-27 · APRIL 2026 TO MARCH 2027</span><h1>GST and TDS due dates calendar</h1>'
-            '<p class="lp-lead">Month-by-month standard due dates for GST returns, TDS and TCS deposits, TDS statements and certificates. Tap a date to see what is due, search for a return or switch to the month list. Add the calendar to your phone or Outlook.</p>'
-            f'<div class="lp-actions"><a class="lp-button" href="{ICS_NAME}" download>Add to calendar (.ics) <span aria-hidden="true">↓</span></a><a class="lp-link" href="free-trial">Try TaxPower free for 30 days ↗</a></div>'
-            f'<p class="lp-meta">Last checked {nice_date(PUBLISHED)}. Dates are standard statutory dates; extensions are notified separately.</p></section>'
             '<section class="lp-panel" aria-labelledby="lp-cal-title"><h2 id="lp-cal-title">Tax calendar</h2>'
             '<div class="lp-toolbar"><div class="lp-views" role="tablist" aria-label="Choose view"><button type="button" role="tab" class="lp-view is-active" data-due-view="cal">Calendar view</button><button type="button" role="tab" class="lp-view" data-due-view="list">List by month</button></div>'
             '<label class="lp-search"><span class="lp-sr">Search due dates</span><input type="search" placeholder="Search due date, e.g. GSTR-3B" data-due-search></label></div>'
@@ -455,6 +455,10 @@ def due_page():
             '<div class="lp-tc-right"><h3 data-tc-title></h3><div class="lp-table-wrap"><table class="lp-table lp-tc-table"><thead><tr><th>Event</th><th>Type</th><th>Description</th></tr></thead><tbody data-tc-rows></tbody></table></div></div></div>'
             f'<div class="lp-calendar" data-due-list>{cal}</div>'
             f'<script type="application/json" id="lp-due-data">{DUE_JSON}</script></section>'
+            '<section class="lp-panel lp-hero"><span class="lp-kicker">FY 2026-27 · APRIL 2026 TO MARCH 2027</span><h1>GST and TDS due dates calendar</h1>'
+            '<p class="lp-lead">Month-by-month standard due dates for GST returns, TDS and TCS deposits, TDS statements and certificates. Tap a date to see what is due, search for a return or switch to the month list. Add the calendar to your phone or Outlook.</p>'
+            f'<div class="lp-actions"><a class="lp-button" href="{ICS_NAME}" download>Add to calendar (.ics) <span aria-hidden="true">↓</span></a><a class="lp-link" href="free-trial">Try TaxPower free for 30 days ↗</a></div>'
+            f'<p class="lp-meta">Last checked {nice_date(PUBLISHED)}. Dates are standard statutory dates; extensions are notified separately.</p></section>'
             '<section class="lp-panel"><h2>Quick reference: GST</h2>' + table_html(['Return or payment', 'Standard due date'], gst_rows) + '</section>'
             '<section class="lp-panel"><h2>Quick reference: TDS and TCS</h2>' + table_html(['Return, payment or certificate', 'Standard due date'], tds_rows) +
             '<p style="margin-top:14px">Income-tax Act, 2025 applies from 1 April 2026, so TDS and TCS forms and sections have new numbers. Forms 24Q, 26Q, 27Q and 27EQ became Forms 138, 140, 144 and 143. Form 16, 16A and 27D became Forms 130, 131 and 133.</p></section>'
@@ -474,6 +478,7 @@ pages = [(hub['slug'],) + hub_page()] + [(c['slug'],) + city_page(c) for c in ci
     + [wrap(pg['slug'], blog_index(pg) if pg.get('type') == 'blog-index' else static_page(pg)) for pg in res['pages']] \
     + [wrap(x['slug'], post_page(x)) for x in res['posts']] \
     + [wrap('gst-tds-due-dates', due_page())]
+RESOURCE_SLUGS.update(p[0] for p in pages if p[0] in {x['slug'] for x in res['pages']} | set(posts_by_slug) | {'gst-tds-due-dates'})
 for slug, body, meta, faqs, trail, extra in pages:
     out = render(slug, body, meta, trail, extra)
     for filename in (f'{slug}.html', f'{slug}/index.html'):
