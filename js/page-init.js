@@ -18,3 +18,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })();
+
+(function(){var h,t=false;function u(){t=false;h=h||document.querySelector('.header');if(h)h.classList.toggle('is-scrolled',window.scrollY>12)}
+function s(){if(!t){t=true;requestAnimationFrame(u)}}
+window.addEventListener('scroll',s,{passive:true});document.addEventListener('taxpower:sections-loaded',u);u()})();
