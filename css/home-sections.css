@@ -109,3 +109,7 @@
 .hx-city:hover{background:#fff0e0;border-color:#f3cfa6;transform:translateY(-1px)}
 .hx-city:first-child{background:#10384b;border-color:#10384b;color:#fff!important}
 @media(max-width:900px){.hx-areabox{grid-template-columns:1fr;padding:22px;gap:20px}.hx-date{padding:18px}}
+
+.hx-grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1060px){.hx-grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.hx-grid-4{grid-template-columns:1fr}}
