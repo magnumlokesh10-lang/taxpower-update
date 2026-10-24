@@ -7,8 +7,8 @@
 .downloads-page .downloads-search-row { box-sizing:border-box; gap:12px; }
 .downloads-page .downloads-banner-search-field :is(h1,.original-h1) { margin:0; line-height:1.25; overflow-wrap:break-word; }
 .downloads-page .downloads-search-suggestion { box-sizing:border-box; }
-.downloads-page .downloads-table-wrap { width:min(1120px,100%); margin-inline:auto; }
-.downloads-page .utility-download-heading { max-width:100%; }
+
+
 @media(max-width:767px) {
  .page-section.downloads-page { padding-top:14px; }
  .downloads-page .downloads-banner { min-height:210px; margin-bottom:22px; }
@@ -36,21 +36,21 @@
 .downloads-page .downloads-search-row { min-height:64px; }
 .downloads-page .downloads-banner-search-field :is(h1,.original-h1) { font-size:clamp(23px,2.6vw,34px); }
 .downloads-page .downloads-search-suggestion { font-size:16px; padding:10px 22px; background:#713a194d; }
-.downloads-desktop-art { position:absolute; right:2%; top:50%; transform:translateY(-50%); width:21%; max-width:240px; pointer-events:none; }
+
 .downloads-banner-links { display:flex; flex-wrap:wrap; gap:9px; margin-top:13px; }
 .downloads-banner-links a { display:inline-flex; align-items:center; gap:18px; min-height:44px; padding:9px 14px; border:1px solid #b8e6f4b3; border-radius:9px; background:#f2fbfff2; color:#135570; font-size:12px; font-weight:700; text-decoration:none; transition:background .18s; }
 .downloads-banner-links a:hover { background:#d9f4ff; }
 .downloads-banner-links a:focus-visible { outline:3px solid #ffbd77; outline-offset:3px; }
-.downloads-art-arrow { animation:downloadsArrowNudge 2.8s ease-in-out infinite; }
+
 @keyframes downloadsArrowNudge { 0%,65%,100% { transform:translateY(0); } 35% { transform:translateY(5px); } }
 #software-downloads,#utility-downloads { scroll-margin-top:110px; }
 @media(max-width:900px) {
  .downloads-page .downloads-banner-content { padding-right:22%; }
- .downloads-desktop-art { width:19%; right:1%; }
+ 
 }
 @media(max-width:767px) {
  .downloads-page .downloads-banner-content { padding-right:22px; }
- .downloads-desktop-art { display:none; }
+ 
  .downloads-page .downloads-banner-search-field :is(h1,.original-h1) { font-size:clamp(22px,4.5vw,30px); }
  .downloads-page .downloads-search-suggestion { font-size:15px; padding:12px 16px; }
 }
@@ -61,7 +61,7 @@
  .downloads-banner-links { width:100%; gap:7px; }
  .downloads-banner-links a { justify-content:space-between; flex:1 1 auto; padding:9px 10px; gap:8px; font-size:11px; }
 }
-@media(prefers-reduced-motion:reduce) { .downloads-art-arrow { animation:none; } }
+
 
 /* Product download cards and compact supporting-utility tiles. */
 .download-products,.download-utilities { width:min(1120px,100%); margin:30px auto 0; }
@@ -89,14 +89,14 @@
 .download-utility-tile { display:flex; align-items:center; gap:12px; min-width:0; padding:17px 14px; border:1px solid #e0e9ee; border-radius:13px; background:#fffffff2; box-shadow:0 4px 12px #183c4c08; }
 .download-utility-icon { display:grid; place-items:center; width:40px; height:44px; flex:0 0 40px; color:#168fbd; }
 .download-utility-icon svg { width:40px; height:40px; }
-.download-utility-icon--net { background:#f1edff; color:#7857c7; border-radius:50%; height:40px; }
-.download-utility-icon--report,.download-utility-icon--sign { color:#ee862d; }
-.download-utility-icon--java { color:#147ea1; }
-.download-utility-icon--postgres { color:#396b8b; }
+
+
+
+
 .download-utility-copy { flex:1; min-width:0; }
 .downloads-page .download-utility-copy h3 { color:#163f50; font-size:13px; line-height:1.45; margin:0 0 4px; overflow-wrap:anywhere; }
 .download-utility-copy p { margin:0; font-size:11px; line-height:1.5; }
-.download-utility-meta { display:block; color:#658391; font-size:10px; margin-top:5px; }
+
 .download-utility-action { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; border-radius:9px; background:#eaf7ff; color:#008bca; transition:background .18s; }
 .download-utility-action:hover { background:#d7effb; }
 .download-utility-action svg { width:22px; height:22px; }
@@ -186,10 +186,10 @@
 .downloads-page .downloads-banner-links a { border:1px solid #baddec; background:#ffffffed; color:#15607c; border-radius:9px; }
 .downloads-page .downloads-banner-links a:first-child { background:#078fbe; border-color:#078fbe; color:white; box-shadow:0 4px 12px #008bbb1c; }
 .downloads-page .downloads-banner-links a:first-child:hover { background:#087fa8; }
-.downloads-page .downloads-desktop-art { right:4%; width:20%; max-width:225px; }
+
 @media(max-width:900px) {
  .downloads-page .downloads-banner-content { padding-right:25%; }
- .downloads-page .downloads-desktop-art { right:2%; }
+ 
 }
 @media(max-width:767px) {
  .downloads-page .downloads-banner-content { padding:24px 22px; }

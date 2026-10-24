@@ -19,6 +19,11 @@ city_by_key = {c['slug'].replace('gst-tds-software-', ''): c for c in cities}
 feature_by_slug = {f['slug']: f for f in features}
 PHONES = ' · '.join(dealer['phones'])
 CSS_V = '20261023-vidarbha'
+import sys
+sys.path.insert(0,str(__import__('pathlib').Path(__file__).resolve().parent))
+import bundle
+LANDING_CSS = bundle.make('landing',['css/stylesheet.css','css/company-logos.css','css/landing.css'],'css')
+LANDING_JS = bundle.make('landing',['js/landing.js'],'js')
 
 organization = {'@type': ['Organization', 'LocalBusiness'], '@id': BASE + '#siddharth', 'name': 'Siddharth Enterprises',
     'description': 'Authorized TaxPower dealer in Nagpur, Maharashtra selling TaxPower GST, Billing and TDS software across India.',
@@ -232,9 +237,7 @@ def render(slug, body, meta, trail, extra):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="css/stylesheet.css?v={CSS_V}">
-<link rel="stylesheet" href="css/company-logos.css?v=20260924-logo-branding">
-<link rel="stylesheet" href="css/landing.css?v={CSS_V}">
+<link rel="stylesheet" href="{LANDING_CSS}">
 <script type="application/ld+json" id="site-structured-data" data-route="{slug}">{ld}</script>
 </head>
 <body>
@@ -244,7 +247,7 @@ def render(slug, body, meta, trail, extra):
 {body}
 </main>
 {FOOTER}
-<script src="js/landing.js?v={CSS_V}" defer></script>
+<script src="{LANDING_JS}" defer></script>
 </body>
 </html>
 '''

@@ -1025,11 +1025,6 @@
 (() => {
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  function keepGstStylesheetLast() {
-    const gstStylesheet = document.querySelector('link[href*="taxpowergst.css"]');
-    if (gstStylesheet) document.head.appendChild(gstStylesheet);
-  }
-
   function initGstAnimations() {
     document.querySelectorAll('.gst-dashboard-page').forEach(initDashboardPageAnimations);
   }
@@ -1499,7 +1494,6 @@
   //------------------------------------------------------------------
 
   function initGstPage() {
-    keepGstStylesheetLast();
     initGstTypingParagraphs();
     initGstAnimations();
     initGstImageHoverHints();
@@ -1508,7 +1502,6 @@
 
   initGstPage();
   document.addEventListener('taxpower:sections-loaded', initGstPage);
-  document.addEventListener('taxpower:navigation-loaded', keepGstStylesheetLast);
 })();
 /* Lightweight demo tabs; supports direct pages and dynamically loaded sections. */
 (() => {

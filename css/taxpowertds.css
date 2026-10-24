@@ -25,45 +25,45 @@
 .tds-preview-header { display: flex; align-items: center; gap: 10px; padding: 16px 24px; background: linear-gradient(90deg,#fff8ef,#eef9ff); border-bottom: 1px solid #dfeaf0; color: #173e51; }
 .tds-preview-header small { display: block; margin-top: 2px; font-size: 11px; color: #648092; }
 .tds-sample-tag { margin-left: auto; border: 1px solid #bfdce8; border-radius: 6px; padding: 5px 9px; font-size: 10px; color: #396b83; }
-.tds-preview-body { padding: 24px 28px; }
-.tds-page .tds-preview-heading h2 { margin: 0 0 5px; color: #0b3b3b; font-size: 23px; letter-spacing: -.025em; }
-.tds-page .tds-preview-heading p { margin: 0 0 20px; color: #67818e; font-size: 12px; }
-.tds-tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin-bottom: 24px; }
-.tds-tabs button { min-height: 48px; border: 1px solid #dae6ed; border-radius: 8px; background: #f6f9fc; color: #567081; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; touch-action: manipulation; }
-.tds-tabs button[aria-selected="true"] { color: #0369a1; background: #e4f5ff; border-color: #92cfe8; box-shadow: inset 0 -3px #f6a65e; }
-.tds-panel { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 16px 24px; min-height: 225px; align-items: start; }
-.tds-panel[hidden] { display: none; }
-.tds-metric { grid-column: 1; grid-row: 1 / span 2; border-right: 1px solid #e0eaf0; padding: 12px 18px 12px 0; min-height: 160px; }
-.tds-metric div>span { color: #65808e; font-size: 12px; line-height: 1.5; }
-.tds-metric strong { display: block; margin: 12px 0 16px; color: #164c68; font-size: 48px; line-height: 1; letter-spacing: -.04em; }
-.tds-status { display: inline-block; padding: 6px 8px; border-radius: 5px; background: #edf5f8; color: #4e7587; font-size: 10px; }
-.tds-form-map { grid-column: 2; }
-.tds-form-map table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
-.tds-form-map caption { margin-bottom: 8px; color: #31566a; font-weight: 700; text-align: left; }
-.tds-form-map th { color: #597887; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; background: #eef5f9; }
-.tds-form-map :is(th,td) { padding: 7px 12px; border-bottom: 1px solid #e7eef3; }
-.tds-form-map td:first-child { color: #557182; }
-.tds-form-map td:last-child { color: #136b8a; font-weight: 700; }
-.tds-checklist { grid-column: 2; list-style: none; margin: 0; padding: 0; }
-.tds-checklist li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid #e8eff3; color: #526e7f; font-size: 12px; line-height: 1.5; }
-.tds-checklist b { color: #1e596d; font-size: 12px; text-align: right; }
-.tds-demo-check { display: flex; align-items: center; gap: 20px; margin-top: 20px; padding: 16px; border: 1px solid #e0eaf1; border-radius: 10px; background: #f4f8fb; }
-.tds-demo-check .tds-primary { flex-shrink: 0; color: #fff; background: linear-gradient(135deg,#0284c7,#0369a1); }
-.tds-page .tds-check-result { margin: 0; color: #557080; font-size: 12px; line-height: 1.6; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .tds-page .tds-demo-note { margin: 12px 0 0; color: #728a97; font-size: 10px; line-height: 1.5; text-align: right; }
 .tds-intro :is(a,button,[tabindex]):focus-visible { outline: 3px solid #ed913c; outline-offset: 3px; }
 @media(max-width:700px) {
  .tds-intro { padding: 28px 18px; border-radius: 8px; }
- .tds-preview-body { padding: 18px 16px; }
+ 
  .tds-preview-header { padding: 14px 16px; }
- .tds-panel { grid-template-columns: 1fr; gap: 14px; }
- .tds-metric { grid-column: 1; grid-row: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 0 14px; border-right: 0; border-bottom: 1px solid #e0eaf0; min-height: 0; }
- .tds-metric strong { margin: 6px 0 0; font-size: 36px; }
- .tds-form-map,.tds-checklist { grid-column: 1; }
- .tds-demo-check { flex-direction: column; align-items: stretch; gap: 12px; }
- .tds-tabs { gap: 6px; }
- .tds-checklist li { flex-wrap: wrap; gap: 3px 10px; }
- .tds-checklist b { text-align: left; }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  .tds-page .tds-demo-note { text-align: left; }
 }
 

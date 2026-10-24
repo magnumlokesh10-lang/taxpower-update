@@ -7,6 +7,9 @@ from pathlib import Path
 from copy import deepcopy
 import json,re,os
 from urllib.parse import urlsplit,unquote
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+import bundle
 from lxml import html,etree
 from PIL import Image
 ROOT=Path(__file__).resolve().parents[1]
@@ -100,11 +103,14 @@ for route,meta in config.items():
         cont.attrib.pop('data-prerendered',None);cont.attrib.pop('data-page-sections',None)
     # Per-page styles and scripts.
     for el in doc.xpath('//head/script[@src] | //head/link[@rel="stylesheet"][starts-with(@href,"css/")] | //head/link[@rel="preload"][@href="nav.html"]'):el.getparent().remove(el)
-    VER='?v='+BUILD
-    for tag,url in head_assets[keep]:
-        if url in DROP or url=='js/page-init.js':continue
-        head.append(etree.Element('link',{'rel':'stylesheet','href':url+VER}) if tag=='link' else etree.Element('script',{'src':url+VER,'defer':''}))
-    head.append(etree.Element('script',{'src':'js/page-init.js'+VER,'defer':''}))
+    # One minified CSS file and one JS file per page.
+    assets=[(t,u) for t,u in head_assets[keep] if u not in DROP and u!='js/page-init.js']
+    css_files=[u for t,u in assets if t=='link']
+    if 'css/taxpowergst.css' in css_files:  # this sheet has always had to come last
+        css_files.remove('css/taxpowergst.css');css_files.append('css/taxpowergst.css')
+    js_files=[u for t,u in assets if t=='script']+['js/page-init.js']
+    head.append(etree.Element('link',{'rel':'stylesheet','href':bundle.make(keep,css_files,'css')}))
+    head.append(etree.Element('script',{'src':bundle.make(keep,js_files,'js'),'defer':''}))
     stub=etree.Element('script');stub.text='window.TaxPowerPage='+json.dumps({'anchor':'#'+PAGE_ANCHOR.get(route,keep) if route in('demo-enquiry','home') else '','nav':NAV_PAGE[keep],'scrollTo':SCROLL_TO.get(route,'')})+';'
     head.insert(0,stub)
     # Same-page '#links' must keep working under <base>; links to other tabs become real page links.
