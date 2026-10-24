@@ -32,7 +32,7 @@ window.addEventListener('scroll',s,{passive:true});document.addEventListener('ta
     if(!cur)return;
     if(!line){line=document.createElement('span');line.className='nav-slide-line';line.setAttribute('aria-hidden','true');wrap.appendChild(line)}
     var w=wrap.getBoundingClientRect(),c=cur.getBoundingClientRect();
-    var width=Math.max(18,Math.min(36,c.width*.4)),x=c.left-w.left+(c.width-width)/2;
+    var width=Math.max(24,Math.min(72,c.width*.6)),x=c.left-w.left+(c.width-width)/2;
     var prev=null;try{prev=JSON.parse(sessionStorage.getItem(K)||'null')}catch(e){}
     if(animate&&prev){line.style.transition='none';line.style.width=prev.w+'px';line.style.transform='translateX('+prev.x+'px)';line.classList.add('on');void line.offsetWidth;line.style.transition=''}
     line.style.width=width+'px';line.style.transform='translateX('+x+'px)';line.classList.add('on');
