@@ -4543,3 +4543,13 @@ body.nav-hovering section *::after { animation-play-state:paused !important; }
 .navbar{transition:box-shadow .25s ease}
 .header.is-scrolled .navbar{box-shadow:0 8px 24px #17384d1f,0 1px 0 #ffffffb3 inset}
 @media(min-width:1181px){.navbar-demo.demo-desktop-only{transition:transform .2s ease,box-shadow .2s ease}.navbar-demo.demo-desktop-only:hover{transform:translateY(-1px);box-shadow:0 8px 18px #ed8b4238}}
+@media(min-width:1181px){
+.navbar-logo{margin-right:18px}
+.brand-subtitle{margin-top:2px}
+.header.is-scrolled .navbar{transform:scale(.97);transform-origin:50% 0}
+.navbar-links{position:relative}
+.header .nav-item.h-current::after{opacity:0!important}
+.nav-slide-line{position:absolute;left:0;bottom:3px;height:3px;width:24px;border-radius:3px;background:linear-gradient(90deg,#ed8b42,#f6b26b);pointer-events:none;z-index:3;opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1),width .45s cubic-bezier(.22,1,.36,1),opacity .2s}
+.nav-slide-line.on{opacity:1}
+}
+@media(max-width:1180px){.nav-slide-line{display:none}}
