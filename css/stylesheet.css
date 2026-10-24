@@ -4534,17 +4534,6 @@ body.nav-hovering section *::after { animation-play-state:paused !important; }
 }
 @media(prefers-reduced-motion:reduce) {.header.nav-gradient-depth .nav-dropdown-menu{transition:none;}}
 
-/* Moving between pages: the header stays put while only the page content fades (Chrome, Edge, Safari 18+). */
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
-  .header { view-transition-name: site-header; }
-  ::view-transition-group(site-header),
-  ::view-transition-new(site-header) { animation: none; }
-  ::view-transition-old(site-header) { display: none; }
-  ::view-transition-old(root) { animation-duration: .14s; }
-  ::view-transition-new(root) { animation-duration: .2s; }
-}
-
 /* The menu panel is solid white: no backdrop blur behind it, so its text stays sharp. */
 .header .nav-dropdown-menu { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 
