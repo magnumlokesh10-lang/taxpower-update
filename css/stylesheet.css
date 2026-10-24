@@ -3223,7 +3223,6 @@ body.demo-form-open {
   padding: 7px 10px 7px 14px;
   gap: 14px;
   border-radius: 999px;
-  animation: nav-pill-enter 0.55s cubic-bezier(.2,.8,.2,1) both;
 }
 
 .navbar::before {
@@ -3418,10 +3417,6 @@ body.demo-form-open {
   50% { box-shadow: 0 8px 22px rgba(244, 122, 34, 0.18); }
 }
 
-@keyframes nav-pill-enter {
-  from { opacity: 0; transform: translateY(-10px) scale(.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
 
 @media (max-width: 1240px) and (min-width: 1101px) {
   .navbar {
@@ -4539,3 +4534,14 @@ body.nav-hovering section *::after { animation-play-state:paused !important; }
  .header.nav-gradient-depth .nav-dropdown:not(.nav-dropdown-managed).is-open > .nav-dropdown-menu {display:block;}
 }
 @media(prefers-reduced-motion:reduce) {.header.nav-gradient-depth .nav-dropdown-menu{transition:none;}}
+
+/* Moving between pages: the header stays put while only the page content fades (Chrome, Edge, Safari 18+). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  .header { view-transition-name: site-header; }
+  ::view-transition-group(site-header),
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) { animation: none; }
+  ::view-transition-old(root) { animation-duration: .14s; }
+  ::view-transition-new(root) { animation-duration: .2s; }
+}
