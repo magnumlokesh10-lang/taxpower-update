@@ -97,3 +97,15 @@
 .hx-product{padding:18px;gap:18px}.hx-product-tds .hx-product-art{order:-1}
 .hx-banner,.hx-contact{padding:24px}.hx-stepsband{border-radius:22px;padding:36px 16px}.hx-post h3{min-height:0}
 }
+
+.hx-date{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--hx-line);border-radius:20px;padding:22px;box-shadow:0 10px 26px #17384d0d}
+.hx-day{flex:0 0 74px;text-align:center;border-radius:16px;background:linear-gradient(160deg,#fff0e0,#ffe0c2);padding:10px 4px}
+.hx-day b{display:block;font:800 32px/1 "Plus Jakarta Sans",sans-serif;color:#b95a12}
+.hx-day small{display:block;margin-top:4px;font:600 10.5px/1.2 "DM Sans",sans-serif;color:#8a5a2c}
+.hx-date h3{font-size:17px;margin-bottom:6px}.hx-date p{margin:0;font-size:14.5px}
+.hx-areabox{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center;background:#fff;border:1px solid var(--hx-line);border-radius:24px;padding:32px;box-shadow:0 12px 30px #17384d0f}
+.hx-cities{display:flex;flex-wrap:wrap;gap:10px;align-content:center}
+.hx-city{padding:10px 16px;border-radius:999px;background:#eef6fa;border:1px solid #d6e6ee;font:700 13.5px/1 "Plus Jakarta Sans",sans-serif;text-decoration:none;color:#10384b!important;transition:background .18s,transform .18s}
+.hx-city:hover{background:#fff0e0;border-color:#f3cfa6;transform:translateY(-1px)}
+.hx-city:first-child{background:#10384b;border-color:#10384b;color:#fff!important}
+@media(max-width:900px){.hx-areabox{grid-template-columns:1fr;padding:22px;gap:20px}.hx-date{padding:18px}}
