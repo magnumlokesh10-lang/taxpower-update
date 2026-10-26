@@ -23,7 +23,8 @@ import sys
 sys.path.insert(0,str(__import__('pathlib').Path(__file__).resolve().parent))
 import bundle
 LANDING_CSS = bundle.make('landing',['css/stylesheet.css','css/company-logos.css','css/landing.css'],'css')
-LANDING_JS = bundle.make('landing',['js/landing.js'],'js')
+THEME_BOOT = "try{if(localStorage.getItem('tp-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}"
+LANDING_JS = bundle.make('landing',['js/landing.js','js/theme.js'],'js')
 
 organization = {'@type': ['Organization', 'LocalBusiness'], '@id': BASE + '#siddharth', 'name': 'Siddharth Enterprises',
     'description': 'Authorized TaxPower dealer in Nagpur, Maharashtra selling TaxPower GST, Billing and TDS software across India.',
@@ -241,6 +242,7 @@ def render(slug, body, meta, trail, extra):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap">
+<script>{THEME_BOOT}</script>
 <link rel="stylesheet" href="{LANDING_CSS}">
 <script type="application/ld+json" id="site-structured-data" data-route="{slug}">{ld}</script>
 </head>

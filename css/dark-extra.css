@@ -1,0 +1,13 @@
+/* Hand-written dark-mode details (generated colour remaps come from scripts/darkgen.py). */
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(0,180,216,.45);background:rgba(255,255,255,.7);color:#0f172a;cursor:pointer;flex-shrink:0;transition:background .2s,border-color .2s,transform .2s;-webkit-tap-highlight-color:transparent}
+.theme-toggle:not([hidden]){display:inline-flex}
+.theme-toggle:hover{border-color:#00b4d8;transform:translateY(-1px)}
+.theme-toggle svg{width:19px;height:19px}.theme-toggle .tt-sun{display:none}
+html[data-theme=dark] .theme-toggle{background:rgba(255,255,255,.08);color:#f4efe6;border-color:rgba(112,222,243,.45)}
+html[data-theme=dark] .theme-toggle .tt-moon{display:none}html[data-theme=dark] .theme-toggle .tt-sun{display:block}
+html[data-theme=dark]{color-scheme:dark;--site-bg-color:#0b1220;--site-grid-line-color:rgba(255,255,255,.05)}
+html[data-theme=dark] body{color:#e6edf6}
+/* logos are drawn for white backgrounds */
+html[data-theme=dark] .company-logo-card,html[data-theme=dark] .trusted-logo,html[data-theme=dark] .logo-card{background:#fff}
+/* small white marks that sit on dark/coloured chips must stay white */
+html[data-theme=dark] .hamburger-menu .bar{background-color:#fff}

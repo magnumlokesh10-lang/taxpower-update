@@ -109,6 +109,7 @@ for route,meta in config.items():
     if 'css/taxpowergst.css' in css_files:  # this sheet has always had to come last
         css_files.remove('css/taxpowergst.css');css_files.append('css/taxpowergst.css')
     js_files=[u for t,u in assets if t=='script']+['js/page-init.js']
+    _b=etree.Element('script');_b.text="try{if(localStorage.getItem('tp-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}";head.append(_b)
     head.append(etree.Element('link',{'rel':'stylesheet','href':bundle.make(keep,css_files,'css')}))
     head.append(etree.Element('script',{'src':bundle.make(keep,js_files,'js'),'defer':''}))
     stub=etree.Element('script');stub.text='window.TaxPowerPage='+json.dumps({'anchor':'#'+PAGE_ANCHOR.get(route,keep) if route in('demo-enquiry','home') else '','nav':NAV_PAGE[keep],'scrollTo':SCROLL_TO.get(route,'')})+';'
