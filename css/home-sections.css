@@ -286,3 +286,8 @@
 .hx-table td:nth-child(2):not(:last-child){white-space:nowrap}
 .hx-table td:nth-child(2):not(:last-child){font-weight:700;color:var(--ink)}
 .home-extra[data-hx-theme=dark] .hx-table td:nth-child(2):not(:last-child){color:#ffb866}
+
+.hx-toprow{display:flex;justify-content:flex-end;margin:0 0 12px}
+.hx-headmid{margin:8px 0 22px}
+.hx-headmid h2{margin-bottom:6px}
+.hx-intro{max-width:620px}
