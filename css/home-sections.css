@@ -258,3 +258,10 @@
 .bento-stats .st-since .st-top{align-self:flex-start}
 .st-since>span:last-child{color:var(--ink)}
 .home-extra[data-hx-theme=dark] .st-since>span:last-child{color:#e6eef3}
+
+.bento-stats{margin-bottom:28px}
+.bento-prod{gap:24px}
+.hx{padding:38px 0}
+.bt-prodhead{padding:22px 22px 0}.bt-prodhead .hx-illus{border-radius:16px 16px 0 0}
+.bt-prodbadge{display:none}
+@media(max-width:620px){.bento-stats{margin-bottom:16px}.bento-prod{gap:16px}.hx{padding:24px 0}}
