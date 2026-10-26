@@ -4,6 +4,9 @@ with the colours remapped by lightness (light surfaces -> dark, dark text -> lig
 Runs at build time, so the browser only downloads plain CSS."""
 import colorsys,re
 DARK='html[data-theme=dark]'
+# Banners/heroes are designed bright (photos, illustrations); they stay as in light mode.
+BRIGHT=['.slider-viewport','.pricing-banner','.downloads-banner','.gst-intro-hero','.gst-dashboard-hero']
+NOT_IN=':not(:is('+','.join(b+','+b+' *' for b in BRIGHT)+'))'
 HEX=re.compile(r'#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\b')
 FUNC=re.compile(r'(rgba?|hsla?)\(([^()]*)\)',re.I)
 NAMED={'white':(255,255,255,1),'black':(0,0,0,1)}
@@ -120,6 +123,8 @@ def _split_sel(sel):
     out.append(cur);return [s.strip() for s in out if s.strip()]
 def _scope(sel):
     s=sel
+    m=re.search(r'(::?(?:before|after|first-line|first-letter|placeholder|selection|marker|-webkit-[\w-]+))$',s)
+    s=(s[:m.start()]+NOT_IN+m.group(1)) if m else s+NOT_IN
     if s.startswith(':root'):return DARK+s[5:]
     if s.startswith('html'):return DARK+s[4:]
     return DARK+' '+s
