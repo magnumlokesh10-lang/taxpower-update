@@ -291,3 +291,21 @@
 .hx-headmid{margin:8px 0 22px}
 .hx-headmid h2{margin-bottom:6px}
 .hx-intro{max-width:620px}
+
+/* full-width background bands (content keeps its width) */
+.home-extra{overflow-x:clip}
+[aria-labelledby=hxB2Title]::before,[aria-labelledby=hxStepsTitle]::before,[aria-labelledby=hxGuidesTitle]::before,[aria-labelledby=hxFaqTitle]::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;margin-left:-50vw}
+[aria-labelledby=hxB2Title],[aria-labelledby=hxStepsTitle],[aria-labelledby=hxGuidesTitle],[aria-labelledby=hxFaqTitle]{position:relative;isolation:isolate;padding:56px 0}
+[aria-labelledby=hxB2Title]::before{background:linear-gradient(180deg,#fff4e6,#ffeedb);border-top:1px solid #fbdcbc;border-bottom:1px solid #fbdcbc}
+[aria-labelledby=hxStepsTitle]::before{background:radial-gradient(60% 120% at 85% 0%,#ed7f1f33,transparent 60%),linear-gradient(160deg,#0c2740,#10384b)}
+[aria-labelledby=hxGuidesTitle]::before{background:linear-gradient(180deg,#e6f6ef,#dcf1e8);border-top:1px solid #bfe6d4;border-bottom:1px solid #bfe6d4}
+[aria-labelledby=hxFaqTitle]::before{background:linear-gradient(180deg,#f0ecfe,#e7e1fb);border-top:1px solid #d8d0f6;border-bottom:1px solid #d8d0f6}
+/* steps on the dark band */
+[aria-labelledby=hxStepsTitle] .hx-head h2{color:#fff}
+[aria-labelledby=hxStepsTitle] .hx-head .hx-kicker{color:#ffb866}
+/* dark mode bands */
+.home-extra[data-hx-theme=dark] [aria-labelledby=hxB2Title]::before{background:linear-gradient(180deg,#14283c,#102236);border-color:#1f3d55}
+.home-extra[data-hx-theme=dark] [aria-labelledby=hxGuidesTitle]::before{background:linear-gradient(180deg,#0f2b33,#0c2430);border-color:#1b4450}
+.home-extra[data-hx-theme=dark] [aria-labelledby=hxFaqTitle]::before{background:linear-gradient(180deg,#191d40,#141836);border-color:#2c3070}
+.home-extra[data-hx-theme=dark] [aria-labelledby=hxStepsTitle]::before{background:radial-gradient(60% 120% at 85% 0%,#ed7f1f2e,transparent 60%),linear-gradient(160deg,#0a1b2d,#0d2438);border-top:1px solid #1f3d55;border-bottom:1px solid #1f3d55}
+@media(max-width:620px){[aria-labelledby=hxB2Title],[aria-labelledby=hxStepsTitle],[aria-labelledby=hxGuidesTitle],[aria-labelledby=hxFaqTitle]{padding:36px 0}}
