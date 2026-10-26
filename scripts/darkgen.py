@@ -5,8 +5,8 @@ Runs at build time, so the browser only downloads plain CSS."""
 import colorsys,re
 DARK='html[data-theme=dark]'
 # Banners/heroes are designed bright (photos, illustrations); they stay as in light mode.
-BRIGHT=['.slider-viewport','.pricing-banner','.downloads-banner','.gst-intro-hero','.gst-dashboard-hero']
-NOT_IN=':not(:is('+','.join(b+','+b+' *' for b in BRIGHT)+'))'
+BRIGHT=['.slider-viewport','.pricing-banner','.downloads-banner','.gst-feature-card','.gst-feature-row','.gst-dashboard-hero','.gst-motion-frame','.gst-browser-frame','.company-logo-card']
+NOT_IN=':where(:not(:is('+','.join(b+','+b+' *' for b in BRIGHT)+')))'
 HEX=re.compile(r'#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\b')
 FUNC=re.compile(r'(rgba?|hsla?)\(([^()]*)\)',re.I)
 NAMED={'white':(255,255,255,1),'black':(0,0,0,1)}
@@ -39,11 +39,11 @@ def _fmt(r,g,b,a):
 def _map(c,mode):
     r,g,b,a=c;h,l,s=colorsys.rgb_to_hls(r/255,g/255,b/255)
     if mode=='text':
-        if l<0.45:l=0.95-0.5*l;s*=0.85
+        if l<0.45:l=0.95-0.5*l;s*=0.85;a=min(1,a+0.3) if a<1 else a
         elif l<0.74:l=0.76
         else:return c,False
     elif mode=='border':
-        if l>=0.75:l=0.30-(l-0.75)*0.6;s*=0.7
+        if l>=0.75:l=0.37-(l-0.75)*0.6;s*=0.7
         elif l<0.3 and a<0.5:return (255,255,255,a),True
         else:return c,False
     else:  # surface (backgrounds, shadows)
@@ -54,7 +54,7 @@ def _map(c,mode):
 def _mode(prop):
     p=prop.lower()
     if p.startswith('--'):
-        return 'text' if re.search(r'text|ink|fg|color-fg|font',p) else 'border' if re.search(r'border|line|stroke',p) else 'surface'
+        return 'text' if re.search(r'text|ink|fg|font|muted|title|head|label|copy|dim|sub',p) else 'border' if re.search(r'border|line|stroke',p) else 'surface'
     if p in TXT:return 'text'
     if p in BG or p.startswith('background'):return 'surface'
     if 'shadow' in p:return 'surface'

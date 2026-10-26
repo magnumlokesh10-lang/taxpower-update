@@ -12,5 +12,6 @@ html[data-theme=dark] .company-logo-card,html[data-theme=dark] .trusted-logo,htm
 /* small white marks that sit on dark/coloured chips must stay white */
 html[data-theme=dark] .hamburger-menu .bar{background-color:#fff}
 /* bright banners keep their light-mode text colours */
-html[data-theme=dark] :is(.slider-viewport,.pricing-banner,.downloads-banner,.gst-intro-hero,.gst-dashboard-hero){color:#0f172a}
+html[data-theme=dark] :is(.slider-viewport,.pricing-banner,.downloads-banner,.gst-feature-card,.gst-feature-row,.gst-dashboard-hero,.gst-motion-frame,.gst-browser-frame,.company-logo-card){color:#0f172a}
 html[data-theme=dark] .slider-viewport{background-color:#f3f6fb;border-radius:22px}
+html[data-theme=dark] .terms-note{color:#ff8a8a}
