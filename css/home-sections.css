@@ -199,3 +199,36 @@
 .home-extra[data-hx-theme=dark] .hx-list-2 li{color:#a9bccb}
 @media(max-width:980px){.fx-grid{grid-template-columns:repeat(2,1fr)}.bento-stats .f4{grid-column:span 2}.bento-prod .f6{grid-column:span 6}.hx-list-2{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.fx-grid{grid-template-columns:1fr}.bento-stats .f4,.bento-prod .f6{grid-column:auto}.hx-list-2{grid-template-columns:1fr}.bt-prodbody{padding:20px}.bt-prodbadge{left:28px;top:28px}}
+
+/* 4 stat tiles, each its own style */
+.bento-stats .f3{grid-column:span 3}
+.bento-stats .bt{min-height:230px;padding:22px}
+.st-top{display:block;font:700 11.5px/1.2 "Plus Jakarta Sans",sans-serif;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;opacity:.85}
+.bt-stat.bt-navy::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#ffb86633,transparent 70%)}
+.st-since{background:#fff;border:2px dashed #7fcfbf}
+.st-since .st-top{color:#0e8a7d}.st-since b{background:linear-gradient(120deg,#0e8a7d,#3fcdb6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.st-since::after{content:"";position:absolute;right:-30px;bottom:-30px;width:120px;height:120px;border-radius:50%;border:14px solid #3fcdb62e}
+.st-lang{background:linear-gradient(150deg,#eeeafd,#d9d0fa);border-color:#cfc4f6}
+.st-lang .st-top{color:#6a4ccf}.st-lang b{color:#4b33a8;font-size:clamp(30px,3.4vw,42px)}
+.st-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px!important}
+.st-chips i{font:700 12.5px/1 "Plus Jakarta Sans",sans-serif;font-style:normal;padding:7px 12px;border-radius:999px;background:#fff;color:#4b33a8}
+.bt-trial .hx-eyebrow{margin-bottom:6px}
+/* contact: bright split card */
+.bt-contact{padding:0;gap:0;border:0;background:#fff;box-shadow:0 18px 40px #10384b1f;grid-template-columns:1.05fr .95fr}
+.bt-contact .hx-contact-left{padding:40px;background:linear-gradient(140deg,#0b6e99,#14a3a0);position:relative;overflow:hidden}
+.bt-contact .hx-contact-left::after{content:"";position:absolute;right:-70px;bottom:-90px;width:260px;height:260px;border-radius:50%;background:#ffffff1c}
+.bt-contact .hx-contact-left::before{content:"";position:absolute;right:50px;top:-60px;width:130px;height:130px;border-radius:50%;background:#ffffff14}
+.bt-contact .hx-contact-left>*{position:relative;z-index:1}
+.bt-contact h2{color:#fff}.bt-contact p{color:#e1f3f6}.bt-contact .hx-kicker-gold{color:#ffe0b3}
+.bt-contact .hx-btn-gold{background:#fff;color:#0b4f6c!important}.bt-contact .hx-btn-gold:hover{background:#fff1e2}
+.hx-link-ct{color:#fff!important}
+.bt-contact .hx-contact-list{padding:30px;background:#fff;gap:14px}
+.bt-contact .hx-contact-list li{background:#f5f9fb;border:1px solid #e1ecf1}
+.bt-contact .hx-contact-list small{color:#5d7685}.bt-contact .hx-contact-list b{color:#10384b}
+.bt-contact .hx-ico-gold{background:#e2f1f6;color:#0b6e99}
+@media(max-width:980px){.bento-stats .f3{grid-column:span 3}.bt-contact{grid-template-columns:1fr}.bt-contact .hx-contact-left{padding:28px}.bt-contact .hx-contact-list{padding:20px}}
+@media(max-width:620px){.bento-stats .f3{grid-column:auto}.bento-stats .bt{min-height:0}}
+.home-extra[data-hx-theme=dark] .st-since{background:#0f2538;border-color:#2d7f74}.home-extra[data-hx-theme=dark] .st-since .st-top{color:#58d9c1}
+.home-extra[data-hx-theme=dark] .st-lang{background:linear-gradient(150deg,#1b1f4a,#241b52);border-color:#3b3478}.home-extra[data-hx-theme=dark] .st-lang b,.home-extra[data-hx-theme=dark] .st-lang .st-top{color:#c7b8ff}.home-extra[data-hx-theme=dark] .st-chips i{background:#ffffff1a;color:#e5ddff}
+.home-extra[data-hx-theme=dark] .bt-contact{background:#0f2538;box-shadow:none}.home-extra[data-hx-theme=dark] .bt-contact .hx-contact-list{background:#0f2538}
+.home-extra[data-hx-theme=dark] .bt-contact .hx-contact-list li{background:#ffffff0f;border-color:#24465f}.home-extra[data-hx-theme=dark] .bt-contact .hx-contact-list small{color:#9db6c4}.home-extra[data-hx-theme=dark] .bt-contact .hx-contact-list b{color:#f4efe6}.home-extra[data-hx-theme=dark] .bt-contact .hx-ico-gold{background:#ffffff12;color:#ffb866}
