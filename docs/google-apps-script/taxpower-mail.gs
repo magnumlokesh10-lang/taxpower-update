@@ -92,13 +92,16 @@ function sendEnquiryEmail(data) {
   var order = quick ? ['name', 'mobile', 'email', 'product', 'purpose', 'page']
     : ['name', 'company', 'mobile', 'email', 'product', 'purpose', 'city', 'state', 'gstin', 'address', 'page'];
   var lines = order.map(function(key) { return labels[key] + ': ' + (data[key] || '-'); });
-  MailApp.sendEmail({
-    to: NOTIFY_EMAIL,
-    name: 'TaxPower Website',
-    replyTo: data.email,
-    subject: subject,
-    body: kind + '\n\n' + lines.join('\n') + '\n\nReference: ' + data.requestId
-  });
+  var body = kind + '\n\n' + lines.join('\n') + '\n\nReference: ' + data.requestId;
+  var options = {name: 'TaxPower Website', replyTo: data.email};
+  // Send as sales@taxpower.co when that address is added as a verified "Send mail as" alias
+  // in the Gmail account that owns this script. Otherwise fall back to the owner's own address.
+  if (GmailApp.getAliases().indexOf(NOTIFY_EMAIL) >= 0) {
+    options.from = NOTIFY_EMAIL;
+    GmailApp.sendEmail(NOTIFY_EMAIL, subject, body, options);
+  } else {
+    MailApp.sendEmail({to: NOTIFY_EMAIL, subject: subject, body: body, name: options.name, replyTo: options.replyTo});
+  }
 }
 
 // Run this once from the editor to authorize sending and test the sales inbox.
