@@ -1,5 +1,5 @@
 /* Paste the new email-only Apps Script Web app /exec URL here after deployment. */
-window.TAXPOWER_FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxiMiTEglxLb43tP1TIV30uk6ysnbfWTeCqdzJRO9AudBHmfzBlWreQ0UARJWmnF5wisw/exec';
+window.TAXPOWER_FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzMvBeJA32vGvU_G6QaLiJftogvJ5jdKdvJH039_Vzr3PA1CbOJLPFSie7lUq58VebqfQ/exec';
 (function () {
   'use strict';
   const pending = new WeakMap();
