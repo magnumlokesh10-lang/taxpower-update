@@ -144,11 +144,12 @@ main{animation:tpPageIn .5s cubic-bezier(.22,.8,.3,1) both}
 .ft-top:hover{color:#bd5e20;text-decoration:none}
 .footer-refined .footer-link-group h2::before,.footer-seo-group h2::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#ee8a2c;margin-right:8px;vertical-align:1px}
 .ft-top{border:0;background:none;cursor:pointer;font:700 inherit/1 inherit;font-size:inherit;padding:0}
-/* footer links: letters roll up one by one on hover and change colour */
+/* footer links: only as wide as the text; letters glide up softly on hover */
+.footer-refined .footer-link-group a,.footer-seo-group a{display:block;width:fit-content;max-width:100%}
 .ft-roll{display:inline-flex;white-space:pre;vertical-align:top}
 .ft-ch{display:inline-block;overflow:hidden;height:1.55em;line-height:1.55em}
-.ft-ch>span{display:block;transition:transform .34s cubic-bezier(.22,.8,.3,1);transition-delay:calc(var(--i)*22ms)}
-.ft-ch>span+span{color:#ee7a1e;font-weight:700}
+.ft-ch>span{display:block;transition:transform .55s cubic-bezier(.33,1,.68,1);transition-delay:calc(var(--i)*14ms)}
+.ft-ch>span+span{color:#ee8a2c}
 .footer-refined .footer-link-group a:hover,.footer-refined .footer-link-group a:focus-visible,.footer-seo-group a:hover,.footer-seo-group a:focus-visible{transform:none!important}
 .footer-refined .footer-link-group a:hover .ft-ch>span,.footer-refined .footer-link-group a:focus-visible .ft-ch>span,.footer-seo-group a:hover .ft-ch>span,.footer-seo-group a:focus-visible .ft-ch>span{transform:translateY(-100%)}
 @media(prefers-reduced-motion:reduce){.ft-ch>span{transition:none}}
