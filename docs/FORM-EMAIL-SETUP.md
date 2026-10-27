@@ -1,13 +1,13 @@
-# Google Apps Script → sales@taxpower.co (email only)
+# Google Apps Script → info@taxpower.co (email only)
 
-FormSubmit and the custom Python backend are removed. No Google Sheet, spreadsheet ID, SMTP password or paid hosting is needed. Both website forms use the same standalone script. Messages are sent by the Google account that owns/executes the deployment to sales@taxpower.co; Reply-To is the customer's email.
+FormSubmit and the custom Python backend are removed. No Google Sheet, spreadsheet ID, SMTP password or paid hosting is needed. Both website forms use the same standalone script. Messages are sent by the Google account that owns/executes the deployment to info@taxpower.co; Reply-To is the customer's email.
 
 ## One-time setup
 
 1. Open https://script.google.com with your Gmail account. Click New project and name it `TaxPower Website Mail`.
 2. Replace all Code.gs contents with `google-apps-script/taxpower-mail.gs` from this repository. Save.
 3. Select `testEmail` in the function dropdown and click Run. Review permissions using the same Gmail account and authorize email sending. Only authorize your own project after reviewing the pasted code. If an unverified-app screen appears, confirm the project is yours; do not bypass a managed-account/admin restriction.
-4. Check sales@taxpower.co Inbox/Spam for `TaxPower — Apps Script email test`. This isolates mailbox delivery from the website. If missing, inspect Apps Script Executions and check ordinary Gmail-to-sales email delivery before deploying.
+4. Check info@taxpower.co Inbox/Spam for `TaxPower — Apps Script email test`. This isolates mailbox delivery from the website. If missing, inspect Apps Script Executions and check ordinary Gmail-to-sales email delivery before deploying.
 5. Deploy → New deployment → select Web app. Execute as: Me. Who has access: Anyone (not 'Anyone with a Google account'). Deploy and authorize if requested. If Anyone is unavailable, account/admin restrictions must be resolved; visitors must not need Google sign-in.
 6. Copy the Web app URL ending `/exec` and send that public endpoint URL to the website maintainer. Do not send passwords or OAuth tokens. `/dev` is for editors only.
 7. Set that URL in `js/form-backend.js` → TAXPOWER_FORM_ENDPOINT and push. The supplied deployment URL is now configured. The owner confirmed receipt of the editor test email; website-to-inbox delivery still needs verification.

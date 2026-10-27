@@ -1,5 +1,5 @@
 /** TaxPower email-only backend. Paste this entire file into a standalone Apps Script project. */
-var NOTIFY_EMAIL = 'sales@taxpower.co';
+var NOTIFY_EMAIL = 'info@taxpower.co';
 var FIELDS = ['name', 'company', 'mobile', 'email', 'gstin', 'address', 'city', 'state', 'product', 'purpose', 'page', 'requestId'];
 
 function validateEnquiry(data) {
@@ -94,7 +94,7 @@ function sendEnquiryEmail(data) {
   var lines = order.map(function(key) { return labels[key] + ': ' + (data[key] || '-'); });
   var body = kind + '\n\n' + lines.join('\n') + '\n\nReference: ' + data.requestId;
   var options = {name: 'TaxPower Website', replyTo: data.email};
-  // Send as sales@taxpower.co when that address is added as a verified "Send mail as" alias
+  // Send as info@taxpower.co when that address is added as a verified "Send mail as" alias
   // in the Gmail account that owns this script. Otherwise fall back to the owner's own address.
   if (GmailApp.getAliases().indexOf(NOTIFY_EMAIL) >= 0) {
     options.from = NOTIFY_EMAIL;
@@ -107,7 +107,7 @@ function sendEnquiryEmail(data) {
 // Run this once from the editor to authorize sending and test the sales inbox.
 function testEmail() {
   MailApp.sendEmail({to: NOTIFY_EMAIL, subject: 'TaxPower — Apps Script email test',
-    body: 'TEST ONLY: Your Google Apps Script can send email to sales@taxpower.co. No customer data.',
+    body: 'TEST ONLY: Your Google Apps Script can send email to info@taxpower.co. No customer data.',
     name: 'TaxPower Website'});
 }
 
