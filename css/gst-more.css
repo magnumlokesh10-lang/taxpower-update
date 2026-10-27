@@ -24,3 +24,18 @@
 .gm-foot a{color:#0b6e99;font-weight:700}
 @media(max-width:1040px){.gm-capgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.gm{margin-top:40px}.gm-rets,.gm-capgrid,.gm-bill .gm-capgrid{grid-template-columns:1fr}.gm-ret{grid-template-columns:1fr;gap:10px}.gm-ret b{justify-self:start}}
+/* signpost cards: pricing / other product */
+.gm-go{max-width:1180px;margin:40px auto 0;padding:0 8px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.gm-go-one{grid-template-columns:1fr}
+.gm-go-wrap{margin-top:40px}.gm-go-wrap .gm-go{margin:0 auto}
+.gm-go-card{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:center;padding:22px 24px;border-radius:20px;text-decoration:none;color:var(--gm-ink,#12324a);position:relative;overflow:hidden;border:1px solid #cfe4ee;background:linear-gradient(120deg,#eaf6fd,#fff7ec);transition:transform .2s,box-shadow .2s}
+.gm-go-card::after{content:"";position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:50%;border:16px solid #0b6e9914;pointer-events:none}
+.gm-go-tds{background:linear-gradient(120deg,#f1ecff,#e8f7f1);border-color:#d9d0f3}
+.gm-go-tds::after{border-color:#5b3fb514}
+.gm-go-card:hover{transform:translateY(-2px);box-shadow:0 14px 30px #12324a1f}
+.gm-go-card h3{font:800 18px/1.25 "Plus Jakarta Sans",sans-serif;margin-bottom:4px}
+.gm-go-card p{color:var(--gm-mute,#4f6b7d);font-size:14px;line-height:1.55}
+.gm-go-btn{grid-column:1/-1;justify-self:start;margin-top:8px;display:inline-flex;gap:8px;align-items:center;padding:10px 18px;border-radius:999px;background:#0b6e99;color:#fff;font:700 13px/1 "Plus Jakarta Sans",sans-serif}
+.gm-go-tds .gm-go-btn{background:#5b3fb5}
+.gm-go-btn i{font-style:normal;transition:transform .2s}.gm-go-card:hover .gm-go-btn i{transform:translateX(3px)}
+@media(max-width:760px){.gm-go{grid-template-columns:1fr}}
