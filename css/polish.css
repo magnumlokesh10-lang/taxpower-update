@@ -144,3 +144,10 @@ main{animation:tpPageIn .5s cubic-bezier(.22,.8,.3,1) both}
 .ft-top:hover{color:#bd5e20;text-decoration:none}
 .footer-refined .footer-link-group h2::before,.footer-seo-group h2::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#ee8a2c;margin-right:8px;vertical-align:1px}
 .ft-top{border:0;background:none;cursor:pointer;font:700 inherit/1 inherit;font-size:inherit;padding:0}
+/* footer links: words roll up from below on hover and change colour */
+.ft-roll{display:inline-block;overflow:hidden;height:1.55em;line-height:1.55em;vertical-align:top}
+.ft-roll>span{display:block;transition:transform .32s cubic-bezier(.22,.8,.3,1),color .2s}
+.ft-roll>span+span{color:#ee7a1e;font-weight:700}
+.footer-refined .footer-link-group a:hover,.footer-refined .footer-link-group a:focus-visible,.footer-seo-group a:hover,.footer-seo-group a:focus-visible{transform:none!important}
+.footer-refined .footer-link-group a:hover .ft-roll>span,.footer-refined .footer-link-group a:focus-visible .ft-roll>span,.footer-seo-group a:hover .ft-roll>span,.footer-seo-group a:focus-visible .ft-roll>span{transform:translateY(-100%)}
+@media(prefers-reduced-motion:reduce){.ft-roll>span{transition:none}}

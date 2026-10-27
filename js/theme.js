@@ -26,3 +26,18 @@
 })();
 
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-ft-top]');if(b){window.scrollTo({top:0,behavior:'smooth'})}});
+
+(function(){
+  function roll(){
+    document.querySelectorAll('.footer-link-group a:not(.footer-demo-button), .footer-seo-group a').forEach(function(a){
+      if(a.querySelector('.ft-roll')||a.children.length)return;
+      var t=a.textContent;if(!t.trim())return;
+      a.textContent='';
+      var w=document.createElement('span');w.className='ft-roll';
+      var s1=document.createElement('span');s1.textContent=t;
+      var s2=document.createElement('span');s2.textContent=t;s2.setAttribute('aria-hidden','true');
+      w.appendChild(s1);w.appendChild(s2);a.appendChild(w);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',roll);else roll();
+})();
