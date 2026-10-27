@@ -26,3 +26,6 @@ html[data-theme=dark] .fq.fq-amber{--fq-ac:#ffa95c!important}
 html[data-theme=dark] .fq.fq-teal{--fq-ac:#4cc9ef!important}
 html[data-theme=dark] .fq.fq-mint{--fq-ac:#4fd6a0!important}
 html[data-theme=dark] .fq .fq-help a{color:#0b1220!important}
+html[data-theme=dark] .lp-contact .lpc-btn{background:#fff!important;color:#0b3f55!important}
+html[data-theme=dark] .lp-contact .lpc-row i{background:#fff!important;color:#087ca6!important}
+html[data-theme=dark] .lp-contact .lpc-eyebrow{color:#bfeaf6!important}
