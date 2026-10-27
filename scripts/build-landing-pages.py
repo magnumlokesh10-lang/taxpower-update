@@ -67,6 +67,7 @@ _RES_TAB = 'class="nav-item nav-dropdown-toggle" data-nav-page="resources.html"'
 assert _RES_TAB in NAV
 NAV_RESOURCES = NAV.replace(_RES_TAB, 'class="nav-item nav-dropdown-toggle h-current" data-nav-page="resources.html" aria-current="page"')
 
+NAV_TDS = NAV.replace('<a href="taxpowertds" class="nav-item nav-item-org nav-item-always nav-dropdown-toggle"', '<a href="taxpowertds" class="nav-item nav-item-org nav-item-always nav-dropdown-toggle h-current" aria-current="page"', 1)
 NAV_GST = NAV.replace('class="nav-item nav-item-org nav-item-always nav-dropdown-toggle"', 'class="nav-item nav-item-org nav-item-always nav-dropdown-toggle h-current" aria-current="page"', 1)
 
 
@@ -219,6 +220,7 @@ def feature_page(f):
 
 import importlib.util as _iu
 _sp = _iu.spec_from_file_location('gst_features', ROOT / 'scripts' / 'gst-features.py'); _gf = _iu.module_from_spec(_sp); _sp.loader.exec_module(_gf)
+_sp2 = _iu.spec_from_file_location('tds_features', ROOT / 'scripts' / 'tds-features.py'); _tf = _iu.module_from_spec(_sp2); _sp2.loader.exec_module(_tf)
 
 
 CATS = [
@@ -262,6 +264,46 @@ def gst_features_page():
         'description': meta['description'], 'url': BASE + 'taxpower-gst-features', 'publisher': {'@id': BASE + '#magnum'}}
 
 
+CATS_TDS = [
+    ('t-returns', 'Statements & filing', 'Quarterly statements, new Act forms, checks and e-filing', 'o', ['tds-returns', 'new-act', 'validation', 'e-filing']),
+    ('t-traces', 'TRACES & corrections', 'Downloads, justification reports and correction statements', 'b', ['traces', 'corrections']),
+    ('t-money', 'Payments & tax', 'Challans, interest, fees and liability', 'g', ['challans', 'computation']),
+    ('t-people', 'People & certificates', 'Deductors, deductees, PAN and Form 16 / 16A / 27D', 'v', ['deductors', 'deductees', 'certificates']),
+    ('t-control', 'Compliance, reports & set-up', 'Default checks, registers, users and help', 's', ['compliance', 'tds-reports', 'tds-platform', 'tds-help']),
+]
+
+
+def tds_features_page():
+    by_id = {g[0]: g for g in _tf.GROUPS}
+    cards = ''.join(f'<li><a class="gx-cat gx-{c}" href="taxpower-tds-features#{cid}"><b>{esc(t)}</b><span>{esc(d)}</span></a></li>' for cid, t, d, c, _a in CATS_TDS)
+    side = ''.join(f'<li><a href="taxpower-tds-features#{cid}" class="gx-side-h gx-{c}">{esc(t)}</a><ul>' + ''.join(f'<li><a href="taxpower-tds-features#{a}">{esc(by_id[a][1].split(":")[0])}</a></li>' for a in areas) + '</ul></li>' for cid, t, _d, c, areas in CATS_TDS)
+    blocks = ''
+    for cid, t, d, c, areas in CATS_TDS:
+        rows = ''
+        for a in areas:
+            gid, title, intro, subs = by_id[a]
+            sub = ''.join(f'<div class="gx-sub"><h4>{esc(h)}</h4><ul>' + ''.join(f'<li>{esc(i)}</li>' for i in items) + '</ul></div>' for h, items in subs)
+            rows += f'<article class="gx-area" id="{gid}" aria-labelledby="{gid}-t"><div class="gx-area-h"><h3 id="{gid}-t">{esc(title)}</h3><p>{esc(intro)}</p></div><div class="gx-subs">{sub}</div></article>'
+        blocks += f'<section class="gx-block gx-{c}" id="{cid}" aria-labelledby="{cid}-t"><header><h2 id="{cid}-t">{esc(t)}</h2><p>{esc(d)}</p></header>{rows}</section>'
+    faqs = list(_tf.FAQ)
+    body = (breadcrumb([('Home', 'home'), ('TaxPower TDS', 'taxpowertds'), ('All features', None)]) +
+            '<section class="gx-hero"><div><span class="lp-kicker">TaxPower TDS · feature guide</span>'
+            '<h1>TaxPower TDS features, grouped by the work you do</h1>'
+            '<p class="lp-lead">From the first deduction entry to the last certificate you email: see what the software handles at each step, then ask for a demo of the parts you care about.</p>'
+            + cta('TaxPower TDS', 'Book a free demo') + '</div>'
+            '<ul class="gx-cats" aria-label="Feature groups">' + cards + '</ul></section>'
+            '<div class="gx-layout"><aside class="gx-side" aria-label="On this page"><p>On this page</p><ul>' + side + '</ul></aside><div class="gx-main">' + blocks + '</div></div>'
+            + faq_block(faqs, 'Questions about TaxPower TDS') +
+            '<section class="lp-panel" aria-labelledby="gf-more-t"><h2 id="gf-more-t">Keep exploring</h2>' +
+            chips([('TaxPower TDS overview', 'taxpowertds'), ('TDS return filing software', 'tds-return-filing-software'), ('Form 16 & 16A software', 'form-16-form-16a-certificate-software'), ('GST & TDS due dates', 'gst-tds-due-dates'), ('Plans & pricing', 'pricing')]) + '</section>'
+            + contact_block())
+    meta = {'title': 'TaxPower TDS Features: 24Q, 26Q, 27Q, 27EQ, TRACES, Form 16 & E-filing',
+            'description': 'A full guide to TaxPower TDS features: 24Q, 26Q, 27Q and 27EQ returns, Income-tax Act 2025 forms, FVU, e-filing, TRACES, challans, Form 16, 16A and 27D.'}
+    return body, meta, faqs, [('Home', 'home'), ('TaxPower TDS', 'taxpowertds'), ('All features', 'taxpower-tds-features')], {
+        '@type': 'SoftwareApplication', 'name': 'TaxPower TDS', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'Windows',
+        'description': meta['description'], 'url': BASE + 'taxpower-tds-features', 'publisher': {'@id': BASE + '#magnum'}}
+
+
 def render(slug, body, meta, trail, extra):
     canonical = BASE + slug
     graph = [organization,
@@ -303,7 +345,7 @@ def render(slug, body, meta, trail, extra):
 </head>
 <body>
 <div class="global-site-bg site-grid-background" data-site-background aria-hidden="true"><div class="grid-blueprint"></div><div class="grid-squares-layer" data-site-background-squares></div></div>
-{NAV_RESOURCES if slug in RESOURCE_SLUGS else NAV_GST if slug == 'taxpower-gst-features' else NAV}
+{NAV_RESOURCES if slug in RESOURCE_SLUGS else NAV_GST if slug == 'taxpower-gst-features' else NAV_TDS if slug == 'taxpower-tds-features' else NAV}
 <main class="lp" id="main">
 {body}
 </main>
@@ -535,7 +577,8 @@ pages = [(hub['slug'],) + hub_page()] + [(c['slug'],) + city_page(c) for c in ci
     + [wrap(pg['slug'], blog_index(pg) if pg.get('type') == 'blog-index' else static_page(pg)) for pg in res['pages']] \
     + [wrap(x['slug'], post_page(x)) for x in res['posts']] \
     + [wrap('gst-tds-due-dates', due_page())] \
-    + [('taxpower-gst-features',) + gst_features_page()]
+    + [('taxpower-gst-features',) + gst_features_page()] \
+    + [('taxpower-tds-features',) + tds_features_page()]
 RESOURCE_SLUGS.update(p[0] for p in pages if p[0] in {x['slug'] for x in res['pages']} | set(posts_by_slug) | {'gst-tds-due-dates'})
 for slug, body, meta, faqs, trail, extra in pages:
     out = render(slug, body, meta, trail, extra)
