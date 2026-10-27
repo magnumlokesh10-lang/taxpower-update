@@ -17,6 +17,7 @@ def make(name,files,kind):
     """files: source paths like 'css/stylesheet.css' in cascade/run order. Returns 'css/p-name.css?v=hash'."""
     files=list(files)
     if kind=='js' and name!='landing' and 'js/theme.js' not in files:files.append('js/theme.js')
+    if kind=='css' and 'css/polish.css' not in files:files.append('css/polish.css')
     parts=[]
     for f in files:
         t=(ROOT/f).read_text()

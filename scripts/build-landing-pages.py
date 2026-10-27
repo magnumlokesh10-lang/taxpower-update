@@ -80,11 +80,15 @@ def faq_block(items, title='Frequently asked questions'):
 
 
 def contact_block(extra=''):
-    phones = ' · '.join(f'<a href="tel:+91{p}">{p}</a>' for p in dealer['phones'])
-    return (f'<section class="lp-panel lp-contact" aria-labelledby="lp-contact-title"><div><h2 id="lp-contact-title">Talk to Siddharth Enterprises</h2>'
-            f'<p>Authorized TaxPower dealer for Vidarbha. Call for a demo, a free trial or a quotation.</p>{extra}</div>'
-            f'<address><strong>Phone:</strong> {phones}<br><strong>Email:</strong> <a href="mailto:{dealer["email"]}">{dealer["email"]}</a><br>'
-            f'<strong>Office:</strong> {esc(dealer["address"])}</address></section>')
+    ico={'ph':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
+         'ml':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+         'pin':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'}
+    phones = ''.join(f'<a class="lpc-btn" href="tel:+91{p}">{ico["ph"]}<span>{p}</span></a>' for p in dealer['phones'])
+    return (f'<section class="lp-panel lp-contact" aria-labelledby="lp-contact-title"><div class="lpc-main"><span class="lpc-eyebrow">Get in touch</span><h2 id="lp-contact-title">Talk to Siddharth Enterprises</h2>'
+            f'<p>Authorized TaxPower dealer for Vidarbha. Call for a demo, a free trial or a quotation.</p>{extra}'
+            f'<div class="lpc-actions">{phones}</div></div>'
+            f'<address class="lpc-list"><div class="lpc-row"><i>{ico["ml"]}</i><div><small>Email</small><a href="mailto:{dealer["email"]}">{dealer["email"]}</a></div></div>'
+            f'<div class="lpc-row"><i>{ico["pin"]}</i><div><small>Office</small><span>{esc(dealer["address"])}</span></div></div></address></section>')
 
 
 def cta(product, label='Book a free demo'):
