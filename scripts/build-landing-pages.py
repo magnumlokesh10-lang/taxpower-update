@@ -5,6 +5,7 @@ Set TAXPOWER_BASE_PATH=/repo-name/ to preview on a GitHub project page (default 
 """
 from pathlib import Path
 from html import escape as esc
+import related
 import json, os
 from urllib.parse import urlsplit
 from lxml import html
@@ -304,6 +305,44 @@ def tds_features_page():
         'description': meta['description'], 'url': BASE + 'taxpower-tds-features', 'publisher': {'@id': BASE + '#magnum'}}
 
 
+SITEMAP_GROUPS = [
+    ('Software', 'What TaxPower does', [
+        ('taxpowergst', 'TaxPower GST', 'GST returns, reconciliation, e-invoice and e-way bill'), ('gst-billing', 'GST billing', 'Invoices, e-invoices and e-way bills'),
+        ('taxpowertds', 'TaxPower TDS', 'TDS and TCS returns, TRACES and Form 16'), ('taxpower-gst-features', 'All GST features', 'Feature guide grouped by the work you do'),
+        ('taxpower-tds-features', 'All TDS features', 'Feature guide for statements, challans and certificates')]),
+    ('Guides', 'Software guides', [
+        ('gst-return-filing-software', 'GST return filing', 'GSTR-1, 3B, 9 and more'), ('gstr-2b-itc-reconciliation-software', 'GSTR-2B ITC reconciliation', 'Match books with portal data'),
+        ('e-invoice-e-way-bill-software', 'E-invoice & e-way bill', 'IRN, QR and transport documents'), ('gst-billing-software', 'GST billing software', 'Sales, purchase and payment entries'),
+        ('tds-return-filing-software', 'TDS return filing', '24Q, 26Q, 27Q and 27EQ'), ('form-16-form-16a-certificate-software', 'Form 16 & 16A software', 'Certificates ready to send')]),
+    ('Plans & help', 'Prices, downloads and help', [
+        ('pricing', 'Plans & pricing', 'Choose modules and see the price'), ('downloads', 'Downloads', 'Setups and utilities'), ('free-trial', 'Free trial', 'Try before you buy'),
+        ('system-requirements', 'System requirements', 'What your computer needs'), ('technical-support', 'Technical support', 'For existing customers'),
+        ('support', 'Demo & support FAQs', 'Common questions answered'), ('demo-enquiry', 'Contact & enquiries', 'Demo, quotation and renewal')]),
+    ('Resources', 'Learn and plan', [
+        ('blog', 'All blogs', 'GST, ITC and TDS guides'), ('gst-tds-due-dates', 'Due dates calendar', 'Monthly and quarterly dates'),
+        ('blog/gstr-1-vs-gstr-3b-difference', 'GSTR-1 vs GSTR-3B', 'The difference, simply'), ('blog/gstr-2b-itc-reconciliation-checklist', 'GSTR-2B checklist', 'Steps for ITC matching'),
+        ('blog/tds-return-forms-24q-26q-27q-27eq-explained', 'TDS forms explained', 'Which form for which payment'), ('blog/form-16-and-form-16a-explained', 'Form 16 & 16A explained', 'Who issues what'),
+        ('blog/how-to-choose-gst-software', 'Choosing GST software', 'What to look for')]),
+    ('Vidarbha', 'Dealer support near you', [('gst-tds-software-vidarbha', 'All Vidarbha', 'Sales and support across the region')] +
+        [(f'gst-tds-software-{c}', c.title(), f'TaxPower in {c.title()}') for c in ['nagpur', 'amravati', 'akola', 'washim', 'buldhana', 'yavatmal', 'wardha', 'bhandara', 'gondia', 'chandrapur', 'gadchiroli']]),
+    ('Company', 'About the dealer', [('home', 'Home', 'Start here'), ('aboutus', 'About us', 'Siddharth Enterprises and Magnum Infosystem')]),
+]
+
+
+def sitemap_page():
+    blocks = ''
+    for key, title, items in SITEMAP_GROUPS:
+        cards = ''.join(f'<li><a class="sm-card" href="{s}"><b>{esc(t)}</b><span>{esc(d)}</span></a></li>' for s, t, d in items)
+        blocks += f'<section class="sm-group" aria-labelledby="sm-{key.lower().replace(" ", "").replace("&", "")}"><h2 id="sm-{key.lower().replace(" ", "").replace("&", "")}">{esc(title)}</h2><ul class="sm-grid">{cards}</ul></section>'
+    body = (breadcrumb([('Home', 'home'), ('Site map', None)]) +
+            '<section class="sm-hero"><span class="lp-kicker">Site map</span><h1>Every TaxPower page in one place</h1>'
+            '<p class="lp-lead">Software, guides, plans, help, resources and local support pages from Siddharth Enterprises, the authorized TaxPower dealer in Nagpur.</p></section>'
+            + blocks + contact_block())
+    meta = {'title': 'TaxPower Site Map: All Software, Guides, Pricing and Support Pages',
+            'description': 'Browse every TaxPower page: GST and TDS software, feature guides, pricing, downloads, support, blogs, due dates and Vidarbha city pages.'}
+    return body, meta, [], [('Home', 'home'), ('Site map', 'sitemap')], {'@type': 'CollectionPage', 'name': 'TaxPower site map', 'url': BASE + 'sitemap'}
+
+
 def render(slug, body, meta, trail, extra):
     canonical = BASE + slug
     graph = [organization,
@@ -349,6 +388,7 @@ def render(slug, body, meta, trail, extra):
 <main class="lp" id="main">
 {body}
 </main>
+{related.block(slug)}
 {FOOTER}
 <script type="speculationrules">{{"prefetch":[{{"where":{{"href_matches":"{BASE_PATH}*"}},"eagerness":"moderate"}}]}}</script>
 <script src="{LANDING_JS}" defer></script>
@@ -429,11 +469,38 @@ def post_cards():
     return cards
 
 
+REF_ROWS = [
+    ('GSTR-1', 'Details of your outward supplies (sales)', 'Monthly or quarterly'),
+    ('GSTR-3B', 'Summary return with tax payment', 'Monthly or quarterly'),
+    ('GSTR-2B', 'Auto-drafted statement of input tax credit', 'Generated each month'),
+    ('GSTR-9', 'Annual return', 'Once a year'),
+    ('24Q', 'TDS on salary', 'Quarterly'),
+    ('26Q', 'TDS on payments other than salary to residents', 'Quarterly'),
+    ('27Q', 'TDS on payments to non-residents', 'Quarterly'),
+    ('27EQ', 'Tax collected at source (TCS)', 'Quarterly'),
+    ('Form 16', 'TDS certificate for salary', 'Yearly'),
+    ('Form 16A', 'TDS certificate for other payments', 'Quarterly'),
+]
+
+
+def reading_paths():
+    paths = [('For CAs and tax practices', 'Filing for many clients? Start with the GST return explainer, then the reconciliation checklist.', [('GSTR-1 vs GSTR-3B', 'blog/gstr-1-vs-gstr-3b-difference'), ('GSTR-2B checklist', 'blog/gstr-2b-itc-reconciliation-checklist')]),
+             ('For business owners', 'Choosing software for your own filing? Read what to look for before you buy.', [('Choosing GST software', 'blog/how-to-choose-gst-software'), ('Plans & pricing', 'pricing')]),
+             ('For payroll and TDS teams', 'Deducting tax? See which form fits which payment and how certificates work.', [('TDS forms explained', 'blog/tds-return-forms-24q-26q-27q-27eq-explained'), ('Form 16 & 16A', 'blog/form-16-and-form-16a-explained')])]
+    cards = ''.join(f'<article class="lp-card"><h3>{esc(t)}</h3><p>{esc(d)}</p>{chips(c)}</article>' for t, d, c in paths)
+    rows = ''.join(f'<tr><th scope="row">{esc(a)}</th><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a, b, c in REF_ROWS)
+    return ('<section class="lp-panel" aria-labelledby="lp-paths-title"><h2 id="lp-paths-title">Where to start reading</h2><div class="lp-grid">' + cards + '</div></section>'
+            '<section class="lp-panel" aria-labelledby="lp-ref-title"><h2 id="lp-ref-title">Quick reference: common returns and forms</h2>'
+            '<p>A one-line reminder of what each return or certificate is for. Always check the latest due dates on the calendar.</p>'
+            '<div class="lp-table-wrap"><table><thead><tr><th scope="col">Return or form</th><th scope="col">What it is</th><th scope="col">How often</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+            + chips([('Due dates calendar', 'gst-tds-due-dates'), ('All GST features', 'taxpower-gst-features'), ('All TDS features', 'taxpower-tds-features')]) + '</section>')
+
+
 def blog_index(pg):
     body = (breadcrumb([('Home', 'home'), ('Blog', None)]) +
             f'<section class="lp-panel lp-hero"><span class="lp-kicker">{esc(pg["kicker"])}</span><h1>{esc(pg["h1"])}</h1><p class="lp-lead">{esc(pg["lead"])}</p></section>'
             f'<section class="lp-panel" aria-labelledby="lp-posts-title"><h2 id="lp-posts-title">Latest guides</h2><div class="lp-grid">{post_cards()}</div></section>'
-            + resources_panel() + contact_block())
+            + reading_paths() + resources_panel() + contact_block())
     return body, {'title': pg['title'], 'description': pg['description']}, [('Home', 'home'), ('Blog', 'blog')], {
         '@type': 'Blog', '@id': BASE + 'blog#blog', 'name': 'TaxPower blog', 'url': BASE + 'blog', 'publisher': {'@id': BASE + '#siddharth'},
         'blogPost': [{'@type': 'BlogPosting', 'headline': x['h1'], 'url': BASE + x['slug'], 'datePublished': PUBLISHED} for x in res['posts']]}
@@ -578,7 +645,8 @@ pages = [(hub['slug'],) + hub_page()] + [(c['slug'],) + city_page(c) for c in ci
     + [wrap(x['slug'], post_page(x)) for x in res['posts']] \
     + [wrap('gst-tds-due-dates', due_page())] \
     + [('taxpower-gst-features',) + gst_features_page()] \
-    + [('taxpower-tds-features',) + tds_features_page()]
+    + [('taxpower-tds-features',) + tds_features_page()] \
+    + [('sitemap',) + sitemap_page()]
 RESOURCE_SLUGS.update(p[0] for p in pages if p[0] in {x['slug'] for x in res['pages']} | set(posts_by_slug) | {'gst-tds-due-dates'})
 for slug, body, meta, faqs, trail, extra in pages:
     out = render(slug, body, meta, trail, extra)

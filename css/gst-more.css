@@ -65,3 +65,6 @@
 .gb-also li{padding:6px 13px;border-radius:999px;background:#fff;border:1px solid #f0d2b0;font-size:13px;color:#5a4631}
 @media(max-width:1040px){.gb-steps{grid-template-columns:repeat(2,1fr)}.gb-steps::before{display:none}}
 @media(max-width:600px){.gb-steps{grid-template-columns:1fr}}
+.gm-chips{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:1180px;margin:22px auto 0;padding:0}
+.gm-chips a{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:999px;background:#fff;border:1px solid #cfe3ec;color:#17384d;font:600 13.5px/1 "DM Sans",Arial,sans-serif;text-decoration:none;transition:transform .15s,background .15s}
+.gm-chips a:hover{transform:translateY(-2px);background:#f1fafe;text-decoration:none}

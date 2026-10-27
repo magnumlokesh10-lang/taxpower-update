@@ -69,3 +69,44 @@
 .lp .gx-side a.gx-side-h{display:flex;justify-content:space-between;align-items:center}
 .lp .gx-side a.gx-side-h::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-right:4px;transition:transform .2s;opacity:.6}
 .gx-side > ul > li.is-open > a.gx-side-h::after{transform:rotate(-135deg)}
+
+/* footer page groups as soft tags, no link look */
+.footer-seo-group{gap:8px!important}
+.footer-seo-group a{display:inline-flex;padding:6px 12px!important;border-radius:999px;background:#eef6fa;border:1px solid #d6e8f0;color:#1f566f!important;font-weight:600;text-decoration:none!important;transition:background .15s,transform .15s}
+.footer-seo-group a:hover,.footer-seo-group a:focus-visible{background:#d9eef7;text-decoration:none!important;transform:translateY(-1px)}
+
+/* related strip + site map */
+.rel-strip{position:relative;margin:30px auto 0;padding:0 16px;max-width:1180px;box-sizing:border-box}
+.rel-inner{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:18px 22px;border-radius:22px;background:linear-gradient(120deg,#e9f6fa,#fff4e6);border:1px solid #d3e7ef}
+.rel-kicker{font:800 12px/1 "Plus Jakarta Sans",Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#0b6e99;margin-right:6px}
+.rel-chips{display:flex;flex-wrap:wrap;gap:8px}
+.rel-chips a{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;background:#fff;border:1px solid #cfe3ec;color:#17384d;font:600 13.5px/1 "DM Sans",Arial,sans-serif;text-decoration:none;transition:transform .15s,background .15s,border-color .15s}
+.rel-chips a:hover{transform:translateY(-2px);background:#f1fafe;border-color:#7cc3da;text-decoration:none}
+.sm-hero{padding:26px 0 10px}
+.sm-hero h1{margin:8px 0 10px}
+.sm-group{margin:30px 0}
+.sm-group h2{margin:0 0 14px;font-size:22px}
+.sm-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.sm-card{display:block;height:100%;padding:16px 18px;border-radius:18px;background:#fff;border:1px solid #d6e8f0;text-decoration:none;transition:transform .18s,box-shadow .18s,border-color .18s}
+.sm-card b{display:block;font:800 15px/1.3 "Plus Jakarta Sans",Arial,sans-serif;color:#17384d;margin-bottom:4px}
+.sm-card span{display:block;font-size:13px;line-height:1.5;color:#4f6b7a}
+.sm-card:hover{transform:translateY(-3px);border-color:#7cc3da;box-shadow:0 14px 26px -18px rgba(8,100,140,.5);text-decoration:none}
+/* page open feel: cross-document view transition + soft entrance */
+@view-transition{navigation:auto}
+@keyframes tpPageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes tpFadeOut{to{opacity:0}}
+main{animation:tpPageIn .5s cubic-bezier(.22,.8,.3,1) both}
+::view-transition-old(root){animation:.18s ease both tpFadeOut}
+::view-transition-new(root){animation:.32s ease both tpPageIn}
+@media(prefers-reduced-motion:reduce){main{animation:none}::view-transition-old(root),::view-transition-new(root){animation:none}}
+/* keep chips, cards and tables in landing pages from picking up the inline-tag look */
+.lp .lp-chips a{display:inline-flex;align-items:center;min-height:40px;padding:8px 16px;margin:0;border:1px solid #c7e0ea;border-radius:22px;background:#fff;color:#17384d!important;font-size:13.5px;font-weight:600;line-height:1.2}
+.lp .lp-chips a:hover{background:#e9f6fb}
+.lp .sm-card{display:block;margin:0;padding:16px 18px;border-radius:18px;background:#fff;border:1px solid #d6e8f0;color:inherit!important;line-height:1.4}
+.lp .sm-card:hover{background:#fff;border-color:#7cc3da}
+.lp .sm-card b{color:#17384d}
+.lp-table-wrap table{width:100%;border-collapse:collapse;font-size:14.5px}
+.lp-table-wrap th,.lp-table-wrap td{padding:12px 16px;text-align:left;border-bottom:1px solid #e1edf2;vertical-align:top}
+.lp-table-wrap thead th{background:#eaf5fa;color:#17384d;font:800 12.5px/1.2 "Plus Jakarta Sans",Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.lp-table-wrap tbody th{font-weight:800;color:#0b5f8f;white-space:nowrap}
+.lp-table-wrap tbody tr:last-child th,.lp-table-wrap tbody tr:last-child td{border-bottom:0}

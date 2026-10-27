@@ -10,6 +10,7 @@ from urllib.parse import urlsplit,unquote
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import bundle
+import related
 from lxml import html,etree
 from PIL import Image
 ROOT=Path(__file__).resolve().parents[1]
@@ -146,10 +147,10 @@ for route,meta in config.items():
     # Both .html resolution and directory resolution serve the same static page.
     for filename,nested in [(route+'.html',False),(route+'/index.html',True)]+([('index.html',False)] if route=='home' else []):
         output=deepcopy(doc);base=etree.Element('base',{'href':BASE_PATH});output.find('head').insert(0,base)
-        path=ROOT/filename;path.parent.mkdir(exist_ok=True);rendered='<!DOCTYPE html>\n'+html.tostring(output,encoding='unicode',method='html')
+        path=ROOT/filename;path.parent.mkdir(exist_ok=True);rendered='<!DOCTYPE html>\n'+html.tostring(output,encoding='unicode',method='html');rendered=rendered.replace('<footer class="site-footer',related.block(route)+'<footer class="site-footer',1)
         path.write_text('\n'.join(line.rstrip() for line in rendered.splitlines())+'\n')
 landing=json.loads((ROOT/'scripts/landing-pages.json').read_text())
-landing_slugs=[landing['hub']['slug']]+[c['slug'] for c in landing['cities']]+[f['slug'] for f in landing['features']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['pages']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['posts']]+['gst-tds-due-dates','taxpower-gst-features','taxpower-tds-features']
+landing_slugs=[landing['hub']['slug']]+[c['slug'] for c in landing['cities']]+[f['slug'] for f in landing['features']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['pages']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['posts']]+['gst-tds-due-dates','taxpower-gst-features','taxpower-tds-features','sitemap']
 canonical_routes=[r for r,m in config.items() if not m.get('canonical')]
 (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>'+BASE+r+'</loc></url>\n' for r in canonical_routes+landing_slugs)+'</urlset>\n')
 (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'sitemap.xml\n')
