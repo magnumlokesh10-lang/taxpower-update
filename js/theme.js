@@ -24,3 +24,5 @@
     });
   });
 })();
+
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-ft-top]');if(b){window.scrollTo({top:0,behavior:'smooth'})}});
