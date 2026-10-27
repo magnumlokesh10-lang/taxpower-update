@@ -160,3 +160,18 @@ document.addEventListener('click', (e) => {
   window.addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(u); } }, { passive: true });
   u();
 })();
+
+
+/* Feature guide: highlight the section being read in the side index. */
+(() => {
+  const links = Array.from(document.querySelectorAll('.gx-side a[href*="#"]'));
+  if (!links.length || !('IntersectionObserver' in window)) return;
+  const map = new Map(links.map((a) => [a.getAttribute('href').split('#')[1], a]));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      const a = map.get(e.target.id);
+      if (a && e.isIntersecting) { links.forEach((l) => l.classList.remove('is-on')); a.classList.add('is-on'); }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('.gx-area, .gx-block').forEach((el) => io.observe(el));
+})();

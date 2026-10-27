@@ -213,21 +213,36 @@ import importlib.util as _iu
 _sp = _iu.spec_from_file_location('gst_features', ROOT / 'scripts' / 'gst-features.py'); _gf = _iu.module_from_spec(_sp); _sp.loader.exec_module(_gf)
 
 
+CATS = [
+    ('returns', 'Returns & filing', 'Sales, summary, annual, composition and refund returns', 'o', ['sales-returns', 'summary-return', 'annual-returns', 'composition', 'other-returns', 'refunds']),
+    ('matching', 'Purchases & matching', 'Supplier data, IMS and reconciliation', 'b', ['purchase-returns', 'supplier-invoices', 'reconciliation', 'gstin-tools']),
+    ('invoicing', 'Billing & invoicing', 'Invoices, e-invoice and e-way bill', 'g', ['billing', 'e-invoicing', 'e-way-bills']),
+    ('practice', 'Clients, notices & reports', 'Dashboards, notices, ledgers and MIS', 'v', ['clients-team', 'notices', 'ledgers-payments', 'reports']),
+    ('setup', 'Data, security & support', 'Imports, Maharashtra PT, backup and help', 's', ['data-import', 'professional-tax', 'security-setup', 'support-extras']),
+]
+
+
 def gst_features_page():
-    jump = ''.join(f'<li><a href="taxpower-gst-features#{gid}">{esc(t.split(":")[0])}</a></li>' for gid, t, _i, _s in _gf.GROUPS)
-    groups = ''
-    for n, (gid, title, intro, subs) in enumerate(_gf.GROUPS, 1):
-        cols = ''.join(f'<div class="gf-sub"><h3>{esc(h)}</h3><ul>' + ''.join(f'<li>{esc(i)}</li>' for i in items) + '</ul></div>' for h, items in subs)
-        groups += (f'<section class="lp-panel gf-group" id="{gid}" aria-labelledby="{gid}-t"><header><span class="gf-n" aria-hidden="true">{n:02d}</span>'
-                   f'<div><h2 id="{gid}-t">{esc(title)}</h2><p>{esc(intro)}</p></div></header><div class="gf-subs">{cols}</div></section>')
+    by_id = {g[0]: g for g in _gf.GROUPS}
+    cards = ''.join(f'<li><a class="gx-cat gx-{c}" href="taxpower-gst-features#{cid}"><b>{esc(t)}</b><span>{esc(d)}</span></a></li>' for cid, t, d, c, _a in CATS)
+    side = ''.join(f'<li><a href="taxpower-gst-features#{cid}" class="gx-side-h gx-{c}">{esc(t)}</a><ul>' + ''.join(f'<li><a href="taxpower-gst-features#{a}">{esc(by_id[a][1].split(":")[0])}</a></li>' for a in areas) + '</ul></li>' for cid, t, _d, c, areas in CATS)
+    blocks = ''
+    for cid, t, d, c, areas in CATS:
+        rows = ''
+        for a in areas:
+            gid, title, intro, subs = by_id[a]
+            sub = ''.join(f'<div class="gx-sub"><h4>{esc(h)}</h4><ul>' + ''.join(f'<li>{esc(i)}</li>' for i in items) + '</ul></div>' for h, items in subs)
+            rows += f'<article class="gx-area" id="{gid}" aria-labelledby="{gid}-t"><div class="gx-area-h"><h3 id="{gid}-t">{esc(title)}</h3><p>{esc(intro)}</p></div><div class="gx-subs">{sub}</div></article>'
+        blocks += f'<section class="gx-block gx-{c}" id="{cid}" aria-labelledby="{cid}-t"><header><h2 id="{cid}-t">{esc(t)}</h2><p>{esc(d)}</p></header>{rows}</section>'
     faqs = list(_gf.FAQ)
     body = (breadcrumb([('Home', 'home'), ('TaxPower GST', 'taxpowergst'), ('All features', None)]) +
-            '<section class="lp-panel lp-hero gf-hero"><span class="lp-kicker">TaxPower GST · feature guide</span>'
-            '<h1>What TaxPower GST can do, area by area</h1>'
-            '<p class="lp-lead">Returns, reconciliation, billing, e-invoicing, notices and client management for CAs, tax professionals and businesses. Use this guide to check a feature before you ask for a demo.</p>'
-            + cta('TaxPower GST Return', 'Book a free demo') + HIGHLIGHTS + '</section>'
-            '<nav class="lp-panel gf-jump" aria-label="Jump to a feature area"><h2>Jump to</h2><ul class="lp-chips">' + jump + '</ul></nav>'
-            + groups + faq_block(faqs, 'Questions about TaxPower GST') +
+            '<section class="gx-hero"><div><span class="lp-kicker">TaxPower GST · feature guide</span>'
+            '<h1>TaxPower GST features, grouped by the work you do</h1>'
+            '<p class="lp-lead">From the first GSTR-1 entry to the last notice reply: see what the software handles for each task, then ask for a demo of the parts you care about.</p>'
+            + cta('TaxPower GST Return', 'Book a free demo') + '</div>'
+            '<ul class="gx-cats" aria-label="Feature groups">' + cards + '</ul></section>'
+            '<div class="gx-layout"><aside class="gx-side" aria-label="On this page"><p>On this page</p><ul>' + side + '</ul></aside><div class="gx-main">' + blocks + '</div></div>'
+            + faq_block(faqs, 'Questions about TaxPower GST') +
             '<section class="lp-panel" aria-labelledby="gf-more-t"><h2 id="gf-more-t">Keep exploring</h2>' +
             chips([('TaxPower GST overview', 'taxpowergst'), ('GST return filing software', 'gst-return-filing-software'), ('GSTR-2B ITC reconciliation', 'gstr-2b-itc-reconciliation-software'),
                    ('E-invoice & e-way bill', 'e-invoice-e-way-bill-software'), ('GST billing', 'gst-billing-software'), ('Plans & pricing', 'pricing')]) + '</section>'
