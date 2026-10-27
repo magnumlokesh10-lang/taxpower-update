@@ -105,7 +105,7 @@
         mobilePrompt.hidden = false;
         shown = true;
       } else showEnquiry();
-    }, 10000);
+    }, 30000);
   }
   function openDetailedFromHash() {
     if (((window.TaxPowerPage && window.TaxPowerPage.anchor) || location.hash) === '#demo-enquiry') {

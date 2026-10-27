@@ -23,9 +23,9 @@ CSS_V = '20261023-vidarbha'
 import sys
 sys.path.insert(0,str(__import__('pathlib').Path(__file__).resolve().parent))
 import bundle
-LANDING_CSS = bundle.make('landing',['css/stylesheet.css','css/company-logos.css','css/landing.css'],'css')
+LANDING_CSS = bundle.make('landing',['css/stylesheet.css','css/company-logos.css','css/support-cards.css','css/landing.css'],'css')
 THEME_BOOT = "try{if(localStorage.getItem('tp-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}"
-LANDING_JS = bundle.make('landing',['js/landing.js','js/theme.js'],'js')
+LANDING_JS = bundle.make('landing',['js/landing.js','js/form-backend.js','js/support-page.js','js/theme.js'],'js')
 
 organization = {'@type': ['Organization', 'LocalBusiness'], '@id': BASE + '#siddharth', 'name': 'Siddharth Enterprises',
     'description': 'Authorized TaxPower dealer in Nagpur, Maharashtra selling TaxPower GST, Billing and TDS software across India.',
