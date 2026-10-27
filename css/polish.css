@@ -56,3 +56,8 @@
 .lp-panel.lp-contact{background:none!important}
 .lp-panel.lp-contact::before{z-index:-2}
 .lp-panel.lp-contact::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px;background:linear-gradient(135deg,#0b3f55,#0a6f8f 70%,#0b8fb0);box-shadow:0 24px 50px -24px rgba(8,60,85,.6)}
+/* feature-guide side index keeps its original plain look */
+.lp .gx-side li a{display:block;margin:0;padding:5px 8px;border-radius:8px;background:none;color:#35566a!important;font-weight:400;font-size:13px;line-height:1.35}
+.lp .gx-side li a:hover{background:#eef6fa}
+.lp .gx-side li a.is-on{background:#e1f1f8;color:#0b5f8f!important;font-weight:700}
+.lp .gx-side a.gx-side-h{font-weight:800;font-size:13px;color:var(--gx-ink)!important;background:var(--gxs);border-left:4px solid var(--gx);border-radius:0 8px 8px 0}
