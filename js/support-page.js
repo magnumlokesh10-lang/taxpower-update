@@ -25,7 +25,13 @@
     autoTimer = null;
     if (mobilePrompt) mobilePrompt.hidden = true;
   }
-  const autoBlocked = () => readCooldown() > Date.now();
+  // Pages where the automatic popup would be redundant or unwelcome (form already there, or existing customers).
+  const quietPages = ['support', 'technical-support', 'demo-enquiry', 'free-trial', 'downloads', 'system-requirements', 'sitemap'];
+  const pageName = () => (location.pathname.replace(/\/+$/, '').split('/').pop() || 'home').replace(/\.html$/, '');
+  const seenKey = 'taxpower-quick-enquiry-seen';
+  const seenThisVisit = () => { try { return sessionStorage.getItem(seenKey) === '1'; } catch (_) { return false; } };
+  const markSeen = () => { try { sessionStorage.setItem(seenKey, '1'); } catch (_) {} };
+  const autoBlocked = () => readCooldown() > Date.now() || quietPages.includes(pageName()) || seenThisVisit();
   document.addEventListener('taxpower:enquiry-saved', () => suppressAutoPopup(7 * day));
   window.addEventListener('storage', event => {
     if (event.key === cooldownKey && autoBlocked()) {
@@ -105,6 +111,7 @@
         mobilePrompt.hidden = false;
         shown = true;
       } else showEnquiry();
+      markSeen();
     }, 30000);
   }
   function openDetailedFromHash() {
