@@ -75,14 +75,29 @@ function doPost(e) {
   }
 }
 
+function clean(value, max) {
+  return String(value || '').replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max || 60);
+}
+
 function sendEnquiryEmail(data) {
-  var kind = data.enquiryType === 'quick' ? 'Callback request' : 'Detailed enquiry';
+  var quick = data.enquiryType === 'quick';
+  var kind = quick ? 'Callback request' : 'Detailed enquiry';
+  // Subject reads like: Callback request | Rajesh Kumar | 9876543210
+  // or: Detailed enquiry | Renewal of License | Lokesh Enterprise, Nagpur
+  var subject = quick
+    ? 'Callback request | ' + clean(data.name, 40) + ' | ' + data.mobile
+    : 'Detailed enquiry | ' + clean(data.purpose, 30) + ' | ' + clean(data.company, 40) + ', ' + clean(data.city, 25);
+  var labels = {name: 'Name', company: 'Company', mobile: 'Mobile', email: 'Email', gstin: 'GSTIN', address: 'Address',
+    city: 'City', state: 'State', product: 'Product', purpose: 'Purpose', page: 'Page'};
+  var order = quick ? ['name', 'mobile', 'email', 'product', 'purpose', 'page']
+    : ['name', 'company', 'mobile', 'email', 'product', 'purpose', 'city', 'state', 'gstin', 'address', 'page'];
+  var lines = order.map(function(key) { return labels[key] + ': ' + (data[key] || '-'); });
   MailApp.sendEmail({
     to: NOTIFY_EMAIL,
     name: 'TaxPower Website',
     replyTo: data.email,
-    subject: 'TaxPower New Enquairy',
-    body: kind + '\n\n' + FIELDS.filter(function(key) { return key !== 'requestId'; }).map(function(key) { return key + ': ' + (data[key] || '-'); }).join('\n')
+    subject: subject,
+    body: kind + '\n\n' + lines.join('\n') + '\n\nReference: ' + data.requestId
   });
 }
 
