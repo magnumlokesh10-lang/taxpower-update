@@ -390,7 +390,7 @@ def render(slug, body, meta, trail, extra):
 </main>
 {related.block(slug)}
 {FOOTER}
-<script type="speculationrules">{{"prefetch":[{{"where":{{"href_matches":"{BASE_PATH}*"}},"eagerness":"moderate"}}]}}</script>
+<script type="speculationrules">{{"prerender":[{{"where":{{"href_matches":"{BASE_PATH}*"}},"eagerness":"moderate"}}],"prefetch":[{{"where":{{"href_matches":"{BASE_PATH}*"}},"eagerness":"moderate"}}]}}</script>
 <script src="{LANDING_JS}" defer></script>
 </body>
 </html>

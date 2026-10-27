@@ -115,7 +115,7 @@ for route,meta in config.items():
     head.append(etree.Element('script',{'src':bundle.make(keep,js_files,'js'),'defer':''}))
     stub=etree.Element('script');stub.text='window.TaxPowerPage='+json.dumps({'anchor':'#'+PAGE_ANCHOR.get(route,keep) if route in('demo-enquiry','home') else '','nav':NAV_PAGE[keep],'scrollTo':SCROLL_TO.get(route,'')})+';'
     head.insert(0,stub)
-    head.append(html.fromstring('<script type="speculationrules">'+json.dumps({'prefetch':[{'where':{'href_matches':BASE_PATH+'*'},'eagerness':'moderate'}]})+'</script>'))
+    head.append(html.fromstring('<script type="speculationrules">'+json.dumps({'prerender':[{'where':{'href_matches':BASE_PATH+'*'},'eagerness':'moderate'}],'prefetch':[{'where':{'href_matches':BASE_PATH+'*'},'eagerness':'moderate'}]})+'</script>'))
     # Same-page '#links' must keep working under <base>; links to other tabs become real page links.
     for a in doc.xpath('//a[@href]'):
         h=a.get('href')

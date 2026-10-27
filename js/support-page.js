@@ -97,6 +97,7 @@
     dialog.querySelector('input[name="name"]').focus();
   }
   function scheduleAutoPopup() {
+    if (document.prerendering) { document.addEventListener('prerenderingchange', scheduleAutoPopup, { once: true }); return; }
     if (shown || autoTimer || autoBlocked()) return;
     autoTimer = setTimeout(() => {
       autoTimer = null;
