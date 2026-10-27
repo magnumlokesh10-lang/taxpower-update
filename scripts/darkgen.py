@@ -54,7 +54,7 @@ def _map(c,mode):
 def _mode(prop):
     p=prop.lower()
     if p.startswith('--'):
-        return 'text' if re.search(r'text|ink|fg|font|muted|title|head|label|copy|dim|sub',p) else 'border' if re.search(r'border|line|stroke',p) else 'surface'
+        return 'text' if re.search(r'text|ink|fg|font|mute|title|head|label|copy|dim|sub',p) else 'border' if re.search(r'border|line|stroke',p) else 'surface'
     if p in TXT:return 'text'
     if p in BG or p.startswith('background'):return 'surface'
     if 'shadow' in p:return 'surface'

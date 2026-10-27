@@ -1,0 +1,26 @@
+/* Extra GST / Billing content sections (coverage, capabilities, billing scope). */
+.gm{--gm-ink:#12324a;--gm-mute:#4f6b7d;--gm-line:#dce8ef;max-width:1180px;margin:56px auto 0;padding:0 8px}
+.gm-head{text-align:center;max-width:720px;margin:0 auto 28px}
+.gm-kicker{display:inline-block;font:700 12px/1 "Plus Jakarta Sans",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#c2540c;margin-bottom:12px}
+.gm-head h2{font:800 clamp(26px,3.2vw,36px)/1.15 "Plus Jakarta Sans",sans-serif;color:var(--gm-ink);letter-spacing:-.02em}
+.gm-head p{margin-top:12px;color:var(--gm-mute);font-size:16px;line-height:1.6}
+.gm-rets{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.gm-ret{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;padding:16px 18px;border-radius:16px;border:1px solid var(--gm-line);background:#fff}
+.gm-ret b{display:inline-flex;justify-content:center;padding:9px 10px;border-radius:999px;font:800 13px/1.2 "Plus Jakarta Sans",sans-serif;text-align:center}
+.gm-ret span{color:var(--gm-mute);font-size:14px;line-height:1.55}
+.gm-o b{background:#ffe9d4;color:#b4470a}.gm-b b{background:#dff0fb;color:#0b5f8f}.gm-g b{background:#dcf5ea;color:#12795a}.gm-v b{background:#ebe5fb;color:#5b3fb5}.gm-r b{background:#fde3ea;color:#b02a52}
+.gm-also{margin-top:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center}
+.gm-also h3{font:700 14px/1 "Plus Jakarta Sans",sans-serif;color:var(--gm-ink)}
+.gm-also ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.gm-also li{padding:7px 12px;border-radius:999px;border:1px solid var(--gm-line);background:#f4f9fc;color:#31566d;font:600 12.5px/1 "Plus Jakarta Sans",sans-serif}
+.gm-capgrid{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.gm-bill .gm-capgrid{grid-template-columns:repeat(2,1fr)}
+.gm-cap{display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:18px;background:linear-gradient(160deg,#f4faff,#fdf6ee);border:1px solid var(--gm-line)}
+.gm-ico{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#fff;color:#c2540c;box-shadow:0 4px 12px #12324a14}
+.gm-ico svg{width:22px;height:22px}
+.gm-cap h3{font:800 16px/1.3 "Plus Jakarta Sans",sans-serif;color:var(--gm-ink);margin-bottom:6px}
+.gm-cap p{color:var(--gm-mute);font-size:14px;line-height:1.6}
+.gm-foot{margin-top:20px;text-align:center;color:var(--gm-mute);font-size:14px;line-height:1.6}
+.gm-foot a{color:#0b6e99;font-weight:700}
+@media(max-width:1040px){.gm-capgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.gm{margin-top:40px}.gm-rets,.gm-capgrid,.gm-bill .gm-capgrid{grid-template-columns:1fr}.gm-ret{grid-template-columns:1fr;gap:10px}.gm-ret b{justify-self:start}}
