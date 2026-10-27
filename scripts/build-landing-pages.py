@@ -375,9 +375,9 @@ def render(slug, body, meta, trail, extra):
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="{t}">
 <meta name="twitter:description" content="{d}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap">
+<link rel="preload" href="fonts/plus-jakarta-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="fonts/plus-jakarta-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="fonts/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous">
 <script>{THEME_BOOT}</script>
 <link rel="stylesheet" href="{LANDING_CSS}">
 <script type="application/ld+json" id="site-structured-data" data-route="{slug}">{ld}</script>

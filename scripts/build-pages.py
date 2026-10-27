@@ -48,8 +48,8 @@ slot=source.xpath('//*[@data-footer-slot]')[0];slot.getparent().replace(slot,htm
 head=source.find('head')
 for node in head.xpath('./script[@type="application/ld+json"] | ./meta[@property] | ./meta[starts-with(@name,"twitter:")]'):
     head.remove(node)
-for attrs in [ {'rel':'preconnect','href':'https://fonts.googleapis.com'}, {'rel':'preconnect','href':'https://fonts.gstatic.com','crossorigin':'anonymous'}, {'rel':'stylesheet','href':'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap'} ]:
-    head.append(etree.Element('link',attrs))
+for name in ['plus-jakarta-sans-latin-400', 'plus-jakarta-sans-latin-700', 'dm-sans-latin-400']:
+    head.append(etree.Element('link',{'rel':'preload','href':'fonts/%s-normal.woff2'%name,'as':'font','type':'font/woff2','crossorigin':'anonymous'}))
 head.append(etree.Element('meta',{'name':'robots','content':'index, follow, max-image-preview:large'}))
 # Preserve existing heading typography independently of semantic heading levels.
 for h in source.xpath('//h1'):
