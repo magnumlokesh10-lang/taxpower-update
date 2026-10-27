@@ -5,7 +5,7 @@ Runs at build time, so the browser only downloads plain CSS."""
 import colorsys,re
 DARK='html[data-theme=dark]'
 # Banners/heroes are designed bright (photos, illustrations); they stay as in light mode.
-BRIGHT=['.slider-viewport','.pricing-banner','.downloads-banner','.gst-feature-card','.gst-feature-row','.gst-dashboard-hero','.gst-motion-frame','.gst-browser-frame','.company-logo-card']
+BRIGHT=['.slider-viewport','.pricing-banner','.downloads-banner','.gst-feature-card','.gst-feature-row','.gst-dashboard-hero','.gst-motion-frame','.gst-browser-frame','.company-logo-card','.tp-plan','.download-products','.support-faq','.se-web','.lp-panel:not(.lp-hero)','.gx-block']
 NOT_IN=':where(:not(:is('+','.join(b+','+b+' *' for b in BRIGHT)+')))'
 HEX=re.compile(r'#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\b')
 FUNC=re.compile(r'(rgba?|hsla?)\(([^()]*)\)',re.I)

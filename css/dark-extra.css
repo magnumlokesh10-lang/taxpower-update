@@ -12,6 +12,12 @@ html[data-theme=dark] .company-logo-card,html[data-theme=dark] .trusted-logo,htm
 /* small white marks that sit on dark/coloured chips must stay white */
 html[data-theme=dark] .hamburger-menu .bar{background-color:#fff}
 /* bright banners keep their light-mode text colours */
-html[data-theme=dark] :is(.slider-viewport,.pricing-banner,.downloads-banner,.gst-feature-card,.gst-feature-row,.gst-dashboard-hero,.gst-motion-frame,.gst-browser-frame,.company-logo-card){color:#0f172a}
+html[data-theme=dark] :is(.slider-viewport,.pricing-banner,.downloads-banner,.gst-feature-card,.gst-feature-row,.gst-dashboard-hero,.gst-motion-frame,.gst-browser-frame,.company-logo-card,.tp-plan,.download-products,.support-faq,.se-web,.lp-panel:not(.lp-hero)){color:#0f172a}
 html[data-theme=dark] .slider-viewport{background-color:#f3f6fb;border-radius:22px}
 html[data-theme=dark] .terms-note{color:#ff8a8a}
+/* night mix: these blocks stay light, so their own text variables and solid white surfaces are restored */
+html[data-theme=dark] .lp-panel:not(.lp-hero){background:#fff;--lp-ink:#103e50;--lp-muted:#4f6b7a;--lp-blue:#087ba5}
+html[data-theme=dark] .gx-block{background:#fff;--lp-ink:#103e50;--lp-muted:#4f6b7a}
+html[data-theme=dark] .download-products{background:#f5f9fc}
+html[data-theme=dark] .se-web{background:#f4f8fb;--se-ink:#103e50;--se-muted:#506b7b;--se-blue:#087ba5}
+html[data-theme=dark] .tp-plan{--plan-ink:#203348;--plan-muted:#596b7c;--plan-line:#dce4eb}

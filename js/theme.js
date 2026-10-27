@@ -4,8 +4,10 @@
   function cur(){return de.getAttribute('data-theme')==='dark'?'dark':'light'}
   function apply(t){
     if(t==='dark')de.setAttribute('data-theme','dark');else de.removeAttribute('data-theme');
-    var he=document.querySelector('.home-extra');
-    if(he){if(t==='dark')he.setAttribute('data-hx-theme','dark');else he.removeAttribute('data-hx-theme')}
+    /* Night mode on Home is a mix: these sections go dark, the others stay light. */
+    document.querySelectorAll('.home-extra [aria-labelledby=hxB1Title],.home-extra [aria-labelledby=hxFormsTitle],.home-extra [aria-labelledby=hxStepsTitle],.home-extra [aria-labelledby=hxAreaTitle],.home-extra [aria-labelledby=hxCheckTitle],.home-extra [aria-label="Website development"],.home-extra [aria-labelledby=hxFinalTitle]').forEach(function(sec){
+      if(t==='dark')sec.setAttribute('data-hx-theme','dark');else sec.removeAttribute('data-hx-theme');
+    });
     var on=t==='dark';
     document.querySelectorAll('[data-theme-toggle]').forEach(function(b){
       b.setAttribute('aria-pressed',on?'true':'false');
