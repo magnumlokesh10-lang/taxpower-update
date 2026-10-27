@@ -61,3 +61,11 @@
 .lp .gx-side li a:hover{background:#eef6fa}
 .lp .gx-side li a.is-on{background:#e1f1f8;color:#0b5f8f!important;font-weight:700}
 .lp .gx-side a.gx-side-h{font-weight:800;font-size:13px;color:var(--gx-ink)!important;background:var(--gxs);border-left:4px solid var(--gx);border-radius:0 8px 8px 0}
+
+/* feature guide index: no scrollbar, only the group being read is expanded */
+.gx-side{max-height:none!important;overflow:visible!important}
+.gx-side > ul > li > ul{display:none}
+.gx-side > ul > li.is-open > ul{display:block}
+.lp .gx-side a.gx-side-h{display:flex;justify-content:space-between;align-items:center}
+.lp .gx-side a.gx-side-h::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-right:4px;transition:transform .2s;opacity:.6}
+.gx-side > ul > li.is-open > a.gx-side-h::after{transform:rotate(-135deg)}

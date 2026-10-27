@@ -170,8 +170,9 @@ document.addEventListener('click', (e) => {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       const a = map.get(e.target.id);
-      if (a && e.isIntersecting) { links.forEach((l) => l.classList.remove('is-on')); a.classList.add('is-on'); }
+      if (a && e.isIntersecting) { links.forEach((l) => l.classList.remove('is-on')); a.classList.add('is-on'); const top = a.closest('.gx-side > ul > li'); document.querySelectorAll('.gx-side > ul > li').forEach((li) => li.classList.toggle('is-open', li === top)); }
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
   document.querySelectorAll('.gx-area, .gx-block').forEach((el) => io.observe(el));
+  const first = document.querySelector('.gx-side > ul > li'); if (first) first.classList.add('is-open');
 })();
