@@ -149,7 +149,7 @@ for route,meta in config.items():
         path=ROOT/filename;path.parent.mkdir(exist_ok=True);rendered='<!DOCTYPE html>\n'+html.tostring(output,encoding='unicode',method='html')
         path.write_text('\n'.join(line.rstrip() for line in rendered.splitlines())+'\n')
 landing=json.loads((ROOT/'scripts/landing-pages.json').read_text())
-landing_slugs=[landing['hub']['slug']]+[c['slug'] for c in landing['cities']]+[f['slug'] for f in landing['features']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['pages']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['posts']]+['gst-tds-due-dates']
+landing_slugs=[landing['hub']['slug']]+[c['slug'] for c in landing['cities']]+[f['slug'] for f in landing['features']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['pages']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['posts']]+['gst-tds-due-dates','taxpower-gst-features']
 canonical_routes=[r for r,m in config.items() if not m.get('canonical')]
 (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>'+BASE+r+'</loc></url>\n' for r in canonical_routes+landing_slugs)+'</urlset>\n')
 (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'sitemap.xml\n')

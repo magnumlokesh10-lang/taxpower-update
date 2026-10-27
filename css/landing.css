@@ -120,3 +120,17 @@
 .lp-due-tag--gst,.lp-due-tag--tds { display:inline-block; }
 @media(max-width:860px) { .lp-taxcal { grid-template-columns:1fr; } }
 .lp-toggle[hidden] { display:none; }
+
+/* TaxPower GST feature guide */
+.gf-jump h2 { font-size:18px; margin-bottom:12px; }
+.gf-group header { display:flex; gap:18px; align-items:flex-start; margin-bottom:18px; }
+.gf-group header p { margin:4px 0 0; }
+.gf-group h2 { margin-bottom:0; }
+.gf-n { flex:0 0 auto; display:grid; place-items:center; width:46px; height:46px; border-radius:14px; background:linear-gradient(135deg,#fff0de,#e0f3fb); color:#b4470a; font:800 15px/1 'Plus Jakarta Sans',sans-serif; }
+.gf-subs { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; }
+.gf-sub { padding:16px 18px; border:1px solid #d6e8f0; border-radius:14px; background:#fff; }
+.gf-sub h3 { font-size:14.5px; margin-bottom:10px; color:#0b5f8f; }
+.gf-sub ul { list-style:none; margin:0; padding:0; display:grid; gap:7px; }
+.gf-sub li { position:relative; padding-left:20px; font-size:14px; line-height:1.5; color:var(--lp-muted); }
+.gf-sub li::before { content:""; position:absolute; left:2px; top:.55em; width:8px; height:5px; border-left:2px solid #12957a; border-bottom:2px solid #12957a; transform:rotate(-45deg) translateY(-50%); }
+@media(max-width:620px){ .gf-group header { gap:12px; } .gf-n { width:40px; height:40px; } }

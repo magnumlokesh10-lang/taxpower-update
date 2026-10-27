@@ -67,6 +67,8 @@ _RES_TAB = 'class="nav-item nav-dropdown-toggle" data-nav-page="resources.html"'
 assert _RES_TAB in NAV
 NAV_RESOURCES = NAV.replace(_RES_TAB, 'class="nav-item nav-dropdown-toggle h-current" data-nav-page="resources.html" aria-current="page"')
 
+NAV_GST = NAV.replace('class="nav-item nav-item-org nav-item-always nav-dropdown-toggle"', 'class="nav-item nav-item-org nav-item-always nav-dropdown-toggle h-current" aria-current="page"', 1)
+
 
 def li(items):
     return '<ul class="lp-bullets">' + ''.join(f'<li>{esc(i)}</li>' for i in items) + '</ul>'
@@ -207,6 +209,36 @@ def feature_page(f):
         'url': BASE + f['slug'], 'publisher': {'@id': BASE + '#magnum'}}
 
 
+import importlib.util as _iu
+_sp = _iu.spec_from_file_location('gst_features', ROOT / 'scripts' / 'gst-features.py'); _gf = _iu.module_from_spec(_sp); _sp.loader.exec_module(_gf)
+
+
+def gst_features_page():
+    jump = ''.join(f'<li><a href="taxpower-gst-features#{gid}">{esc(t.split(":")[0])}</a></li>' for gid, t, _i, _s in _gf.GROUPS)
+    groups = ''
+    for n, (gid, title, intro, subs) in enumerate(_gf.GROUPS, 1):
+        cols = ''.join(f'<div class="gf-sub"><h3>{esc(h)}</h3><ul>' + ''.join(f'<li>{esc(i)}</li>' for i in items) + '</ul></div>' for h, items in subs)
+        groups += (f'<section class="lp-panel gf-group" id="{gid}" aria-labelledby="{gid}-t"><header><span class="gf-n" aria-hidden="true">{n:02d}</span>'
+                   f'<div><h2 id="{gid}-t">{esc(title)}</h2><p>{esc(intro)}</p></div></header><div class="gf-subs">{cols}</div></section>')
+    faqs = list(_gf.FAQ)
+    body = (breadcrumb([('Home', 'home'), ('TaxPower GST', 'taxpowergst'), ('All features', None)]) +
+            '<section class="lp-panel lp-hero gf-hero"><span class="lp-kicker">TaxPower GST · feature guide</span>'
+            '<h1>What TaxPower GST can do, area by area</h1>'
+            '<p class="lp-lead">Returns, reconciliation, billing, e-invoicing, notices and client management for CAs, tax professionals and businesses. Use this guide to check a feature before you ask for a demo.</p>'
+            + cta('TaxPower GST Return', 'Book a free demo') + HIGHLIGHTS + '</section>'
+            '<nav class="lp-panel gf-jump" aria-label="Jump to a feature area"><h2>Jump to</h2><ul class="lp-chips">' + jump + '</ul></nav>'
+            + groups + faq_block(faqs, 'Questions about TaxPower GST') +
+            '<section class="lp-panel" aria-labelledby="gf-more-t"><h2 id="gf-more-t">Keep exploring</h2>' +
+            chips([('TaxPower GST overview', 'taxpowergst'), ('GST return filing software', 'gst-return-filing-software'), ('GSTR-2B ITC reconciliation', 'gstr-2b-itc-reconciliation-software'),
+                   ('E-invoice & e-way bill', 'e-invoice-e-way-bill-software'), ('GST billing', 'gst-billing-software'), ('Plans & pricing', 'pricing')]) + '</section>'
+            + contact_block())
+    meta = {'title': 'TaxPower GST Features: Returns, Reconciliation, Billing & E-invoice',
+            'description': 'A full guide to TaxPower GST features: GSTR-1, 3B, 2B, 9 and 4 filing, IMS, ITC reconciliation, e-invoice, e-way bill, billing, notices and client dashboards.'}
+    return body, meta, faqs, [('Home', 'home'), ('TaxPower GST', 'taxpowergst'), ('All features', 'taxpower-gst-features')], {
+        '@type': 'SoftwareApplication', 'name': 'TaxPower GST', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'Windows',
+        'description': meta['description'], 'url': BASE + 'taxpower-gst-features', 'publisher': {'@id': BASE + '#magnum'}}
+
+
 def render(slug, body, meta, trail, extra):
     canonical = BASE + slug
     graph = [organization,
@@ -248,7 +280,7 @@ def render(slug, body, meta, trail, extra):
 </head>
 <body>
 <div class="global-site-bg site-grid-background" data-site-background aria-hidden="true"><div class="grid-blueprint"></div><div class="grid-squares-layer" data-site-background-squares></div></div>
-{NAV_RESOURCES if slug in RESOURCE_SLUGS else NAV}
+{NAV_RESOURCES if slug in RESOURCE_SLUGS else NAV_GST if slug == 'taxpower-gst-features' else NAV}
 <main class="lp" id="main">
 {body}
 </main>
@@ -479,7 +511,8 @@ def wrap(slug, result):
 pages = [(hub['slug'],) + hub_page()] + [(c['slug'],) + city_page(c) for c in cities] + [(f['slug'],) + feature_page(f) for f in features] \
     + [wrap(pg['slug'], blog_index(pg) if pg.get('type') == 'blog-index' else static_page(pg)) for pg in res['pages']] \
     + [wrap(x['slug'], post_page(x)) for x in res['posts']] \
-    + [wrap('gst-tds-due-dates', due_page())]
+    + [wrap('gst-tds-due-dates', due_page())] \
+    + [('taxpower-gst-features',) + gst_features_page()]
 RESOURCE_SLUGS.update(p[0] for p in pages if p[0] in {x['slug'] for x in res['pages']} | set(posts_by_slug) | {'gst-tds-due-dates'})
 for slug, body, meta, faqs, trail, extra in pages:
     out = render(slug, body, meta, trail, extra)
