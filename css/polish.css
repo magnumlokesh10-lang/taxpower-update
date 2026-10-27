@@ -1,14 +1,28 @@
-/* ---- unified FAQ accordions ---- */
-.lp-faq details,.gm-faqlist details,.tp-pricing-faq details,#support .support-faq details{background:#fff;border:1px solid #dbe7ee;border-radius:14px;padding:0 18px;margin:0 0 10px;transition:border-color .2s,box-shadow .2s,background .2s}
-.lp-faq details:last-child,.lp-faq details{border-bottom:1px solid #dbe7ee}
-.lp-faq details:hover,.gm-faqlist details:hover,.tp-pricing-faq details:hover,#support .support-faq details:hover{border-color:#9ccfe0}
-.lp-faq details[open],.gm-faqlist details[open],.tp-pricing-faq details[open],#support .support-faq details[open]{background:#f3fafd;border-color:#7cc3da;box-shadow:0 6px 18px -10px rgba(8,124,166,.35)}
-.lp-faq summary,.gm-faqlist summary,.tp-pricing-faq summary,#support .support-faq summary{list-style:none;position:relative;cursor:pointer;padding:16px 38px 16px 0;font:700 15px/1.45 "Plus Jakarta Sans",Arial,sans-serif;color:#17384d}
-.lp-faq summary::-webkit-details-marker,.gm-faqlist summary::-webkit-details-marker,.tp-pricing-faq summary::-webkit-details-marker,#support .support-faq summary::-webkit-details-marker{display:none}
-.lp-faq summary::after,.gm-faqlist summary::after,.tp-pricing-faq summary::after,#support .support-faq summary::after{content:"+";position:absolute;right:0;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:#e4f3f9;color:#087ca6;font:700 18px/26px Arial,sans-serif;text-align:center;transition:transform .2s,background .2s,color .2s}
-.lp-faq details[open] summary::after,.gm-faqlist details[open] summary::after,.tp-pricing-faq details[open] summary::after,#support .support-faq details[open] summary::after{content:"\2212";background:#087ca6;color:#fff}
-.lp-faq details p,.gm-faqlist details p,.tp-pricing-faq details p,#support .support-faq details p{margin:0;padding:0 0 16px;font-size:14.5px;line-height:1.7;color:#4f6b7a}
-.tp-pricing-faq{background:none;border:0;padding:26px 0 0}
+/* ---- unified FAQ: intro card + accordion cards ---- */
+.fq{--fq-bg:#e9f6fa;--fq-line:#cfe6ee;--fq-ac:#087ca6;--fq-open:#f3fbfe;--fq-ink:#0f3a4f;--fq-mute:#4f6b7a;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:18px;padding:26px;margin:26px 0 0;border-radius:26px;background:var(--fq-bg);border:1px solid var(--fq-line);box-sizing:border-box}
+.fq-teal{}
+.fq-violet{--fq-bg:#efe9ff;--fq-line:#ddd2fb;--fq-ac:#6a43d8;--fq-open:#faf7ff}
+.fq-amber{--fq-bg:#fff2e0;--fq-line:#f3d9b8;--fq-ac:#c8651b;--fq-open:#fffaf3}
+.fq-mint{--fq-bg:#e6f7ef;--fq-line:#c5e8d6;--fq-ac:#12805a;--fq-open:#f4fcf8}
+.fq-head{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:26px;border-radius:20px;border:1px solid var(--fq-line);background:rgba(255,255,255,.35)}
+.fq-ico{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#fff;color:var(--fq-ac);margin-bottom:14px;box-shadow:0 6px 14px -8px rgba(0,0,0,.25)}
+.fq-ico svg{width:26px;height:26px}
+.fq-eyebrow{font:700 11px/1 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--fq-ac);margin-bottom:8px}
+.fq-head h2{margin:0 0 8px;font:800 clamp(24px,2.6vw,32px)/1.12 "Plus Jakarta Sans",Arial,sans-serif;color:var(--fq-ink);letter-spacing:-.02em}
+.fq-head p{margin:0;font-size:14.5px;line-height:1.55;color:var(--fq-mute)}
+.fq-list{display:flex;flex-direction:column;gap:10px;min-width:0}
+.fq-list details{background:#fff;border:1px solid var(--fq-line);border-radius:18px;padding:0 20px;margin:0;transition:background .2s,border-color .2s}
+.fq-list details:hover{border-color:var(--fq-ac)}
+.fq-list details[open]{background:var(--fq-open);border-color:var(--fq-ac)}
+.fq-list summary{cursor:pointer;padding:16px 0;font:700 15.5px/1.4 "Plus Jakarta Sans",Arial,sans-serif;color:var(--fq-ink)}
+.fq-list summary::marker{color:var(--fq-ac)}
+.fq-list details p{margin:0;padding:0 0 16px;font-size:14.5px;line-height:1.7;color:var(--fq-mute)}
+.fq-help{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:6px;padding:14px 18px;border-radius:18px;border:1.5px dashed var(--fq-ac)}
+.fq-help span{flex:1 1 220px;font-weight:700;font-size:14px;color:var(--fq-ink)}
+.fq-help a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:22px;background:var(--fq-ac);color:#fff!important;font:700 14px/1 Arial,sans-serif;text-decoration:none!important}
+@media(max-width:860px){.fq{grid-template-columns:1fr;padding:16px}.fq-head{padding:20px}}
+#support .fq{max-width:850px;margin-left:auto;margin-right:auto}
+@media(min-width:861px){#support .fq{grid-template-columns:1fr}}
 /* ---- contact panel ---- */
 .lp-panel.lp-contact{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:center;background:linear-gradient(135deg,#0b3f55,#0a6f8f 70%,#0b8fb0);border:0;color:#e8f6fb;border-radius:22px;padding:34px;overflow:hidden;position:relative}
 .lp-contact .lpc-eyebrow{display:inline-block;font:700 11px/1 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bfeaf6;background:rgba(255,255,255,.14);padding:6px 10px;border-radius:20px;margin-bottom:12px}
@@ -26,5 +40,5 @@
 .lp-contact .lpc-row span,.lp-contact .lpc-row a{color:#fff!important;font-size:14.5px;line-height:1.55;text-decoration:none!important;overflow-wrap:anywhere;font-weight:600}
 @media(max-width:860px){.lp-panel.lp-contact{grid-template-columns:1fr;padding:24px}}
 /* ---- no hyperlink look: inline links become soft tags ---- */
-.lp p a,.lp li a,.lp td a,.hx p a,.hx-q p a,.lp-faq p a,.gm-faqlist p a,.tp-pricing-faq p a,#support .support-faq p a,#support .support-help-links a,#support .support-strip-contacts a,.se-trust-credit a,.download-support-contacts a,.download-utility-action,.hx-fine a,.bt p a{display:inline-block;padding:1px 9px;margin:0 1px;border-radius:8px;background:#e6f4fa;color:#0b5f7e!important;font-weight:700;text-decoration:none!important;line-height:1.5;transition:background .15s}
-.lp p a:hover,.lp li a:hover,.hx p a:hover,.hx-q p a:hover,.lp-faq p a:hover,.gm-faqlist p a:hover,.tp-pricing-faq p a:hover,#support .support-faq p a:hover,#support .support-help-links a:hover,#support .support-strip-contacts a:hover,.se-trust-credit a:hover,.download-support-contacts a:hover,.download-utility-action:hover,.bt p a:hover{background:#cbe9f4;text-decoration:none!important}
+.lp p a,.lp li a,.lp td a,.hx p a,.hx-q p a,.fq-list p a,#support .support-help-links a,#support .support-strip-contacts a,.se-trust-credit a,.download-support-contacts a,.download-utility-action,.hx-fine a,.bt p a{display:inline-block;padding:1px 9px;margin:0 1px;border-radius:8px;background:#e6f4fa;color:#0b5f7e!important;font-weight:700;text-decoration:none!important;line-height:1.5;transition:background .15s}
+.lp p a:hover,.lp li a:hover,.hx p a:hover,.hx-q p a:hover,.fq-list p a:hover,#support .support-help-links a:hover,#support .support-strip-contacts a:hover,.se-trust-credit a:hover,.download-support-contacts a:hover,.download-utility-action:hover,.bt p a:hover{background:#cbe9f4;text-decoration:none!important}

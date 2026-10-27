@@ -76,7 +76,11 @@ def li(items):
 
 def faq_block(items, title='Frequently asked questions'):
     rows = ''.join(f'<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in items)
-    return f'<section class="lp-panel lp-faq" aria-labelledby="lp-faq-title"><h2 id="lp-faq-title">{esc(title)}</h2>{rows}</section>'
+    ico = '<span class="fq-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span>'
+    help_ = ''.join(f'<a href="tel:+91{p}">{p}</a>' for p in dealer['phones'])
+    return (f'<section class="fq fq-teal" aria-labelledby="lp-faq-title"><div class="fq-head">{ico}<span class="fq-eyebrow">Questions</span>'
+            f'<h2 id="lp-faq-title">{esc(title)}</h2><p>Quick answers to what people ask first.</p></div>'
+            f'<div class="fq-list">{rows}<div class="fq-help"><span>Still have a question? Talk to us directly.</span>{help_}</div></div></section>')
 
 
 def contact_block(extra=''):
