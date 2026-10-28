@@ -89,7 +89,7 @@
         {"t": "p", "v": "The invoices you report in GSTR-1 flow into your buyers' auto-drafted GSTR-2B. If an invoice is missed or reported with the wrong GSTIN or value, your buyer may not see the credit they expect. That leads to calls from customers asking you to correct the return."},
         {"t": "h2", "v": "Why the two returns must agree"},
         {"t": "p", "v": "GSTR-1 and GSTR-3B are compared by the system. In recent years GSTN has moved towards auto-populating GSTR-3B from GSTR-1, so an error in GSTR-1 can carry into GSTR-3B. A mismatch between sales in the two returns can lead to a notice, so it is worth checking before you file."},
-        {"t": "h2", "v": "A quick pre-filing check"},
+        {"t": "h2", "v": "A pre-filing check"},
         {"t": "list", "v": ["Compare total taxable value and tax in GSTR-1 with the outward supply table in GSTR-3B", "Check that credit notes and amendments are included in the right period", "Look at invoices reported in the wrong month or under the wrong GSTIN", "Confirm that e-invoices match what you report in GSTR-1", "Keep a note of the reason for any difference you decide to carry forward"]},
         {"t": "h2", "v": "How TaxPower GST helps"},
         {"t": "p", "v": "TaxPower GST lets you compare GSTR-3B with GSTR-1 in one preview, download GSTR-1 data and compare GSTR-1 with e-invoices to find missing invoices and tax differences before you file."}
@@ -200,7 +200,7 @@
         {"t": "h2", "v": "2. Can it file directly to the portal?"},
         {"t": "p", "v": "Look for upload and download from inside the software, with EVC/OTP or DSC support, so that you do not log in to the portal client by client."},
         {"t": "h2", "v": "3. How good is ITC reconciliation?"},
-        {"t": "p", "v": "Test GSTR-2B reconciliation with a messy purchase register. Check how it handles invoice-number differences and whether IMS actions are supported."},
+        {"t": "p", "v": "Test GSTR-2B reconciliation with a purchase register that has errors. Check how it handles invoice-number differences and whether IMS actions are supported."},
         {"t": "h2", "v": "4. Does it cover e-invoice and e-way bill?"},
         {"t": "p", "v": "If your clients raise e-invoices, bulk generation and an e-way bill from an IRN save a lot of time."},
         {"t": "h2", "v": "5. What reports do you get?"},

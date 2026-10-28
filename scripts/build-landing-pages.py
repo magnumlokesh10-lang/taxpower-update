@@ -81,7 +81,7 @@ def faq_block(items, title='Frequently asked questions'):
     ico = '<span class="fq-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span>'
     help_ = ''.join(f'<a href="tel:+91{p}">{p}</a>' for p in dealer['phones'])
     return (f'<section class="fq fq-teal" aria-labelledby="lp-faq-title"><div class="fq-head">{ico}<span class="fq-eyebrow">Questions</span>'
-            f'<h2 id="lp-faq-title">{esc(title)}</h2><p>Quick answers to what people ask first.</p></div>'
+            f'<h2 id="lp-faq-title">{esc(title)}</h2><p>Answers to questions that customers ask most often.</p></div>'
             f'<div class="fq-list">{rows}<div class="fq-help"><span>Still have a question? Talk to us directly.</span>{help_}</div></div></section>')
 
 
@@ -159,7 +159,7 @@ def city_page(c):
         + faq_block(faqs, f'TaxPower in {n}: common questions') +
         f'<section class="lp-panel" aria-labelledby="lp-near-title"><h2 id="lp-near-title">Also serving nearby Vidarbha districts</h2>'
         + chips(nearby + [('All Vidarbha', hub['slug'])]) +
-        '<p style="margin-top:16px">Outside Vidarbha? We sell TaxPower across India. Send an enquiry from any state and we will arrange an online demo.</p></section>'
+        '<p style="margin-top:16px">We also sell TaxPower to customers outside Vidarbha. Send an enquiry from any state and we will arrange an online demonstration.</p></section>'
         + contact_block())
     meta = {'title': f'GST & TDS Software in {n} | TaxPower Dealer, Vidarbha',
             'description': f'Buy TaxPower GST, Billing and TDS software in {n}, Vidarbha from authorized dealer Siddharth Enterprises. Marathi, Hindi and English support, online demo, free trial.'}
@@ -249,12 +249,12 @@ def gst_features_page():
     body = (breadcrumb([('Home', 'home'), ('TaxPower GST', 'taxpowergst'), ('All features', None)]) +
             '<section class="gx-hero"><div><span class="lp-kicker">TaxPower GST · feature guide</span>'
             '<h1>TaxPower GST features, grouped by the work you do</h1>'
-            '<p class="lp-lead">From the first GSTR-1 entry to the last notice reply: see what the software handles for each task, then ask for a demo of the parts you care about.</p>'
+            '<p class="lp-lead">The features of TaxPower GST, listed by the type of work. You can ask for a demonstration of the parts that are relevant to you.</p>'
             + cta('TaxPower GST Return', 'Book a free demo') + '</div>'
             '<ul class="gx-cats" aria-label="Feature groups">' + cards + '</ul></section>'
             '<div class="gx-layout"><aside class="gx-side" aria-label="On this page"><p>On this page</p><ul>' + side + '</ul></aside><div class="gx-main">' + blocks + '</div></div>'
             + faq_block(faqs, 'Questions about TaxPower GST') +
-            '<section class="lp-panel" aria-labelledby="gf-more-t"><h2 id="gf-more-t">Keep exploring</h2>' +
+            '<section class="lp-panel" aria-labelledby="gf-more-t"><h2 id="gf-more-t">Related pages</h2>' +
             chips([('TaxPower GST overview', 'taxpowergst'), ('GST return filing software', 'gst-return-filing-software'), ('GSTR-2B ITC reconciliation', 'gstr-2b-itc-reconciliation-software'),
                    ('E-invoice & e-way bill', 'e-invoice-e-way-bill-software'), ('GST billing', 'gst-billing-software'), ('Plans & pricing', 'pricing')]) + '</section>'
             + contact_block())
@@ -290,12 +290,12 @@ def tds_features_page():
     body = (breadcrumb([('Home', 'home'), ('TaxPower TDS', 'taxpowertds'), ('All features', None)]) +
             '<section class="gx-hero"><div><span class="lp-kicker">TaxPower TDS · feature guide</span>'
             '<h1>TaxPower TDS features, grouped by the work you do</h1>'
-            '<p class="lp-lead">From the first deduction entry to the last certificate you email: see what the software handles at each step, then ask for a demo of the parts you care about.</p>'
+            '<p class="lp-lead">The features of TaxPower TDS, listed by the type of work. You can ask for a demonstration of the parts that are relevant to you.</p>'
             + cta('TaxPower TDS', 'Book a free demo') + '</div>'
             '<ul class="gx-cats" aria-label="Feature groups">' + cards + '</ul></section>'
             '<div class="gx-layout"><aside class="gx-side" aria-label="On this page"><p>On this page</p><ul>' + side + '</ul></aside><div class="gx-main">' + blocks + '</div></div>'
             + faq_block(faqs, 'Questions about TaxPower TDS') +
-            '<section class="lp-panel" aria-labelledby="gf-more-t"><h2 id="gf-more-t">Keep exploring</h2>' +
+            '<section class="lp-panel" aria-labelledby="gf-more-t"><h2 id="gf-more-t">Related pages</h2>' +
             chips([('TaxPower TDS overview', 'taxpowertds'), ('TDS return filing software', 'tds-return-filing-software'), ('Form 16 & 16A software', 'form-16-form-16a-certificate-software'), ('GST & TDS due dates', 'gst-tds-due-dates'), ('Plans & pricing', 'pricing')]) + '</section>'
             + contact_block())
     meta = {'title': 'TaxPower TDS Features: 24Q, 26Q, 27Q, 27EQ, TRACES, Form 16 & E-filing',
@@ -308,24 +308,24 @@ def tds_features_page():
 SITEMAP_GROUPS = [
     ('Software', 'What TaxPower does', [
         ('taxpowergst', 'TaxPower GST', 'GST returns, reconciliation, e-invoice and e-way bill'), ('gst-billing', 'GST billing', 'Invoices, e-invoices and e-way bills'),
-        ('taxpowertds', 'TaxPower TDS', 'TDS and TCS returns, TRACES and Form 16'), ('taxpower-gst-features', 'All GST features', 'Feature guide grouped by the work you do'),
+        ('taxpowertds', 'TaxPower TDS', 'TDS and TCS returns, TRACES and Form 16'), ('taxpower-gst-features', 'All GST features', 'Features listed by type of work'),
         ('taxpower-tds-features', 'All TDS features', 'Feature guide for statements, challans and certificates')]),
     ('Guides', 'Software guides', [
         ('gst-return-filing-software', 'GST return filing', 'GSTR-1, 3B, 9 and more'), ('gstr-2b-itc-reconciliation-software', 'GSTR-2B ITC reconciliation', 'Match books with portal data'),
         ('e-invoice-e-way-bill-software', 'E-invoice & e-way bill', 'IRN, QR and transport documents'), ('gst-billing-software', 'GST billing software', 'Sales, purchase and payment entries'),
-        ('tds-return-filing-software', 'TDS return filing', '24Q, 26Q, 27Q and 27EQ'), ('form-16-form-16a-certificate-software', 'Form 16 & 16A software', 'Certificates ready to send')]),
+        ('tds-return-filing-software', 'TDS return filing', '24Q, 26Q, 27Q and 27EQ'), ('form-16-form-16a-certificate-software', 'Form 16 & 16A software', 'Certificates for employees and deductees')]),
     ('Plans & help', 'Prices, downloads and help', [
-        ('pricing', 'Plans & pricing', 'Choose modules and see the price'), ('downloads', 'Downloads', 'Setups and utilities'), ('free-trial', 'Free trial', 'Try before you buy'),
+        ('pricing', 'Plans & pricing', 'Select modules and view the price'), ('downloads', 'Downloads', 'Setups and utilities'), ('free-trial', 'Free trial', 'Trial of the software'),
         ('system-requirements', 'System requirements', 'What your computer needs'), ('technical-support', 'Technical support', 'For existing customers'),
-        ('support', 'Demo & support FAQs', 'Common questions answered'), ('demo-enquiry', 'Contact & enquiries', 'Demo, quotation and renewal')]),
+        ('support', 'Demo & support FAQs', 'Frequently asked questions'), ('demo-enquiry', 'Contact & enquiries', 'Demo, quotation and renewal')]),
     ('Resources', 'Learn and plan', [
         ('blog', 'All blogs', 'GST, ITC and TDS guides'), ('gst-tds-due-dates', 'Due dates calendar', 'Monthly and quarterly dates'),
-        ('blog/gstr-1-vs-gstr-3b-difference', 'GSTR-1 vs GSTR-3B', 'The difference, simply'), ('blog/gstr-2b-itc-reconciliation-checklist', 'GSTR-2B checklist', 'Steps for ITC matching'),
+        ('blog/gstr-1-vs-gstr-3b-difference', 'GSTR-1 vs GSTR-3B', 'How the two returns differ'), ('blog/gstr-2b-itc-reconciliation-checklist', 'GSTR-2B checklist', 'Steps for ITC matching'),
         ('blog/tds-return-forms-24q-26q-27q-27eq-explained', 'TDS forms explained', 'Which form for which payment'), ('blog/form-16-and-form-16a-explained', 'Form 16 & 16A explained', 'Who issues what'),
         ('blog/how-to-choose-gst-software', 'Choosing GST software', 'What to look for')]),
     ('Vidarbha', 'Dealer support near you', [('gst-tds-software-vidarbha', 'All Vidarbha', 'Sales and support across the region')] +
         [(f'gst-tds-software-{c}', c.title(), f'TaxPower in {c.title()}') for c in ['nagpur', 'amravati', 'akola', 'washim', 'buldhana', 'yavatmal', 'wardha', 'bhandara', 'gondia', 'chandrapur', 'gadchiroli']]),
-    ('Company', 'About the dealer', [('home', 'Home', 'Start here'), ('aboutus', 'About us', 'Siddharth Enterprises and Magnum Infosystem')]),
+    ('Company', 'About the dealer', [('home', 'Home', 'Main page'), ('aboutus', 'About us', 'Siddharth Enterprises and Magnum Infosystem')]),
 ]
 
 
@@ -335,7 +335,7 @@ def sitemap_page():
         cards = ''.join(f'<li><a class="sm-card" href="{s}"><b>{esc(t)}</b><span>{esc(d)}</span></a></li>' for s, t, d in items)
         blocks += f'<section class="sm-group" aria-labelledby="sm-{key.lower().replace(" ", "").replace("&", "")}"><h2 id="sm-{key.lower().replace(" ", "").replace("&", "")}">{esc(title)}</h2><ul class="sm-grid">{cards}</ul></section>'
     body = (breadcrumb([('Home', 'home'), ('Site map', None)]) +
-            '<section class="sm-hero"><span class="lp-kicker">Site map</span><h1>Every TaxPower page in one place</h1>'
+            '<section class="sm-hero"><span class="lp-kicker">Site map</span><h1>TaxPower site map</h1>'
             '<p class="lp-lead">Software, guides, plans, help, resources and local support pages from Siddharth Enterprises, the authorized TaxPower dealer in Nagpur.</p></section>'
             + blocks + contact_block())
     meta = {'title': 'TaxPower Site Map: All Software, Guides, Pricing and Support Pages',
@@ -484,14 +484,14 @@ REF_ROWS = [
 
 
 def reading_paths():
-    paths = [('For CAs and tax practices', 'Filing for many clients? Start with the GST return explainer, then the reconciliation checklist.', [('GSTR-1 vs GSTR-3B', 'blog/gstr-1-vs-gstr-3b-difference'), ('GSTR-2B checklist', 'blog/gstr-2b-itc-reconciliation-checklist')]),
-             ('For business owners', 'Choosing software for your own filing? Read what to look for before you buy.', [('Choosing GST software', 'blog/how-to-choose-gst-software'), ('Plans & pricing', 'pricing')]),
-             ('For payroll and TDS teams', 'Deducting tax? See which form fits which payment and how certificates work.', [('TDS forms explained', 'blog/tds-return-forms-24q-26q-27q-27eq-explained'), ('Form 16 & 16A', 'blog/form-16-and-form-16a-explained')])]
+    paths = [('For CAs and tax practices', 'For practices that file for many clients: the GSTR-1 and GSTR-3B explainer, followed by the reconciliation checklist.', [('GSTR-1 vs GSTR-3B', 'blog/gstr-1-vs-gstr-3b-difference'), ('GSTR-2B checklist', 'blog/gstr-2b-itc-reconciliation-checklist')]),
+             ('For business owners', 'For business owners selecting software for their own filing: what to check before buying.', [('Choosing GST software', 'blog/how-to-choose-gst-software'), ('Plans & pricing', 'pricing')]),
+             ('For payroll and TDS teams', 'For teams that deduct tax: which form applies to which payment, and how certificates are issued.', [('TDS forms explained', 'blog/tds-return-forms-24q-26q-27q-27eq-explained'), ('Form 16 & 16A', 'blog/form-16-and-form-16a-explained')])]
     cards = ''.join(f'<article class="lp-card"><h3>{esc(t)}</h3><p>{esc(d)}</p>{chips(c)}</article>' for t, d, c in paths)
     rows = ''.join(f'<tr><th scope="row">{esc(a)}</th><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a, b, c in REF_ROWS)
-    return ('<section class="lp-panel" aria-labelledby="lp-paths-title"><h2 id="lp-paths-title">Where to start reading</h2><div class="lp-grid">' + cards + '</div></section>'
+    return ('<section class="lp-panel" aria-labelledby="lp-paths-title"><h2 id="lp-paths-title">Suggested reading</h2><div class="lp-grid">' + cards + '</div></section>'
             '<section class="lp-panel" aria-labelledby="lp-ref-title"><h2 id="lp-ref-title">Quick reference: common returns and forms</h2>'
-            '<p>A one-line reminder of what each return or certificate is for. Always check the latest due dates on the calendar.</p>'
+            '<p>A short description of each return and certificate. Please check the latest due dates on the due dates calendar.</p>'
             '<div class="lp-table-wrap"><table><thead><tr><th scope="col">Return or form</th><th scope="col">What it is</th><th scope="col">How often</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
             + chips([('Due dates calendar', 'gst-tds-due-dates'), ('All GST features', 'taxpower-gst-features'), ('All TDS features', 'taxpower-tds-features')]) + '</section>')
 

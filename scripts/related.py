@@ -1,4 +1,4 @@
-"""Topic-based 'Keep exploring' chips for every page (own wording, built into each page)."""
+"""Topic-based 'Related pages' chips for every page (own wording, built into each page)."""
 L = {
  'home': 'Home', 'taxpowergst': 'TaxPower GST', 'taxpowertds': 'TaxPower TDS', 'gst-return': 'GST returns', 'gst-billing': 'GST billing',
  'pricing': 'Plans & pricing', 'downloads': 'Downloads', 'aboutus': 'About us', 'support': 'Demo & support FAQs', 'technical-support': 'Technical support',
@@ -52,5 +52,5 @@ def related_slugs(slug):
 
 def block(slug):
     chips = ''.join(f'<a href="{s}">{L[s]}</a>' for s in related_slugs(slug))
-    return (f'<section class="rel-strip" aria-label="Related pages"><div class="rel-inner"><span class="rel-kicker">Keep exploring</span>'
+    return (f'<section class="rel-strip" aria-label="Related pages"><div class="rel-inner"><span class="rel-kicker">Related pages</span>'
             f'<div class="rel-chips">{chips}</div></div></section>')

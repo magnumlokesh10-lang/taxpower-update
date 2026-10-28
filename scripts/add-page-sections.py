@@ -20,64 +20,64 @@ def go(items):
 
 P = {}
 P['pricing'] = (
- sec('price-how', 'How pricing works', 'What you pay, and when', 'A short guide before you open the plan builder.',
-     caps([('tag', 'One-time installation fee', 'The price shown for a plan is paid once, when the software is installed and set up for you.'),
-           ('shield', 'First year included', 'Support and software updates are free for the first year after purchase.'),
-           ('sync', 'Yearly renewal after that', 'From the second year an annual renewal keeps support and updates going. The builder shows it next to the price.'),
-           ('doc', 'GST is added on top', '18% GST is added to the displayed installation price, so your invoice total will be higher than the figure shown.'),
-           ('users', 'LAN access is extra', 'Need more than one computer on the same network? Optional LAN access is priced separately per additional PC.'),
-           ('list', 'Combine to save', 'Pick GST, billing and TDS together in the plan builder to see a combined price for the modules you choose.')])) +
- sec('price-who', 'Choosing an edition', 'Professional or Business?', 'Two editions, made for two kinds of users.',
-     caps([('users', 'Professional', 'For CAs, consultants and tax practices that file for many clients and want client-wise tracking.'),
-           ('pc', 'Business', 'For companies and finance teams that prepare returns for their own entities.'),
-           ('chat', 'Not sure?', 'Tell us how many GSTINs and TANs you handle and we will suggest the edition during a free demo.')], 'gm-three')) +
- go([('chat', 'gm-go-price', 'free-trial', 'Try it first', 'Start a free trial and test the software on your own data before you decide.', 'Start a free trial'),
-     ('list', 'gm-go-tds', 'taxpower-gst-features', 'Compare features', 'See what each module does, grouped by the work you do.', 'Open GST feature guide')]) +
+ sec('price-how', 'How pricing works', 'Payment terms', 'Please read these notes before you open the plan builder.',
+     caps([('tag', 'One-time installation fee', 'The price shown for a plan is paid once, at the time the software is installed.'),
+           ('shield', 'First year included', 'Support and software updates are provided free for the first year after purchase.'),
+           ('sync', 'Annual renewal', 'From the second year, an annual renewal is required to continue support and updates. The renewal amount is shown beside the price in the plan builder.'),
+           ('doc', 'GST is added on top', 'GST at 18% is charged on the displayed installation price, so the invoice total is higher than the price shown.'),
+           ('users', 'LAN access is extra', 'Use on more than one computer in the same office network is optional and is charged separately for each additional PC.'),
+           ('list', 'Combined modules', 'Select GST, billing and TDS together in the plan builder to see one price for the modules you choose.')])) +
+ sec('price-who', 'Choosing an edition', 'Professional or Business', 'Select the edition that matches how you use the software.',
+     caps([('users', 'Professional', 'Suitable for chartered accountants, tax consultants and practices that file returns for several clients and need client-wise records.'),
+           ('pc', 'Business', 'Suitable for companies and accounts teams that prepare returns for their own registrations.'),
+           ('chat', 'Need help choosing', 'Share the GSTINs and TANs you handle and we will recommend an edition during a demo.')], 'gm-three')) +
+ go([('chat', 'gm-go-price', 'free-trial', 'Free trial', 'Use the software with your own data before you decide to buy.', 'Start a free trial'),
+     ('list', 'gm-go-tds', 'taxpower-gst-features', 'Feature guide', 'Each module and its features, listed by type of work.', 'Open GST feature guide')]) +
  chips([('System requirements', 'system-requirements'), ('Free trial', 'free-trial'), ('TaxPower TDS features', 'taxpower-tds-features'), ('Contact for a quotation', 'demo-enquiry'), ('Downloads', 'downloads')]))
 
 P['aboutus'] = (
- sec('about-how', 'How we work with you', 'From first call to everyday support', 'A simple path, handled by one local team.',
-     steps([('Demo', 'See it on your work', 'We show the modules you need, using steps close to your real filing routine.'),
-            ('Install', 'Set it up properly', 'We install TaxPower, load your masters and check that returns and certificates open correctly.'),
-            ('Train', 'Teach your team', 'Short, practical sessions so staff can file and reconcile without waiting for us.'),
-            ('Support', 'Stay on call', 'Phone and remote help for installation, updates, licences and filing questions.'),
-            ('Renew', 'Keep it current', 'We remind you about yearly renewals so support and updates continue without a break.')])) +
- sec('about-why', 'Why a local dealer', 'Software from Magnum, service from Nagpur', 'What it means for you in practice.',
-     caps([('chat', 'Your language', 'We explain and support in Marathi, Hindi and English, so the whole team understands the steps.'),
-           ('pin', 'Close by', 'Our office is in Hingna MIDC, Nagpur, and we serve every district in Vidarbha as well as customers across India.'),
-           ('shield', 'Authorized dealer', 'We sell and support TaxPower as an authorized dealer of Magnum Infosystem, the company that develops it.')], 'gm-three')) +
- go([('list', 'gm-go-tds', 'taxpowergst', 'Explore TaxPower GST', 'Returns, reconciliation, e-invoice and billing in one place.', 'See TaxPower GST'),
-     ('doc', 'gm-go-price', 'taxpowertds', 'Explore TaxPower TDS', 'Statements, TRACES and certificates in one workspace.', 'See TaxPower TDS')]) +
+ sec('about-how', 'Our process', 'From the first demo to ongoing support', 'Every customer is handled by the same local team through these stages.',
+     steps([('Demo', 'Product demonstration', 'We demonstrate the modules relevant to your work, following your usual filing routine.'),
+            ('Install', 'Installation', 'We install TaxPower, load your masters and confirm that returns and certificates open correctly.'),
+            ('Train', 'Training', 'Practical sessions for your staff on filing and reconciliation.'),
+            ('Support', 'Support', 'Telephone and remote assistance for installation, updates, licences and filing queries.'),
+            ('Renew', 'Renewal', 'We inform you before the annual renewal date so that support and updates continue.')])) +
+ sec('about-why', 'Local dealer', 'Software by Magnum, service from Nagpur', 'What our customers receive from a dealer based in Nagpur.',
+     caps([('chat', 'Language', 'Demonstration, training and support are available in Marathi, Hindi and English.'),
+           ('pin', 'Location', 'Our office is in Hingna MIDC, Nagpur. We serve Vidarbha and customers across India.'),
+           ('shield', 'Authorized dealer', 'We sell and support TaxPower as an authorized dealer of Magnum Infosystem, the developer of the software.')], 'gm-three')) +
+ go([('list', 'gm-go-tds', 'taxpowergst', 'Explore TaxPower GST', 'Return filing, reconciliation, e-invoicing and billing.', 'See TaxPower GST'),
+     ('doc', 'gm-go-price', 'taxpowertds', 'Explore TaxPower TDS', 'TDS statements, TRACES activities and certificates.', 'See TaxPower TDS')]) +
  chips([('Software in Vidarbha', 'gst-tds-software-vidarbha'), ('Nagpur', 'gst-tds-software-nagpur'), ('Technical support', 'technical-support'), ('Contact & enquiries', 'demo-enquiry'), ('Blog', 'blog')]))
 
 P['downloads'] = (
- sec('dl-before', 'Before you install', 'A short checklist for a smooth setup', 'Five minutes here saves time later.',
-     steps([('Check', 'Your computer', 'Confirm Windows version, memory and disk space against the system requirements page.'),
-            ('Backup', 'Existing data', 'If you are updating, copy your current company data to a safe place first.'),
-            ('Download', 'The right setup', 'Pick the GST or TDS setup you have a licence or trial for from the list above.'),
-            ('Install', 'Supporting items', 'The database and runtime packages listed here are needed by some versions. The installer tells you which.'),
-            ('Ask', 'If anything stops', 'Keep the error message and your licence ID ready and call technical support.')])) +
- sec('dl-what', 'What is what', 'Why the extra downloads are here', 'Short notes on the helper packages so you do not install blindly.',
-     caps([('pc', 'Database packages', 'SQL Server Express and PostgreSQL store your company data on the computer.'),
-           ('doc', 'Runtime packages', '.NET and Java runtimes let TaxPower and some utilities run on Windows.'),
-           ('shield', 'GST Signer', 'A small utility used with a digital signature certificate when signing returns.')], 'gm-three')) +
- go([('pc', 'gm-go-price', 'system-requirements', 'Will it run on my PC?', 'Windows, memory, disk, internet and DSC details.', 'Check requirements'),
-     ('phone', 'gm-go-tds', 'technical-support', 'Stuck during install?', 'Reach our technical support team by phone or email.', 'Get technical help')]) +
+ sec('dl-before', 'Before installation', 'Installation checklist', 'Please go through these points before you install.',
+     steps([('Check', 'System', 'Compare your Windows version, memory and disk space with the system requirements page.'),
+            ('Backup', 'Existing data', 'When updating, first copy your current company data to a safe location.'),
+            ('Download', 'Setup file', 'Choose the GST or TDS setup for which you hold a licence or trial, from the list above.'),
+            ('Install', 'Supporting packages', 'Some versions need the database and runtime packages listed here. The installer indicates which are required.'),
+            ('Contact', 'If installation stops', 'Note the error message and your licence ID and contact technical support.')])) +
+ sec('dl-what', 'Supporting downloads', 'Purpose of the additional downloads', 'A brief note on each supporting package listed on this page.',
+     caps([('pc', 'Database packages', 'SQL Server Express and PostgreSQL are used to store company data on the computer.'),
+           ('doc', 'Runtime packages', '.NET and Java runtimes are required by TaxPower and some of its utilities on Windows.'),
+           ('shield', 'GST Signer', 'A utility used with a digital signature certificate for signing returns.')], 'gm-three')) +
+ go([('pc', 'gm-go-price', 'system-requirements', 'System requirements', 'Windows version, memory, disk space, internet and DSC details.', 'Check requirements'),
+     ('phone', 'gm-go-tds', 'technical-support', 'Technical support', 'Contact our technical support team by phone or email.', 'Contact technical support')]) +
  chips([('Free trial', 'free-trial'), ('Plans & pricing', 'pricing'), ('TaxPower GST', 'taxpowergst'), ('TaxPower TDS', 'taxpowertds')]))
 
 P['support'] = (
- sec('sup-which', 'Which team to call', 'Pick the right door', 'It gets you an answer faster.',
-     caps([('chat', 'Demo, quotation, renewal', 'Use the enquiry form or call the sales line for a demo, a price or to renew a licence.'),
-           ('phone', 'Technical problem', 'For installation, updates, licence or software errors, use technical support.'),
-           ('doc', 'Learning the software', 'Ask for a training session, or read the feature guides and blog explainers first.')], 'gm-three')) +
- sec('sup-ready', 'Before you call', 'Keep these ready', 'A few details help us fix things in one call.',
-     steps([('Licence', 'Customer or licence ID', 'It tells us which edition and modules you have.'),
-            ('Screen', 'Error message', 'Note the text or take a screenshot of the message.'),
-            ('Task', 'What you were doing', 'Filing, importing, updating or printing? The step matters.'),
-            ('Version', 'Software version', 'It is shown inside the software. Update first if you are on an old one.'),
-            ('Time', 'Remote help', 'For remote help keep the computer on, online and free for a short while.')])) +
- go([('list', 'gm-go-price', 'taxpower-gst-features', 'Look up a feature', 'See what TaxPower GST can do for each task.', 'GST feature guide'),
-     ('list', 'gm-go-tds', 'taxpower-tds-features', 'Look up a TDS feature', 'Statements, TRACES, challans and certificates.', 'TDS feature guide')]) +
+ sec('sup-which', 'Who to contact', 'Choose the right contact', 'Contacting the correct team gets your query resolved sooner.',
+     caps([('chat', 'Demo, quotation and renewal', 'Use the enquiry form or call us for a demo, a price quotation or a licence renewal.'),
+           ('phone', 'Technical issues', 'For installation, updates, licence problems or software errors, contact technical support.'),
+           ('doc', 'Training and guidance', 'Request a training session, or refer to the feature guides and blog articles.')], 'gm-three')) +
+ sec('sup-ready', 'Before you contact us', 'Details to keep ready', 'These details help us resolve your query faster.',
+     steps([('Licence', 'Customer or licence ID', 'It shows the edition and modules you have.'),
+            ('Screen', 'Error message', 'Note the text of the message or take a screenshot.'),
+            ('Task', 'The task you were doing', 'For example filing, importing data, updating or printing.'),
+            ('Version', 'Software version', 'The version is shown inside the software. If it is an old version, update it first.'),
+            ('Time', 'Remote assistance', 'For remote assistance, keep the computer switched on, connected to the internet and free.')])) +
+ go([('list', 'gm-go-price', 'taxpower-gst-features', 'TaxPower GST features', 'Features of TaxPower GST, listed by task.', 'GST feature guide'),
+     ('list', 'gm-go-tds', 'taxpower-tds-features', 'TaxPower TDS features', 'Statements, TRACES, challans and certificates.', 'TDS feature guide')]) +
  chips([('Nagpur', 'gst-tds-software-nagpur'), ('Amravati', 'gst-tds-software-amravati'), ('Akola', 'gst-tds-software-akola'), ('All Vidarbha', 'gst-tds-software-vidarbha'), ('System requirements', 'system-requirements'), ('Downloads', 'downloads')]))
 
 MARK = '<!--tp-extra-sections-->'
