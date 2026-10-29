@@ -364,7 +364,11 @@ def render(slug, body, meta, trail, extra):
 <link rel="canonical" href="{canonical}">
 <meta name="description" content="{d}">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="icon" type="image/x-icon" href="asset/swt_icon/taxpower_icon.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="48x48" href="asset/swt_icon/taxpower_icon.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="asset/swt_icon/favicon-96.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="asset/swt_icon/favicon-192.png">
+  <link rel="apple-touch-icon" href="asset/swt_icon/apple-touch-icon.png">
 <meta property="og:title" content="{t}">
 <meta property="og:description" content="{d}">
 <meta property="og:url" content="{canonical}">
