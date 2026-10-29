@@ -243,3 +243,6 @@
 @keyframes moreUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes moreFade{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.more-sheet,.more-backdrop{animation:none!important}.tabbar .tab svg{transition:none}}
+
+/* Footer registered mark: same style as the header one, in blue */
+.footer-logo-text sup{position:relative;font-family:'Plus Jakarta Sans',sans-serif!important;font-size:20px;font-weight:600;color:#00b4d8!important;vertical-align:super;margin-left:2px}
