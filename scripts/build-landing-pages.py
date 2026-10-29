@@ -659,3 +659,5 @@ for slug, body, meta, faqs, trail, extra in pages:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text('\n'.join(line.rstrip() for line in out.splitlines()) + '\n')
 print('Built', len(pages), 'standalone landing pages.')
+import faq_schema
+faq_schema.run()
