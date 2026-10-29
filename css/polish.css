@@ -253,3 +253,10 @@
 /* Siddharth logo registered mark: smaller, letter optically centred in the circle */
 .se-reg{width:12px!important;height:12px!important;font-size:7.5px!important;line-height:1!important;border-width:1.2px!important;display:flex!important;align-items:center;justify-content:center;padding:1px 0 0 0;text-indent:0}
 .footer-company-logo .se-reg{width:10px!important;height:10px!important;font-size:6px!important;border-width:1px!important;padding:.5px 0 0 0}
+
+/* Software tab: TaxPower logo as the icon, opens a sheet with GST and TDS */
+@media(max-width:760px){
+  .tabbar .tab-ico img{display:block;width:26px;height:26px;object-fit:contain}
+  .tabbar .tab-soft.is-active,.tabbar .tab-soft[aria-expanded=true]{color:#fff;font-weight:800}
+  .tabbar .tab-soft.is-active .tab-ico,.tabbar .tab-soft[aria-expanded=true] .tab-ico{background:#fff}
+}
