@@ -62,7 +62,7 @@ def shared(xpath_root, source_file, selector):
 
 
 RESOURCE_SLUGS = set()
-NAV = shared(None, 'nav.html', '//header | //button[@id="backToTop"]')
+NAV = shared(None, 'nav.html', '//header | //nav[@class="tabbar"] | //div[@id="moreBackdrop"] | //div[@id="moreSheet"] | //button[@id="backToTop"]')
 FOOTER = shared(None, 'footer.html', None)
 _RES_TAB = 'class="nav-item nav-dropdown-toggle" data-nav-page="resources.html"'
 assert _RES_TAB in NAV

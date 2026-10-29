@@ -46,3 +46,20 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',roll);else roll();
 })();
+
+/* Phone bottom bar: mark the current page and open or close the More sheet. */
+(function(){
+  var bar=document.querySelector('.tabbar'),more=document.getElementById('tabMore'),sheet=document.getElementById('moreSheet'),back=document.getElementById('moreBackdrop');
+  if(!bar||!more||!sheet||!back)return;
+  var seg=location.pathname.replace(/\.html$/,'').replace(/\/index$/,'').replace(/\/+$/,'').split('/').pop();
+  if(!seg||seg==='taxpower-update')seg='home';
+  function mark(list,cls,aria){var hit=false;list.forEach(function(a){if((a.getAttribute('data-match')||'').split(' ').indexOf(seg)>-1){a.classList.add(cls);if(aria)a.setAttribute('aria-current','page');hit=true}});return hit}
+  mark([].slice.call(bar.querySelectorAll('.tab[data-match]')),'is-active',true);
+  if(mark([].slice.call(sheet.querySelectorAll('.more-row[data-match]')),'is-active',true))more.classList.add('is-active');
+  function set(open){sheet.hidden=!open;back.hidden=!open;more.setAttribute('aria-expanded',String(open));document.body.classList.toggle('more-open',open);if(open){var f=sheet.querySelector('.more-row:not([hidden])');if(f)f.focus({preventScroll:true})}}
+  more.addEventListener('click',function(){set(sheet.hidden)});
+  back.addEventListener('click',function(){set(false)});
+  sheet.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a'))set(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!sheet.hidden){set(false);more.focus()}});
+  window.addEventListener('resize',function(){if(window.innerWidth>760&&!sheet.hidden)set(false)});
+})();

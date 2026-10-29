@@ -41,3 +41,11 @@ html[data-theme=dark] .tp-navy .tp-num{color:#ffb866!important}html[data-theme=d
 html[data-theme=dark] .tp-orange .tp-num,html[data-theme=dark] .tp-orange .tp-lab,html[data-theme=dark] .tp-orange .tp-sub{color:#fff!important}
 html[data-theme=dark] .tp-orange{background:repeating-linear-gradient(135deg,#ffffff12 0 8px,transparent 8px 16px),linear-gradient(145deg,#ff9f4a,#e9731a)!important;border:0!important}
 html[data-theme=dark] .tp-dash .tp-num{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#58d9c1!important}
+
+html[data-theme=dark] .more-sheet{background:#10202b!important;border-color:#27404f!important}
+html[data-theme=dark] .more-row{color:#e6f1f6!important}
+html[data-theme=dark] .more-row.is-active{background:#17475a!important}
+html[data-theme=dark] .more-ico{background:#1a2e3b!important;color:#8fd6e6!important}
+html[data-theme=dark] .more-text small,html[data-theme=dark] .more-title,html[data-theme=dark] .more-chev{color:#8fa6b4!important}
+html[data-theme=dark] .tabbar{background:#0a1a24!important;border:1px solid #27404f}
+html[data-theme=dark] .more-backdrop{background:#000000a6!important}
