@@ -260,3 +260,11 @@
   .tabbar .tab-soft.is-active,.tabbar .tab-soft[aria-expanded=true]{color:#fff;font-weight:800}
   .tabbar .tab-soft.is-active .tab-ico,.tabbar .tab-soft[aria-expanded=true] .tab-ico{background:#fff}
 }
+
+/* Pricing page on phones: keep Quick Enquiry above the floating price bar, not on top of it */
+@media(max-width:760px){
+  .tp-mobile-price{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+  body:has(.tp-plan-in-view) #quickEnquiryRoot .quick-enquiry-floating{bottom:calc(176px + env(safe-area-inset-bottom,0px))}
+  body:has(.tp-plan-in-view) #quickEnquiryRoot .quick-enquiry-prompt{bottom:calc(240px + env(safe-area-inset-bottom,0px))}
+  body:has(.tp-plan-in-view) .back-to-top{bottom:calc(240px + env(safe-area-inset-bottom,0px))}
+}
