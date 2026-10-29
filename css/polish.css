@@ -249,3 +249,7 @@
 
 /* Smaller registered mark next to the logo icon (desktop) */
 @media(min-width:761px){.sup-for-logo{font-size:15px;top:-6px;right:-8px}}
+
+/* Siddharth logo registered mark: smaller, letter optically centred in the circle */
+.se-reg{width:12px!important;height:12px!important;font-size:7.5px!important;line-height:1!important;border-width:1.2px!important;display:flex!important;align-items:center;justify-content:center;padding:1px 0 0 0;text-indent:0}
+.footer-company-logo .se-reg{width:10px!important;height:10px!important;font-size:6px!important;border-width:1px!important;padding:.5px 0 0 0}
