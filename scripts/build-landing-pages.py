@@ -136,7 +136,7 @@ def city_page(c):
     towns = ', '.join(c['towns'][:-1]) + ' and ' + c['towns'][-1]
     faqs = [
         (c['faq_q'], c['faq_a']),
-        (f'Who provides TaxPower demo and support in {n}?', f'Siddharth Enterprises is authorized by Magnum Infosystem, the developer of TaxPower, to sell TaxPower GST, Billing and TDS software across Vidarbha, including {n} district ({towns}).'),
+        (f'Who provides TaxPower demo and support in {n}?', ('Nagpur customers are served directly by Magnum Infosystem, the developer of TaxPower. An enquiry sent on this website is passed to the Magnum Infosystem team.' if n=='Nagpur' else '') or f'Siddharth Enterprises is authorized by Magnum Infosystem, the developer of TaxPower, to sell TaxPower GST, Billing and TDS software across Vidarbha, including {n} district ({towns}).'),
         (f'Can I try TaxPower before buying in {n}?', 'Yes. A free trial is available. Book an online demo, tell us the work you do (GST returns, billing or TDS) and ask for the trial. Prices for installation and renewal are on the pricing page.'),
     ]
     body = (
