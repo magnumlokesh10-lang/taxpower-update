@@ -176,12 +176,10 @@ function initTaxPowerSite() {
   const pauseBtn = document.getElementById('sliderPauseBtn');
   const sliderViewport = document.querySelector('.slider-viewport');
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
   const autoSlideDuration = 7000;
   let activeIndex = 0;
   let isUserPaused = reducedMotionQuery.matches;
   let heroVisible = true;
-  let hoverPaused = false;
   let focusPaused = false;
   let dragging = false;
   let timer = null;
@@ -211,6 +209,10 @@ function initTaxPowerSite() {
 
   // Previous / next arrows (shown on hover-capable screens by CSS).
   if (sliderViewport && totalSlides > 1) {
+    const shell = document.createElement('div');
+    shell.className = 'slider-shell';
+    sliderViewport.parentNode.insertBefore(shell, sliderViewport);
+    shell.appendChild(sliderViewport);
     ['prev', 'next'].forEach((dir) => {
       const arrow = document.createElement('button');
       arrow.type = 'button';
@@ -218,12 +220,12 @@ function initTaxPowerSite() {
       arrow.setAttribute('aria-label', dir === 'prev' ? 'Previous slide' : 'Next slide');
       arrow.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir === 'prev' ? 'm15 5-7 7 7 7' : 'm9 5 7 7-7 7'}"/></svg>`;
       arrow.addEventListener('click', () => goTo(activeIndex + (dir === 'prev' ? -1 : 1)));
-      sliderViewport.appendChild(arrow);
+      shell.appendChild(arrow);
     });
   }
 
   const shouldRun = () => totalSlides > 1 && !isUserPaused && !reducedMotionQuery.matches && !document.hidden &&
-    heroVisible && !hoverPaused && !focusPaused && !dragging;
+    heroVisible && !focusPaused && !dragging;
 
   // One timer that remembers how much of the slide time is left, so pause and resume stay in step with the dot progress bar.
   function clearTimer() {
@@ -278,10 +280,8 @@ function initTaxPowerSite() {
     sync();
   }
 
-  // Pause while the pointer is over the banner (mouse only) or keyboard focus is inside it.
+  // Pause while keyboard focus is inside the banner.
   if (sliderViewport) {
-    sliderViewport.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && hoverQuery.matches) { hoverPaused = true; sync(); } });
-    sliderViewport.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hoverPaused = false; sync(); } });
     sliderViewport.addEventListener('focusin', (e) => { if (e.target.matches && e.target.matches(':focus-visible')) { focusPaused = true; sync(); } });
     sliderViewport.addEventListener('focusout', (e) => { if (!sliderViewport.contains(e.relatedTarget)) { focusPaused = false; sync(); } });
     sliderViewport.addEventListener('keydown', (e) => {
