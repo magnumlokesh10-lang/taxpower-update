@@ -182,9 +182,6 @@ function initTaxPowerSite() {
   let heroVisible = true;
   let focusPaused = false;
   let dragging = false;
-  let timer = null;
-  let remaining = autoSlideDuration;
-  let startedAt = 0;
 
   // The track is [copy of last][1][2][3][copy of first] so that 3 -> 1 keeps moving forward; the copies are swapped for the real slide once the move ends.
   let cloneFirst = null;
@@ -263,24 +260,22 @@ function initTaxPowerSite() {
   const shouldRun = () => totalSlides > 1 && !isUserPaused && !reducedMotionQuery.matches && !document.hidden &&
     heroVisible && !focusPaused && !dragging;
 
-  // One timer that remembers how much of the slide time is left, so pause and resume stay in step with the dot progress bar.
-  function clearTimer() {
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-      remaining = Math.max(400, remaining - (performance.now() - startedAt));
-    }
-  }
+  // The dot's progress bar is the clock: when it finishes, the next slide starts. Bar and slide change can no longer drift apart.
   function sync() {
-    clearTimer();
     const run = shouldRun();
     sliderViewport?.classList.toggle('is-autoplay-paused', !run);
     sliderTrack?.setAttribute('aria-live', run ? 'off' : 'polite');
-    if (run) {
-      startedAt = performance.now();
-      timer = setTimeout(() => { timer = null; remaining = autoSlideDuration; step(1); }, remaining);
-    }
   }
+  function restartProgress() {
+    const dot = dotsList[activeIndex];
+    if (!dot) return;
+    dot.classList.remove('active-dot');
+    void dot.offsetWidth;
+    dot.classList.add('active-dot');
+  }
+  dotsContainer?.addEventListener('animationend', (e) => {
+    if (e.animationName === 'slider-progress' && e.target.classList.contains('active-dot') && shouldRun()) step(1);
+  });
 
   function restartEntrance(slide) {
     if (!slide || reducedMotionQuery.matches) return;
@@ -304,10 +299,9 @@ function initTaxPowerSite() {
   }
 
   function moveTo(target, p, entering) {
-    if (timer) { clearTimeout(timer); timer = null; }
-    remaining = autoSlideDuration;
     activeIndex = target;
     render();
+    restartProgress();
     restartEntrance(entering);
     place(p, true);
     if (reducedMotionQuery.matches) snap(); else setTimeout(snap, 1100);
@@ -325,13 +319,8 @@ function initTaxPowerSite() {
   }
   function jump(index) {
     snap();
-    if (index === activeIndex) { // same dot: restart its progress bar
-      if (timer) { clearTimeout(timer); timer = null; }
-      remaining = autoSlideDuration;
-      const dot = dotsList[activeIndex];
-      if (dot) { dot.classList.remove('active-dot'); void dot.offsetWidth; dot.classList.add('active-dot'); }
-      sync();
-    } else moveTo(index, index + base, slides[index]);
+    if (index === activeIndex) { restartProgress(); sync(); }
+    else moveTo(index, index + base, slides[index]);
   }
 
   // Pause while keyboard focus is inside the banner.
@@ -380,7 +369,7 @@ function initTaxPowerSite() {
       sliderViewport.addEventListener('click', stop, { capture: true, once: true });
       setTimeout(() => sliderViewport.removeEventListener('click', stop, { capture: true }), 60);
       if (Math.abs(dx) > w * 0.18 || (speed > 0.5 && Math.abs(dx) > 50)) step(dx < 0 ? 1 : -1);
-      else { place(pos, true); remaining = Math.max(remaining, 1500); sync(); }
+      else { place(pos, true); sync(); }
     };
     sliderViewport.addEventListener('pointerup', end);
     sliderViewport.addEventListener('pointercancel', end);

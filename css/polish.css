@@ -188,11 +188,11 @@
 .slider-viewport{min-width:0;max-width:100%;contain:layout paint}
 .slider-arrow{position:absolute;top:50%;z-index:3;width:42px;height:42px;margin-top:-21px;border:1px solid #d6e3e8;border-radius:50%;background:#fff;color:#0f3a4f;display:none;place-items:center;cursor:pointer;box-shadow:0 8px 22px #0f3a4f26;transition:transform .2s,background .2s,box-shadow .2s}
 .slider-arrow svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.slider-arrow-prev{left:-21px}.slider-arrow-next{right:-21px}
+.slider-arrow-prev{left:-54px}.slider-arrow-next{right:-54px}
 .slider-arrow:hover{transform:scale(1.08);box-shadow:0 10px 26px #0f3a4f33}
 .slider-arrow:focus-visible{outline:3px solid #00b4d8;outline-offset:2px}
 @media(hover:hover) and (pointer:fine) and (min-width:900px){
- .slider-shell{margin-inline:26px}
+ .slider-shell{margin-inline:64px}
  .slider-arrow{display:grid}
 }
 .slider-pause-button{width:30px;height:30px}
