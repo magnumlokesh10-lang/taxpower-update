@@ -30,7 +30,14 @@ html[data-theme=dark] .lp-contact .lpc-btn{background:#fff!important;color:#0b3f
 html[data-theme=dark] .lp-contact .lpc-row i{background:#fff!important;color:#087ca6!important}
 html[data-theme=dark] .lp-contact .lpc-eyebrow{color:#bfeaf6!important}
 html[data-theme=dark] .footer-refined .footer-company-logo{background:#fff!important}
-html[data-theme=dark] .tp-stat{background:#0f2538!important;border-color:#23405a!important;border-top-color:var(--a)!important;box-shadow:0 12px 30px #0006!important}
-html[data-theme=dark] .tp-lab{color:#e6eef3!important}
-html[data-theme=dark] .tp-sub{color:#9fb2c1!important}
-html[data-theme=dark] .tp-num{background:linear-gradient(120deg,var(--b),var(--a))!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+html[data-theme=dark] .tp-lilac{background:linear-gradient(150deg,#1b1f4a,#241b52)!important;border-color:#3b3478!important}
+html[data-theme=dark] .tp-lilac .tp-num,html[data-theme=dark] .tp-lilac .tp-lab{color:#c7b8ff!important}html[data-theme=dark] .tp-lilac .tp-sub{color:#b9afe6!important}
+html[data-theme=dark] .tp-dash{background:#0f2538!important;border-color:#2d7f74!important}
+html[data-theme=dark] .tp-dash .tp-lab{color:#e6eef3!important}html[data-theme=dark] .tp-dash .tp-sub{color:#9fb2c1!important}
+html[data-theme=dark] .tp-mint{background:linear-gradient(160deg,#112b42,#0d2033)!important;border-color:#23405a!important}
+html[data-theme=dark] .tp-mint .tp-num{color:#4fd1b6!important}html[data-theme=dark] .tp-mint .tp-lab{color:#f4efe6!important}html[data-theme=dark] .tp-mint .tp-sub{color:#9fb2c1!important}
+html[data-theme=dark] .tp-navy{background:radial-gradient(circle at 85% 20%,#ffb86626,transparent 45%),linear-gradient(155deg,#16405c,#0e2c40)!important;border-color:#2b5775!important}
+html[data-theme=dark] .tp-navy .tp-num{color:#ffb866!important}html[data-theme=dark] .tp-navy .tp-lab{color:#fff!important}html[data-theme=dark] .tp-navy .tp-sub{color:#c4d6e0!important}
+html[data-theme=dark] .tp-orange .tp-num,html[data-theme=dark] .tp-orange .tp-lab,html[data-theme=dark] .tp-orange .tp-sub{color:#fff!important}
+html[data-theme=dark] .tp-orange{background:repeating-linear-gradient(135deg,#ffffff12 0 8px,transparent 8px 16px),linear-gradient(145deg,#ff9f4a,#e9731a)!important;border:0!important}
+html[data-theme=dark] .tp-dash .tp-num{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#58d9c1!important}
