@@ -168,8 +168,7 @@ function initTaxPowerSite() {
     });
   }
 
-  // module 01: accessible slider management
-  let activeIndex = 0;
+  // module 01: banner slider (autoplay with pause/resume, swipe, arrows, keyboard)
   const sliderTrack = document.getElementById('sliderTrack');
   const slides = Array.from(document.querySelectorAll('.hero-slide-item'));
   const totalSlides = slides.length;
@@ -177,114 +176,193 @@ function initTaxPowerSite() {
   const pauseBtn = document.getElementById('sliderPauseBtn');
   const sliderViewport = document.querySelector('.slider-viewport');
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
   const autoSlideDuration = 7000;
+  let activeIndex = 0;
   let isUserPaused = reducedMotionQuery.matches;
+  let heroVisible = true;
+  let hoverPaused = false;
+  let focusPaused = false;
+  let dragging = false;
+  let timer = null;
+  let remaining = autoSlideDuration;
+  let startedAt = 0;
 
   if (pauseBtn) {
+    pauseBtn.setAttribute('aria-pressed', String(isUserPaused));
     pauseBtn.setAttribute('aria-label', isUserPaused ? 'Resume auto-rotation' : 'Pause auto-rotation');
     pauseBtn.classList.toggle('is-paused', isUserPaused);
   }
 
-  // dynamic pagination dots generation dynamically
+  const dotsList = [];
   if (dotsContainer) {
     for (let i = 0; i < totalSlides; i++) {
-      const dotElement = document.createElement('button');
-      dotElement.type = 'button';
-      dotElement.classList.add('dot');
-      dotElement.style.setProperty('--progress-duration', `${autoSlideDuration}ms`);
-      dotElement.setAttribute('aria-label', `Go to slide ${i + 1}`);
-      dotElement.setAttribute('aria-current', i === 0 ? 'true' : 'false');
-      if (i === 0) dotElement.classList.add('active-dot');
-      dotElement.addEventListener('click', () => jumpToSlide(i));
-      dotsContainer.appendChild(dotElement);
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'dot' + (i === 0 ? ' active-dot' : '');
+      dot.style.setProperty('--progress-duration', `${autoSlideDuration}ms`);
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      dot.setAttribute('aria-current', i === 0 ? 'true' : 'false');
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+      dotsList.push(dot);
     }
   }
 
-  const dotsList = Array.from(document.querySelectorAll('.dot'));
-  let autoSlideTimer = null;
-  let heroVisible = true;
+  // Previous / next arrows (shown on hover-capable screens by CSS).
+  if (sliderViewport && totalSlides > 1) {
+    ['prev', 'next'].forEach((dir) => {
+      const arrow = document.createElement('button');
+      arrow.type = 'button';
+      arrow.className = `slider-arrow slider-arrow-${dir}`;
+      arrow.setAttribute('aria-label', dir === 'prev' ? 'Previous slide' : 'Next slide');
+      arrow.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir === 'prev' ? 'm15 5-7 7 7 7' : 'm9 5 7 7-7 7'}"/></svg>`;
+      arrow.addEventListener('click', () => goTo(activeIndex + (dir === 'prev' ? -1 : 1)));
+      sliderViewport.appendChild(arrow);
+    });
+  }
 
-  // Auto slide run karne ka helper function
-  function startAutoSlide() {
-    if (totalSlides > 1 && !autoSlideTimer && !isUserPaused && !reducedMotionQuery.matches && !document.hidden && heroVisible) {
-      sliderViewport?.classList.remove('is-autoplay-paused');
-      autoSlideTimer = setInterval(() => changeSlide(1), autoSlideDuration);
+  const shouldRun = () => totalSlides > 1 && !isUserPaused && !reducedMotionQuery.matches && !document.hidden &&
+    heroVisible && !hoverPaused && !focusPaused && !dragging;
+
+  // One timer that remembers how much of the slide time is left, so pause and resume stay in step with the dot progress bar.
+  function clearTimer() {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+      remaining = Math.max(400, remaining - (performance.now() - startedAt));
+    }
+  }
+  function sync() {
+    clearTimer();
+    const run = shouldRun();
+    sliderViewport?.classList.toggle('is-autoplay-paused', !run);
+    sliderTrack?.setAttribute('aria-live', run ? 'off' : 'polite');
+    if (run) {
+      startedAt = performance.now();
+      timer = setTimeout(() => { timer = null; remaining = autoSlideDuration; goTo(activeIndex + 1, true); }, remaining);
     }
   }
 
-  // Auto slide pause karne ka helper function
-  function stopAutoSlide() {
-    if (autoSlideTimer) {
-      clearInterval(autoSlideTimer);
-      autoSlideTimer = null;
-    }
-    sliderViewport?.classList.add('is-autoplay-paused');
-  }
-
-  // function to process slide layout translate recalculations
-  function updateSliderView() {
-    if (!sliderTrack) return;
-    sliderTrack.style.transform = `translateX(-${activeIndex * 100}%)`;
-
+  function render(withEntrance) {
+    if (sliderTrack) sliderTrack.style.transform = `translate3d(-${activeIndex * 100}%,0,0)`;
     dotsList.forEach((dot, idx) => {
-      dot.classList.remove('active-dot');
-      dot.setAttribute('aria-current', String(idx === activeIndex));
-      if (idx === activeIndex) dot.classList.add('active-dot');
+      const on = idx === activeIndex;
+      dot.classList.toggle('active-dot', on);
+      dot.setAttribute('aria-current', String(on));
     });
-
     slides.forEach((slide, idx) => {
-      const isActive = idx === activeIndex;
-      slide.setAttribute('aria-hidden', String(!isActive));
-      slide.toggleAttribute('inert', !isActive);
+      const on = idx === activeIndex;
+      slide.setAttribute('aria-hidden', String(!on));
+      slide.toggleAttribute('inert', !on);
+      slide.classList.toggle('is-current', on);
+      if (on && withEntrance && !reducedMotionQuery.matches) {
+        slide.classList.remove('slide-enter');
+        void slide.offsetWidth;
+        slide.classList.add('slide-enter');
+      }
     });
-
   }
 
-  // function to advance slide increments via control parameters
-  function changeSlide(direction) {
-    stopAutoSlide();
-    activeIndex = (activeIndex + direction + totalSlides) % totalSlides;
-    updateSliderView();
-    startAutoSlide();
+  function goTo(index, fromTimer) {
+    const next = (index + totalSlides) % totalSlides;
+    const changed = next !== activeIndex;
+    activeIndex = next;
+    if (timer) { clearTimeout(timer); timer = null; }
+    remaining = autoSlideDuration;
+    if (changed) render(true);
+    else if (!fromTimer) { // same dot clicked: restart its progress bar
+      const dot = dotsList[activeIndex];
+      if (dot) { dot.classList.remove('active-dot'); void dot.offsetWidth; dot.classList.add('active-dot'); }
+    }
+    sync();
   }
 
-  // direct jump action via dot selectors points
-  function jumpToSlide(index) {
-    stopAutoSlide();
-    activeIndex = index;
-    updateSliderView();
-    startAutoSlide();
+  // Pause while the pointer is over the banner (mouse only) or keyboard focus is inside it.
+  if (sliderViewport) {
+    sliderViewport.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && hoverQuery.matches) { hoverPaused = true; sync(); } });
+    sliderViewport.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hoverPaused = false; sync(); } });
+    sliderViewport.addEventListener('focusin', (e) => { if (e.target.matches && e.target.matches(':focus-visible')) { focusPaused = true; sync(); } });
+    sliderViewport.addEventListener('focusout', (e) => { if (!sliderViewport.contains(e.relatedTarget)) { focusPaused = false; sync(); } });
+    sliderViewport.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(activeIndex - 1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); goTo(activeIndex + 1); }
+    });
+  }
+
+  // Swipe or drag; the track follows the finger and settles on the nearest slide.
+  if (sliderViewport && sliderTrack && totalSlides > 1) {
+    let startX = 0, startY = 0, dx = 0, pointerId = null, moved = false, locked = null, t0 = 0;
+    sliderViewport.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (e.target.closest('a,button,.dot,.slider-arrow')) return;
+      pointerId = e.pointerId; startX = e.clientX; startY = e.clientY; dx = 0; moved = false; locked = null; t0 = performance.now();
+    });
+    sliderViewport.addEventListener('pointermove', (e) => {
+      if (pointerId !== e.pointerId) return;
+      const mx = e.clientX - startX, my = e.clientY - startY;
+      if (locked === null && (Math.abs(mx) > 8 || Math.abs(my) > 8)) locked = Math.abs(mx) > Math.abs(my) ? 'x' : 'y';
+      if (locked !== 'x') return;
+      if (!moved) {
+        moved = true; dragging = true; sync();
+        sliderViewport.setPointerCapture?.(pointerId);
+        sliderTrack.style.transition = 'none';
+        sliderViewport.classList.add('is-dragging');
+      }
+      dx = mx;
+      const w = sliderViewport.clientWidth || 1;
+      let shift = dx;
+      // a little resistance at the first and last slide
+      if ((activeIndex === 0 && dx > 0) || (activeIndex === totalSlides - 1 && dx < 0)) shift = dx * 0.35;
+      sliderTrack.style.transform = `translate3d(calc(-${activeIndex * 100}% + ${shift}px),0,0)`;
+    });
+    const end = (e) => {
+      if (pointerId !== e.pointerId) return;
+      pointerId = null;
+      if (!moved) return;
+      const w = sliderViewport.clientWidth || 1;
+      const speed = Math.abs(dx) / Math.max(1, performance.now() - t0);
+      sliderTrack.style.transition = '';
+      sliderViewport.classList.remove('is-dragging');
+      dragging = false;
+      let target = activeIndex;
+      if (Math.abs(dx) > w * 0.18 || (speed > 0.5 && Math.abs(dx) > 50)) target = activeIndex + (dx < 0 ? 1 : -1);
+      target = Math.max(0, Math.min(totalSlides - 1, target));
+      // swallow the click that follows a drag
+      const stop = (ev) => { ev.preventDefault(); ev.stopPropagation(); };
+      sliderViewport.addEventListener('click', stop, { capture: true, once: true });
+      setTimeout(() => sliderViewport.removeEventListener('click', stop, { capture: true }), 60);
+      if (target === activeIndex) { render(false); remaining = Math.max(remaining, 1500); sync(); }
+      else goTo(target);
+    };
+    sliderViewport.addEventListener('pointerup', end);
+    sliderViewport.addEventListener('pointercancel', end);
   }
 
   if (sliderViewport && 'IntersectionObserver' in window) {
-    new IntersectionObserver(entries => {
-      heroVisible = entries[0].isIntersecting;
-      if (heroVisible) startAutoSlide(); else stopAutoSlide();
-    }).observe(sliderViewport);
+    new IntersectionObserver((entries) => { heroVisible = entries[0].isIntersecting; sync(); }, { threshold: 0.15 }).observe(sliderViewport);
   }
 
-  // connecting interface hardware event listeners triggers
   pauseBtn?.addEventListener('click', () => {
     isUserPaused = !isUserPaused;
     pauseBtn.setAttribute('aria-pressed', String(isUserPaused));
     pauseBtn.setAttribute('aria-label', isUserPaused ? 'Resume auto-rotation' : 'Pause auto-rotation');
     pauseBtn.classList.toggle('is-paused', isUserPaused);
-    stopAutoSlide();
-    startAutoSlide();
+    sync();
   });
 
-  sliderViewport?.addEventListener('focusin', stopAutoSlide);
-  sliderViewport?.addEventListener('focusout', (event) => {
-    if (!sliderViewport.contains(event.relatedTarget)) startAutoSlide();
-  });
+  document.addEventListener('visibilitychange', sync);
+  reducedMotionQuery.addEventListener?.('change', () => { if (reducedMotionQuery.matches) isUserPaused = true; sync(); });
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopAutoSlide();
-    else startAutoSlide();
-  });
+  // Load the other slides' images in the background so a slide never pops in while it slides across.
+  function warmImages() {
+    slides.forEach((slide) => slide.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; img.decoding = 'async'; }));
+  }
+  if (document.readyState === 'complete') setTimeout(warmImages, 300);
+  else window.addEventListener('load', () => setTimeout(warmImages, 300), { once: true });
 
-  updateSliderView();
-  startAutoSlide();
+  render(false);
+  sync();
 
   // module 02: navigation for separate pages (each tab is its own page)
   const navItems = document.querySelectorAll('.nav-item');
