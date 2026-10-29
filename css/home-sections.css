@@ -324,7 +324,7 @@ html[data-theme=dark] [aria-labelledby=hxWhoTitle]::before{background:linear-gra
 
 /* highlight numbers: tile styles that match the product tiles */
 .tp-stats{gap:14px}
-.tp-stat{position:relative;overflow:hidden;text-align:left;border:1px solid var(--line,#dde9ee);border-top-width:1px;border-radius:26px;padding:22px 20px 20px;min-height:180px;display:flex;flex-direction:column;justify-content:center;box-shadow:none}
+.tp-stat{position:relative;overflow:hidden;text-align:center;align-items:center;border:1px solid var(--line,#dde9ee);border-top-width:1px;border-radius:24px;padding:20px 16px;min-height:150px;display:flex;flex-direction:column;justify-content:center;box-shadow:none}
 .tp-stat:hover{transform:translateY(-3px);box-shadow:0 14px 30px #0f3a4f1a}
 .tp-num{font:800 clamp(30px,3.2vw,42px)/1 "Plus Jakarta Sans",sans-serif;letter-spacing:-.03em;background:none;-webkit-background-clip:border-box;background-clip:border-box;color:inherit;position:relative}
 .tp-lab{margin:10px 0 4px;font:700 15px/1.3 "Plus Jakarta Sans",sans-serif;position:relative}
@@ -342,3 +342,8 @@ html[data-theme=dark] [aria-labelledby=hxWhoTitle]::before{background:linear-gra
 .tp-mint{background:linear-gradient(150deg,#e3f6ee,#c9eddc);border-color:#bfe6d4}
 .tp-mint .tp-num{color:#0e8a7d}.tp-mint .tp-lab{color:#0b3b3b}.tp-mint .tp-sub{color:#3f5a68}
 @media(max-width:640px){.tp-stat{min-height:0;padding:18px}}
+
+.trusted-companies-section{padding-block:clamp(22px,3vw,34px)}
+.trusted-companies-section .trusted-subtitle{margin-bottom:16px}
+.tp-stats{width:min(1080px,100%);margin-top:0}
+.tp-stat .tp-sub{max-width:20ch;margin-inline:auto}
