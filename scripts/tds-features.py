@@ -56,5 +56,5 @@ FAQ = [
 ('Can I download challans instead of typing them?', 'Yes. Challans can be downloaded from the income-tax portal and TRACES, book-entry details fetched with the BIN, or challans created from your own deduction entries.'),
 ('Does it generate Form 16 and 16A?', 'Yes. Form 16 is prepared for salaried employees, Form 16A comes from TRACES, and Form 27D covers tax collected at source. You can sign, print and email them.'),
 ('Can I file the return from inside the software?', 'Yes. It runs the file validation utility, creates Form 27A and files with OTP verification. The acknowledgement and RRR numbers are saved with the return.'),
-('Will someone help me install and learn it?', 'Siddharth Enterprises, the authorized dealer in Nagpur, helps with installation, training and support in Marathi, Hindi and English.'),
+('Will someone help me install and learn it?', 'Siddharth Enterprises, the authorized dealer, helps with installation, training and support in Marathi, Hindi and English.'),
 ]

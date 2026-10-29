@@ -74,5 +74,5 @@ FAQ = [
  ('I file for many clients. Is that supported?', 'Yes. A client dashboard shows the filing status of every client and period, with notes, reminders, user roles and password protection for client files.'),
  ('Is billing part of the same software?', 'GST billing is a separate module that works with the returns module. Invoices you create can flow into your returns, so the same data is not entered twice.'),
  ('Can I try it before buying?', 'Yes. Siddharth Enterprises can arrange a trial and a live demo, and help with installation and training in Marathi, Hindi or English.'),
- ('Who sells and supports TaxPower GST in Nagpur and Vidarbha?', 'Siddharth Enterprises, an authorised TaxPower dealer in Nagpur, handles demos, sales, installation and support. The software is developed by Magnum Infosystem.'),
+ ('Who sells and supports TaxPower GST in Nagpur and Vidarbha?', 'Siddharth Enterprises, an authorised TaxPower dealer, handles demos, sales, installation and support. The software is developed by Magnum Infosystem.'),
 ]

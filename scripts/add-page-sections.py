@@ -42,7 +42,7 @@ P['aboutus'] = (
             ('Train', 'Training', 'Practical sessions for your staff on filing and reconciliation.'),
             ('Support', 'Support', 'Telephone and remote assistance for installation, updates, licences and filing queries.'),
             ('Renew', 'Renewal', 'We inform you before the annual renewal date so that support and updates continue.')])) +
- sec('about-why', 'Local dealer', 'Software by Magnum, service from Nagpur', 'What our customers receive from a dealer based in Nagpur.',
+ sec('about-why', 'Local dealer', 'Software by Magnum, service from your dealer', 'What our customers receive from a local TaxPower dealer.',
      caps([('chat', 'Language', 'Demonstration, training and support are available in Marathi, Hindi and English.'),
            ('pin', 'Location', 'Our office is in Hingna MIDC, Nagpur. We serve Vidarbha and customers across India.'),
            ('shield', 'Authorized dealer', 'We sell and support TaxPower as an authorized dealer of Magnum Infosystem, the developer of the software.')], 'gm-three')) +

@@ -28,7 +28,7 @@ THEME_BOOT = "try{if(localStorage.getItem('tp-theme')==='dark')document.document
 LANDING_JS = bundle.make('landing',['js/landing.js','js/form-backend.js','js/support-page.js','js/theme.js'],'js')
 
 organization = {'@type': ['Organization', 'LocalBusiness'], '@id': BASE + '#siddharth', 'name': 'Siddharth Enterprises',
-    'description': 'Authorized TaxPower dealer in Nagpur, Maharashtra selling TaxPower GST, Billing and TDS software across India.',
+    'description': 'Authorized TaxPower dealer selling TaxPower GST, Billing and TDS software across India.',
     'areaServed': [{'@type': 'Country', 'name': 'India'}, {'@type': 'AdministrativeArea', 'name': 'Vidarbha, Maharashtra'}],
     'url': BASE + 'aboutus', 'logo': BASE + 'asset/swt_icon/siddharth-enterprises-logo.webp', 'email': dealer['email'],
     'telephone': ['+91' + p for p in dealer['phones']],
@@ -136,12 +136,12 @@ def city_page(c):
     towns = ', '.join(c['towns'][:-1]) + ' and ' + c['towns'][-1]
     faqs = [
         (c['faq_q'], c['faq_a']),
-        (f'Who is the authorized TaxPower dealer in {n}?', f'Siddharth Enterprises, Nagpur is authorized by Magnum Infosystem, the developer of TaxPower, to sell TaxPower GST, Billing and TDS software across Vidarbha, including {n} district ({towns}).'),
+        (f'Who provides TaxPower demo and support in {n}?', f'Siddharth Enterprises is authorized by Magnum Infosystem, the developer of TaxPower, to sell TaxPower GST, Billing and TDS software across Vidarbha, including {n} district ({towns}).'),
         (f'Can I try TaxPower before buying in {n}?', 'Yes. A free trial is available. Book an online demo, tell us the work you do (GST returns, billing or TDS) and ask for the trial. Prices for installation and renewal are on the pricing page.'),
     ]
     body = (
         breadcrumb([('Home', 'home'), ('Vidarbha', hub['slug']), (n, None)]) +
-        f'<section class="lp-panel lp-hero"><span class="lp-kicker">Authorized TaxPower dealer · {esc(c["division"])}</span>'
+        f'<section class="lp-panel lp-hero"><span class="lp-kicker">{"TaxPower GST and TDS" if c["name"]=="Nagpur" else "Authorized TaxPower dealer"} · {esc(c["name"])}</span>'
         f'<h1>GST &amp; TDS software in {esc(n)}</h1><p class="lp-lead">{esc(c["intro"])}</p>'
         + cta('TaxPower Software', f'Book a demo in {n}') + HIGHLIGHTS + '</section>'
         f'<section class="lp-panel" aria-labelledby="lp-use-title"><h2 id="lp-use-title">TaxPower for {esc(n)} CAs and businesses</h2><p>{esc(c["context"])}</p>'
@@ -161,7 +161,7 @@ def city_page(c):
         + chips(nearby + [('All Vidarbha', hub['slug'])]) +
         '<p style="margin-top:16px">We also sell TaxPower to customers outside Vidarbha. Send an enquiry from any state and we will arrange an online demonstration.</p></section>'
         + contact_block())
-    meta = {'title': f'GST & TDS Software in {n} | TaxPower Dealer, Vidarbha',
+    meta = {'title': f'GST & TDS Software in {n} | TaxPower',
             'description': f'Buy TaxPower GST, Billing and TDS software in {n}, Vidarbha from authorized dealer Siddharth Enterprises. Marathi, Hindi and English support, online demo, free trial.'}
     return body, meta, faqs, [('Home', 'home'), ('Vidarbha', hub['slug']), (n, c['slug'])], {
         '@type': 'Service', 'serviceType': 'GST, Billing and TDS software sales, demo and support',
@@ -336,7 +336,7 @@ def sitemap_page():
         blocks += f'<section class="sm-group" aria-labelledby="sm-{key.lower().replace(" ", "").replace("&", "")}"><h2 id="sm-{key.lower().replace(" ", "").replace("&", "")}">{esc(title)}</h2><ul class="sm-grid">{cards}</ul></section>'
     body = (breadcrumb([('Home', 'home'), ('Site map', None)]) +
             '<section class="sm-hero"><span class="lp-kicker">Site map</span><h1>TaxPower site map</h1>'
-            '<p class="lp-lead">Software, guides, plans, help, resources and local support pages from Siddharth Enterprises, the authorized TaxPower dealer in Nagpur.</p></section>'
+            '<p class="lp-lead">Software, guides, plans, help, resources and local support pages from Siddharth Enterprises, the authorized TaxPower dealer.</p></section>'
             + blocks + contact_block())
     meta = {'title': 'TaxPower Site Map: All Software, Guides, Pricing and Support Pages',
             'description': 'Browse every TaxPower page: GST and TDS software, feature guides, pricing, downloads, support, blogs, due dates and Vidarbha city pages.'}
