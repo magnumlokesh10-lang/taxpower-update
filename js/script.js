@@ -168,7 +168,7 @@ function initTaxPowerSite() {
     });
   }
 
-  // module 01: banner slider (autoplay with pause/resume, swipe, arrows, keyboard)
+  // module 01: banner slider (endless loop, autoplay with pause/resume, swipe, arrows, keyboard)
   const sliderTrack = document.getElementById('sliderTrack');
   const slides = Array.from(document.querySelectorAll('.hero-slide-item'));
   const totalSlides = slides.length;
@@ -186,6 +186,42 @@ function initTaxPowerSite() {
   let remaining = autoSlideDuration;
   let startedAt = 0;
 
+  // The track is [copy of last][1][2][3][copy of first] so that 3 -> 1 keeps moving forward; the copies are swapped for the real slide once the move ends.
+  let cloneFirst = null;
+  let cloneLast = null;
+  if (sliderTrack && totalSlides > 1) {
+    const makeClone = (src) => {
+      const c = src.cloneNode(true);
+      c.classList.add('is-clone');
+      c.setAttribute('aria-hidden', 'true');
+      c.setAttribute('inert', '');
+      c.removeAttribute('aria-label');
+      c.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+      c.querySelectorAll('a,button').forEach((n) => n.setAttribute('tabindex', '-1'));
+      return c;
+    };
+    cloneFirst = makeClone(slides[0]);
+    cloneLast = makeClone(slides[totalSlides - 1]);
+    sliderTrack.appendChild(cloneFirst);
+    sliderTrack.insertBefore(cloneLast, sliderTrack.firstChild);
+  }
+  const base = cloneLast ? 1 : 0;
+  let pos = base;
+
+  // Whole-pixel offsets keep the text sharp (percentages give blurry text on fractional widths).
+  const slideWidth = () => (sliderTrack ? sliderTrack.clientWidth : 0) || (sliderViewport ? sliderViewport.clientWidth : 0) || 1;
+  function place(p, animate) {
+    if (!sliderTrack) return;
+    pos = p;
+    if (!animate) sliderTrack.style.transition = 'none';
+    sliderTrack.style.transform = `translate3d(${-Math.round(p * slideWidth())}px,0,0)`;
+    if (!animate) { void sliderTrack.offsetWidth; sliderTrack.style.transition = ''; }
+  }
+  function snap() {
+    if (pos !== activeIndex + base) place(activeIndex + base, false);
+  }
+  sliderTrack?.addEventListener('transitionend', (e) => { if (e.target === sliderTrack && e.propertyName === 'transform') snap(); });
+
   if (pauseBtn) {
     pauseBtn.setAttribute('aria-pressed', String(isUserPaused));
     pauseBtn.setAttribute('aria-label', isUserPaused ? 'Resume auto-rotation' : 'Pause auto-rotation');
@@ -201,13 +237,13 @@ function initTaxPowerSite() {
       dot.style.setProperty('--progress-duration', `${autoSlideDuration}ms`);
       dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
       dot.setAttribute('aria-current', i === 0 ? 'true' : 'false');
-      dot.addEventListener('click', () => goTo(i));
+      dot.addEventListener('click', () => jump(i));
       dotsContainer.appendChild(dot);
       dotsList.push(dot);
     }
   }
 
-  // Previous / next arrows (shown on hover-capable screens by CSS).
+  // Previous / next arrows, placed on the edge of the banner (hover-capable screens only, see CSS).
   if (sliderViewport && totalSlides > 1) {
     const shell = document.createElement('div');
     shell.className = 'slider-shell';
@@ -219,7 +255,7 @@ function initTaxPowerSite() {
       arrow.className = `slider-arrow slider-arrow-${dir}`;
       arrow.setAttribute('aria-label', dir === 'prev' ? 'Previous slide' : 'Next slide');
       arrow.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir === 'prev' ? 'm15 5-7 7 7 7' : 'm9 5 7 7-7 7'}"/></svg>`;
-      arrow.addEventListener('click', () => goTo(activeIndex + (dir === 'prev' ? -1 : 1)));
+      arrow.addEventListener('click', () => step(dir === 'prev' ? -1 : 1));
       shell.appendChild(arrow);
     });
   }
@@ -242,12 +278,18 @@ function initTaxPowerSite() {
     sliderTrack?.setAttribute('aria-live', run ? 'off' : 'polite');
     if (run) {
       startedAt = performance.now();
-      timer = setTimeout(() => { timer = null; remaining = autoSlideDuration; goTo(activeIndex + 1, true); }, remaining);
+      timer = setTimeout(() => { timer = null; remaining = autoSlideDuration; step(1); }, remaining);
     }
   }
 
-  function render(withEntrance) {
-    if (sliderTrack) sliderTrack.style.transform = `translate3d(-${activeIndex * 100}%,0,0)`;
+  function restartEntrance(slide) {
+    if (!slide || reducedMotionQuery.matches) return;
+    slide.classList.remove('slide-enter');
+    void slide.offsetWidth;
+    slide.classList.add('slide-enter');
+  }
+
+  function render() {
     dotsList.forEach((dot, idx) => {
       const on = idx === activeIndex;
       dot.classList.toggle('active-dot', on);
@@ -258,26 +300,38 @@ function initTaxPowerSite() {
       slide.setAttribute('aria-hidden', String(!on));
       slide.toggleAttribute('inert', !on);
       slide.classList.toggle('is-current', on);
-      if (on && withEntrance && !reducedMotionQuery.matches) {
-        slide.classList.remove('slide-enter');
-        void slide.offsetWidth;
-        slide.classList.add('slide-enter');
-      }
     });
   }
 
-  function goTo(index, fromTimer) {
-    const next = (index + totalSlides) % totalSlides;
-    const changed = next !== activeIndex;
-    activeIndex = next;
+  function moveTo(target, p, entering) {
     if (timer) { clearTimeout(timer); timer = null; }
     remaining = autoSlideDuration;
-    if (changed) render(true);
-    else if (!fromTimer) { // same dot clicked: restart its progress bar
+    activeIndex = target;
+    render();
+    restartEntrance(entering);
+    place(p, true);
+    if (reducedMotionQuery.matches) snap(); else setTimeout(snap, 1100);
+    sync();
+  }
+
+  // One step forward (+1) or back (-1); it wraps around in the same direction.
+  function step(dir) {
+    if (totalSlides < 2) return;
+    snap();
+    let target = activeIndex + dir;
+    if (target >= totalSlides) moveTo(0, totalSlides + base, cloneFirst);
+    else if (target < 0) moveTo(totalSlides - 1, 0, cloneLast);
+    else moveTo(target, target + base, slides[target]);
+  }
+  function jump(index) {
+    snap();
+    if (index === activeIndex) { // same dot: restart its progress bar
+      if (timer) { clearTimeout(timer); timer = null; }
+      remaining = autoSlideDuration;
       const dot = dotsList[activeIndex];
       if (dot) { dot.classList.remove('active-dot'); void dot.offsetWidth; dot.classList.add('active-dot'); }
-    }
-    sync();
+      sync();
+    } else moveTo(index, index + base, slides[index]);
   }
 
   // Pause while keyboard focus is inside the banner.
@@ -285,8 +339,8 @@ function initTaxPowerSite() {
     sliderViewport.addEventListener('focusin', (e) => { if (e.target.matches && e.target.matches(':focus-visible')) { focusPaused = true; sync(); } });
     sliderViewport.addEventListener('focusout', (e) => { if (!sliderViewport.contains(e.relatedTarget)) { focusPaused = false; sync(); } });
     sliderViewport.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(activeIndex - 1); }
-      else if (e.key === 'ArrowRight') { e.preventDefault(); goTo(activeIndex + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
     });
   }
 
@@ -304,36 +358,29 @@ function initTaxPowerSite() {
       if (locked === null && (Math.abs(mx) > 8 || Math.abs(my) > 8)) locked = Math.abs(mx) > Math.abs(my) ? 'x' : 'y';
       if (locked !== 'x') return;
       if (!moved) {
-        moved = true; dragging = true; sync();
+        moved = true; dragging = true; snap(); sync();
         sliderViewport.setPointerCapture?.(pointerId);
         sliderTrack.style.transition = 'none';
         sliderViewport.classList.add('is-dragging');
       }
       dx = mx;
-      const w = sliderViewport.clientWidth || 1;
-      let shift = dx;
-      // a little resistance at the first and last slide
-      if ((activeIndex === 0 && dx > 0) || (activeIndex === totalSlides - 1 && dx < 0)) shift = dx * 0.35;
-      sliderTrack.style.transform = `translate3d(calc(-${activeIndex * 100}% + ${shift}px),0,0)`;
+      sliderTrack.style.transform = `translate3d(${-Math.round(pos * slideWidth()) + dx}px,0,0)`;
     });
     const end = (e) => {
       if (pointerId !== e.pointerId) return;
       pointerId = null;
       if (!moved) return;
-      const w = sliderViewport.clientWidth || 1;
+      const w = slideWidth();
       const speed = Math.abs(dx) / Math.max(1, performance.now() - t0);
       sliderTrack.style.transition = '';
       sliderViewport.classList.remove('is-dragging');
       dragging = false;
-      let target = activeIndex;
-      if (Math.abs(dx) > w * 0.18 || (speed > 0.5 && Math.abs(dx) > 50)) target = activeIndex + (dx < 0 ? 1 : -1);
-      target = Math.max(0, Math.min(totalSlides - 1, target));
       // swallow the click that follows a drag
       const stop = (ev) => { ev.preventDefault(); ev.stopPropagation(); };
       sliderViewport.addEventListener('click', stop, { capture: true, once: true });
       setTimeout(() => sliderViewport.removeEventListener('click', stop, { capture: true }), 60);
-      if (target === activeIndex) { render(false); remaining = Math.max(remaining, 1500); sync(); }
-      else goTo(target);
+      if (Math.abs(dx) > w * 0.18 || (speed > 0.5 && Math.abs(dx) > 50)) step(dx < 0 ? 1 : -1);
+      else { place(pos, true); remaining = Math.max(remaining, 1500); sync(); }
     };
     sliderViewport.addEventListener('pointerup', end);
     sliderViewport.addEventListener('pointercancel', end);
@@ -341,6 +388,10 @@ function initTaxPowerSite() {
 
   if (sliderViewport && 'IntersectionObserver' in window) {
     new IntersectionObserver((entries) => { heroVisible = entries[0].isIntersecting; sync(); }, { threshold: 0.15 }).observe(sliderViewport);
+  }
+  if (sliderViewport && 'ResizeObserver' in window) {
+    let lastWidth = slideWidth();
+    new ResizeObserver(() => { const w = slideWidth(); if (w !== lastWidth) { lastWidth = w; place(pos, false); } }).observe(sliderViewport);
   }
 
   pauseBtn?.addEventListener('click', () => {
@@ -356,12 +407,13 @@ function initTaxPowerSite() {
 
   // Load the other slides' images in the background so a slide never pops in while it slides across.
   function warmImages() {
-    slides.forEach((slide) => slide.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; img.decoding = 'async'; }));
+    sliderTrack?.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; img.decoding = 'async'; });
   }
   if (document.readyState === 'complete') setTimeout(warmImages, 300);
   else window.addEventListener('load', () => setTimeout(warmImages, 300), { once: true });
 
-  render(false);
+  place(base, false);
+  render();
   sync();
 
   // module 02: navigation for separate pages (each tab is its own page)
