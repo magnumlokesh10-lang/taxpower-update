@@ -30,3 +30,7 @@ html[data-theme=dark] .lp-contact .lpc-btn{background:#fff!important;color:#0b3f
 html[data-theme=dark] .lp-contact .lpc-row i{background:#fff!important;color:#087ca6!important}
 html[data-theme=dark] .lp-contact .lpc-eyebrow{color:#bfeaf6!important}
 html[data-theme=dark] .footer-refined .footer-company-logo{background:#fff!important}
+html[data-theme=dark] .tp-stat{background:#0f2538!important;border-color:#23405a!important;border-top-color:var(--a)!important;box-shadow:0 12px 30px #0006!important}
+html[data-theme=dark] .tp-lab{color:#e6eef3!important}
+html[data-theme=dark] .tp-sub{color:#9fb2c1!important}
+html[data-theme=dark] .tp-num{background:linear-gradient(120deg,var(--b),var(--a))!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
