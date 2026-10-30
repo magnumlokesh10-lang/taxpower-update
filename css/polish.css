@@ -271,3 +271,6 @@
 
 .download-product-logo{width:52px;height:52px}
 @media(max-width:540px){.download-product-logo{width:48px;height:48px}}
+
+.tp-module-icon{width:40px;height:40px}
+.tp-module-icon img{width:32px;height:32px}
