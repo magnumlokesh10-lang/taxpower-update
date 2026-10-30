@@ -39,7 +39,7 @@
         {"t": "table", "head": ["Item", "What you need"], "rows": [
           ["Operating system", "Windows desktop. Windows 10 or Windows 11 is the usual choice. For server setups, ask us which version fits your case."],
           ["Internet", "Needed for activation, updates, GST portal and Income Tax portal filing, TRACES downloads and e-invoice or e-way bill generation."],
-          ["Database", "TaxPower TDS stores its data in a PostgreSQL database that is set up during installation. We help you with this step."],
+          ["Database", "TaxPower GST runs on Microsoft SQL Server and TaxPower TDS runs on PostgreSQL, so each product uses its own database. The database is installed automatically along with the software and creates your data on the server PC, which is the main computer where TaxPower is installed. In an office with several users, the other computers connect to this server PC over the LAN. You do not have to set up the database yourself, and we help with installation if you need it."],
           ["Authentication", "EVC/OTP or a Digital Signature Certificate (DSC), depending on the filing you are doing. Keep your DSC token and its driver ready."],
           ["Email", "Needed if you want to email Form 16/16A certificates and reports directly from the software."],
           ["Hardware", "Needs depend on how much data you handle and how many users work at the same time. Call us with your number of clients and users and we will advise."]
