@@ -322,7 +322,8 @@ SITEMAP_GROUPS = [
         ('blog', 'All blogs', 'GST, ITC and TDS guides'), ('gst-tds-due-dates', 'Due dates calendar', 'Monthly and quarterly dates'),
         ('blog/gstr-1-vs-gstr-3b-difference', 'GSTR-1 vs GSTR-3B', 'How the two returns differ'), ('blog/gstr-2b-itc-reconciliation-checklist', 'GSTR-2B checklist', 'Steps for ITC matching'),
         ('blog/tds-return-forms-24q-26q-27q-27eq-explained', 'TDS forms explained', 'Which form for which payment'), ('blog/form-16-and-form-16a-explained', 'Form 16 & 16A explained', 'Who issues what'),
-        ('blog/how-to-choose-gst-software', 'Choosing GST software', 'What to look for')]),
+        ('blog/how-to-choose-gst-software', 'Choosing GST software', 'What to look for'),
+        ('blog/taxpower-new-desktop-icons-download-latest-setup', 'New desktop icons', 'Download the latest setup')]),
     ('Vidarbha', 'Dealer support near you', [('gst-tds-software-vidarbha', 'All Vidarbha', 'Sales and support across the region')] +
         [(f'gst-tds-software-{c}', c.title(), f'TaxPower in {c.title()}') for c in ['nagpur', 'amravati', 'akola', 'washim', 'buldhana', 'yavatmal', 'wardha', 'bhandara', 'gondia', 'chandrapur', 'gadchiroli']]),
     ('Company', 'About the dealer', [('home', 'Home', 'Main page'), ('aboutus', 'About us', 'Siddharth Enterprises and Magnum Infosystem')]),
@@ -375,8 +376,8 @@ def render(slug, body, meta, trail, extra):
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_IN">
 <meta property="og:site_name" content="TaxPower">
-<meta property="og:image" content="{BASE}asset/swt_icon/taxpower_icon.png">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{BASE}{meta.get('image') or 'asset/swt_icon/taxpower_icon.png'}">
+<meta name="twitter:card" content="{'summary_large_image' if meta.get('image') else 'summary'}">
 <meta name="twitter:title" content="{t}">
 <meta name="twitter:description" content="{d}">
 <link rel="preload" href="fonts/plus-jakarta-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -414,6 +415,24 @@ NICE = {s_: short_name(f) for s_, f in feature_by_slug.items()}
 def nice_date(iso):
     d = dt.date.fromisoformat(iso)
     return f'{d.day} {d.strftime("%B %Y")}'
+
+
+def post_when(x):
+    """Per-post publish date and time (IST). Falls back to the site-wide PUBLISHED date."""
+    day = x.get('published', PUBLISHED)
+    t = x.get('time')
+    if not t:
+        return nice_date(day), day
+    h, m = map(int, t.split(':'))
+    clock = f'{(h % 12) or 12}:{m:02d} {"AM" if h < 12 else "PM"} IST'
+    return f'{nice_date(day)}, {clock}', f'{day}T{h:02d}:{m:02d}:00+05:30'
+
+
+def cover_img(x, eager=False):
+    if not x.get('cover'):
+        return ''
+    return (f'<img class="lp-cover" src="{x["cover"]}" alt="{esc(x.get("cover_alt", ""), quote=True)}" width="1200" height="630" '
+            f'decoding="async"{"" if eager else " loading=\"lazy\""}>')
 
 
 def table_html(head, rows):
@@ -468,7 +487,7 @@ def static_page(pg):
 def post_cards():
     cards = ''
     for x in res['posts']:
-        cards += (f'<article class="lp-card"><span class="lp-tag">{esc(x["category"])} · {x["minutes"]} min read</span><h3><a href="{x["slug"]}">{esc(x["h1"])}</a></h3>'
+        cards += (f'<article class="lp-card">{cover_img(x)}<span class="lp-tag">{esc(x["category"])} · {x["minutes"]} min read</span><h3><a href="{x["slug"]}">{esc(x["h1"])}</a></h3>'
                   f'<p>{esc(x["summary"])}</p><a class="lp-more" href="{x["slug"]}">Read the guide ↗</a></article>')
     return cards
 
@@ -507,10 +526,11 @@ def blog_index(pg):
             + reading_paths() + resources_panel() + contact_block())
     return body, {'title': pg['title'], 'description': pg['description']}, [('Home', 'home'), ('Blog', 'blog')], {
         '@type': 'Blog', '@id': BASE + 'blog#blog', 'name': 'TaxPower blog', 'url': BASE + 'blog', 'publisher': {'@id': BASE + '#siddharth'},
-        'blogPost': [{'@type': 'BlogPosting', 'headline': x['h1'], 'url': BASE + x['slug'], 'datePublished': PUBLISHED} for x in res['posts']]}
+        'blogPost': [{'@type': 'BlogPosting', 'headline': x['h1'], 'url': BASE + x['slug'], 'datePublished': post_when(x)[1]} for x in res['posts']]}
 
 
 def post_page(x):
+    when, iso = post_when(x)
     related = []
     for r in x['related']:
         if r in posts_by_slug:
@@ -521,16 +541,16 @@ def post_page(x):
             related.append(('Free 30-day trial', r))
     body = (breadcrumb([('Home', 'home'), ('Blog', 'blog'), (x['h1'].split(':')[0], None)]) +
             f'<section class="lp-panel lp-hero"><span class="lp-kicker">{esc(x["category"])} · GUIDE</span><h1>{esc(x["h1"])}</h1>'
-            f'<p class="lp-meta">By Siddharth Enterprises · Published {nice_date(PUBLISHED)} · Last updated {nice_date(PUBLISHED)} · {x["minutes"]} min read</p>'
-            f'<p class="lp-lead">{esc(x["summary"])}</p></section>' + blocks_html(x['blocks']) +
+            f'<p class="lp-meta">By Siddharth Enterprises · Published {when} · Last updated {when} · {x["minutes"]} min read</p>'
+            f'<p class="lp-lead">{esc(x["summary"])}</p>{cover_img(x, True)}</section>' + blocks_html(x['blocks']) +
             '<section class="lp-panel"><h2>Check before you act</h2><p>Tax rules, forms and due dates change often and may be extended by notification. Use this guide as a starting point and confirm the current position on the official portals, <a href="https://www.gst.gov.in" rel="noopener">gst.gov.in</a> for GST and <a href="https://www.incometax.gov.in" rel="noopener">incometax.gov.in</a> for TDS, or with your CA.</p></section>'
             '<section class="lp-panel lp-hero"><h2>Try TaxPower free for 30 days</h2><p>See these workflows on your own work. Installation help and training are available in Marathi, Hindi or English.</p>'
             + cta('TaxPower Software', 'Request free trial') + '</section>'
             '<section class="lp-panel"><h2>Related</h2>' + chips(related + [('All guides', 'blog')]) + '</section>' + contact_block())
-    return body, {'title': x['title'], 'description': x['description']}, [('Home', 'home'), ('Blog', 'blog'), (x['h1'], x['slug'])], {
+    return body, {'title': x['title'], 'description': x['description'], 'image': x.get('cover')}, [('Home', 'home'), ('Blog', 'blog'), (x['h1'], x['slug'])], {
         '@type': 'BlogPosting', '@id': BASE + x['slug'] + '#article', 'headline': x['h1'], 'description': x['description'], 'url': BASE + x['slug'],
-        'mainEntityOfPage': BASE + x['slug'], 'datePublished': PUBLISHED, 'dateModified': PUBLISHED, 'inLanguage': 'en-IN',
-        'author': {'@id': BASE + '#siddharth'}, 'publisher': {'@id': BASE + '#siddharth'}, 'image': BASE + 'asset/swt_icon/taxpower_icon.png'}
+        'mainEntityOfPage': BASE + x['slug'], 'datePublished': iso, 'dateModified': iso, 'inLanguage': 'en-IN',
+        'author': {'@id': BASE + '#siddharth'}, 'publisher': {'@id': BASE + '#siddharth'}, 'image': BASE + (x.get('cover') or 'asset/swt_icon/taxpower_icon.png')}
 
 
 # ---- due-date calendar, FY 2026-27 (standard statutory dates; extensions are notified separately)

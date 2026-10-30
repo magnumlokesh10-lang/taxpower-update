@@ -69,6 +69,31 @@
   ],
   "posts": [
     {
+      "slug": "blog/taxpower-new-desktop-icons-download-latest-setup",
+      "title": "New TaxPower GST & TDS Desktop Icons: Download the Latest Setup",
+      "description": "TaxPower GST and TaxPower TDS now have refreshed desktop icons. See what changed, where to download the latest setup and what to check before installing.",
+      "h1": "New desktop icons for TaxPower GST and TDS: how to download the latest setup",
+      "category": "Product update",
+      "minutes": 3,
+      "published": "2026-10-31",
+      "time": "00:00",
+      "cover": "asset/blog/taxpower-new-desktop-icons-cover.webp",
+      "cover_alt": "New TaxPower GST and TaxPower TDS desktop icons",
+      "summary": "TaxPower GST and TaxPower TDS now come with refreshed desktop icons: an orange G for GST and a blue T for TDS. Here is what changed and where to get the latest setup.",
+      "blocks": [
+        {"t": "h2", "v": "What has changed"},
+        {"t": "p", "v": "The desktop icons of TaxPower GST and TaxPower TDS have been refreshed. TaxPower GST now uses an orange icon with a G, and TaxPower TDS uses a blue icon with a T, so you can tell the two programs apart at a glance on the desktop and the taskbar."},
+        {"t": "p", "v": "The same new icons now appear on our Downloads and Pricing pages, so the icon you see on the website is the icon you will see on your computer."},
+        {"t": "h2", "v": "How to download the latest setup"},
+        {"t": "steps", "v": ["Open the Downloads page at taxpower.co/downloads.", "Under TaxPower Software Downloads, choose TaxPower GST or TaxPower TDS.", "Click Download Setup. The page shows the file type (Web Setup) and its size before you download.", "Run the downloaded file on your Windows computer and follow the installation prompts.", "When the installation is complete, look for the new icon on your desktop."]},
+        {"t": "h2", "v": "Before you install"},
+        {"t": "list", "v": ["Check the system requirements for your computer.", "Supporting tools such as SQL Server Express, the .NET runtime and the TaxPower Reporting Engine are listed under TaxPower Utilities on the same Downloads page.", "If you already use TaxPower, take a backup of your data before you install anything, and call support if you are not sure how to proceed."]},
+        {"t": "faq", "v": [{"q": "Where can I download TaxPower GST and TaxPower TDS?", "a": "Both setups are on the Downloads page at taxpower.co/downloads. Choose the product and click Download Setup."}, {"q": "Which icon is for which software?", "a": "TaxPower GST uses the orange icon with a G, and TaxPower TDS uses the blue icon with a T."}, {"q": "Who can help me with installation?", "a": "Siddharth Enterprises can help with installation, training and support. You can find the contact details at the end of this page."}]},
+        {"t": "links", "v": [["Go to Downloads", "downloads"], ["System requirements", "system-requirements"], ["Technical support", "technical-support"]]}
+      ],
+      "related": ["system-requirements", "free-trial"]
+    },
+    {
       "slug": "blog/gstr-1-vs-gstr-3b-difference",
       "title": "GSTR-1 vs GSTR-3B: Differences and How They Should Match",
       "description": "GSTR-1 reports your sales invoice by invoice; GSTR-3B is the summary return where tax is paid. See how they differ, their due dates and why they must match.",

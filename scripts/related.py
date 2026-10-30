@@ -10,7 +10,7 @@ L = {
  'gst-tds-due-dates': 'Due dates calendar', 'blog': 'All blogs', 'sitemap': 'Site map',
  'blog/gstr-1-vs-gstr-3b-difference': 'GSTR-1 vs GSTR-3B', 'blog/gstr-2b-itc-reconciliation-checklist': 'GSTR-2B checklist',
  'blog/tds-return-forms-24q-26q-27q-27eq-explained': 'TDS forms explained', 'blog/form-16-and-form-16a-explained': 'Form 16 & 16A explained',
- 'blog/how-to-choose-gst-software': 'Choosing GST software',
+ 'blog/how-to-choose-gst-software': 'Choosing GST software', 'blog/taxpower-new-desktop-icons-download-latest-setup': 'New desktop icons',
  'gst-tds-software-vidarbha': 'Software in Vidarbha', 'gst-tds-software-nagpur': 'Nagpur', 'gst-tds-software-amravati': 'Amravati', 'gst-tds-software-akola': 'Akola',
  'gst-tds-software-washim': 'Washim', 'gst-tds-software-buldhana': 'Buldhana', 'gst-tds-software-yavatmal': 'Yavatmal', 'gst-tds-software-wardha': 'Wardha',
  'gst-tds-software-bhandara': 'Bhandara', 'gst-tds-software-gondia': 'Gondia', 'gst-tds-software-chandrapur': 'Chandrapur', 'gst-tds-software-gadchiroli': 'Gadchiroli',

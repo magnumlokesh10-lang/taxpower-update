@@ -155,3 +155,6 @@
 .gx-sub li { padding:6px 11px; border-radius:999px; background:var(--gxs); border:1px solid #0000000d; font-size:13px; line-height:1.35; color:#1d4157; }
 @media(max-width:1000px){ .gx-hero { grid-template-columns:1fr; } .gx-layout { grid-template-columns:1fr; } .gx-side { display:none; } }
 @media(max-width:700px){ .gx-area { grid-template-columns:1fr; } }
+
+.lp-cover{display:block;width:100%;height:auto;aspect-ratio:1200/630;object-fit:cover;border-radius:14px;margin:18px 0 0;border:1px solid #d6e8f0}
+.lp-card .lp-cover{margin:0 0 14px}
