@@ -274,3 +274,28 @@
 
 .tp-module-icon{width:40px;height:40px}
 .tp-module-icon img{width:32px;height:32px}
+
+/* Review us on Google: footer button and exit prompt */
+.footer-review-button{display:inline-flex;align-items:center;gap:8px;margin:10px 0 0;padding:11px 16px;min-height:44px;border:1px solid #f4a04e;border-radius:12px;color:#b4540c;background:#fff8ef;font-weight:700;font-size:14px;text-decoration:none}
+.footer-review-button span{color:#f59a23;font-size:16px}
+.footer-review-button:hover{background:#ffeed8}
+@media(max-width:760px){.footer-review-button{margin-left:0}}
+.tp-review-ask{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:16px}
+.tp-review-backdrop{position:absolute;inset:0;background:#0b2230a6}
+.tp-review-card{position:relative;width:min(420px,100%);padding:30px 28px 24px;border-radius:20px;background:#fff;color:#0b3b4f;text-align:center;box-shadow:0 24px 70px #0b223055;animation:tpRvIn .22s ease-out}
+.tp-review-stars{color:#f5a623;font-size:26px;letter-spacing:4px;margin-bottom:8px}
+.tp-review-card h2{margin:0 0 8px;font-size:22px;line-height:1.3;color:#0b3b4f}
+.tp-review-card p{margin:0 0 20px;font-size:15px;line-height:1.6;color:#4a697a}
+.tp-review-x{position:absolute;top:8px;right:10px;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#5b7788;font-size:26px;line-height:1;cursor:pointer}
+.tp-review-x:hover{background:#eef5f9}
+.tp-review-actions{display:flex;flex-direction:column;gap:10px}
+.tp-review-go{display:block;padding:14px 18px;border-radius:12px;background:#ed741c;color:#fff;font-weight:800;font-size:15.5px;text-decoration:none}
+.tp-review-go:hover{filter:brightness(.95)}
+.tp-review-later{padding:12px;border:0;background:transparent;color:#4a697a;font:inherit;font-weight:600;font-size:14px;cursor:pointer}
+.tp-review-later:hover{text-decoration:underline}
+.tp-review-go:focus-visible,.tp-review-later:focus-visible,.tp-review-x:focus-visible{outline:3px solid #0b657f;outline-offset:2px}
+html[data-theme=dark] .tp-review-card{background:#12303f;color:#e6f3f9}
+html[data-theme=dark] .tp-review-card h2{color:#e6f3f9}
+html[data-theme=dark] .tp-review-card p,html[data-theme=dark] .tp-review-later,html[data-theme=dark] .tp-review-x{color:#a9c3d1}
+@keyframes tpRvIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.tp-review-card{animation:none}}

@@ -78,3 +78,38 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;pairs.forEach(function(p){if(!p.sheet.hidden){set(p,false);p.btn.focus()}})});
   window.addEventListener('resize',function(){if(window.innerWidth>760)pairs.forEach(function(p){if(!p.sheet.hidden)set(p,false)})});
 })();
+
+/* Google review prompt. Desktop only: shown once, when a visitor who has spent a little time on the site moves the pointer
+   out through the top of the window (towards the tab bar or close button). Asks only for an honest review from people who
+   already use TaxPower. Remembered for 30 days, so it never nags. */
+(function(){
+  var URL='https://g.page/r/CfXFywcVUofsEAI/review',K='tp-review-ask',DAYS=30,MIN_MS=15000,start=Date.now(),shown=false,last=null;
+  function get(){try{return localStorage.getItem(K)}catch(e){return null}}
+  function put(){try{localStorage.setItem(K,String(Date.now()))}catch(e){}}
+  var prev=get();
+  if(prev&&Date.now()-Number(prev)<DAYS*864e5)return;
+  if(!window.matchMedia||!window.matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  function close(){var m=document.getElementById('tpReviewAsk');if(m)m.remove();document.removeEventListener('keydown',onKey);if(last&&last.focus)try{last.focus()}catch(e){}}
+  function onKey(e){if(e.key==='Escape')close()}
+  function open(){
+    if(shown)return;shown=true;put();last=document.activeElement;
+    var m=document.createElement('div');m.id='tpReviewAsk';m.className='tp-review-ask';
+    m.innerHTML='<div class="tp-review-backdrop" data-rv-close></div><div class="tp-review-card" role="dialog" aria-modal="true" aria-labelledby="tpReviewTitle">'
+      +'<button type="button" class="tp-review-x" data-rv-close aria-label="Close">&times;</button>'
+      +'<div class="tp-review-stars" aria-hidden="true">★★★★★</div>'
+      +'<h2 id="tpReviewTitle">Already use TaxPower?</h2>'
+      +'<p>Your honest review on Google helps other CAs and businesses choose the right software. It takes about a minute.</p>'
+      +'<div class="tp-review-actions"><a class="tp-review-go" href="'+URL+'" target="_blank" rel="noopener noreferrer" data-rv-close>Write a Google review</a>'
+      +'<button type="button" class="tp-review-later" data-rv-close>Maybe later</button></div></div>';
+    m.addEventListener('click',function(e){if(e.target.closest('[data-rv-close]'))close()});
+    document.body.appendChild(m);document.addEventListener('keydown',onKey);
+    var go=m.querySelector('.tp-review-go');if(go)go.focus();
+  }
+  document.addEventListener('mouseout',function(e){
+    if(shown||e.relatedTarget||e.clientY>0)return;
+    if(Date.now()-start<MIN_MS)return;
+    if(document.body.classList.contains('more-open'))return;
+    var a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return;
+    open();
+  });
+})();
