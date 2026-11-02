@@ -113,3 +113,46 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
     open();
   });
 })();
+
+/* Compact page loader: a thin progress bar plus a small "Loading" pill.
+   Nothing shows on fast loads. It appears only if a page (or the next page after a link click) is slow, and goes away when loading ends. */
+(function(){
+  var doc=document,root=doc.documentElement,bar,pill,tBar,tPill,tMax,tick,w=0,live=false;
+  function build(){
+    if(bar)return;
+    bar=doc.createElement('div');bar.className='tp-ld-bar';bar.setAttribute('aria-hidden','true');
+    pill=doc.createElement('div');pill.className='tp-ld-pill';pill.setAttribute('role','status');pill.setAttribute('aria-live','polite');
+    pill.innerHTML='<span class="tp-ld-ic" aria-hidden="true"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="11.5" class="t"/><circle cx="13" cy="13" r="11.5" class="a"/></svg><img src="asset/swt_icon/taxpower_icon.png" width="16" height="16" alt=""></span><span class="tp-ld-tx">Loading</span>';
+    (doc.body||root).appendChild(bar);(doc.body||root).appendChild(pill);
+  }
+  function setW(v){w=v;bar.style.transform='scaleX('+v+')'}
+  function start(barDelay,pillDelay){
+    if(live)return;live=true;clearTimeout(tBar);clearTimeout(tPill);clearTimeout(tMax);
+    tBar=setTimeout(function(){build();bar.classList.remove('done');bar.style.opacity='1';setW(.08);
+      clearInterval(tick);tick=setInterval(function(){setW(w+(.86-w)*.07)},180)},barDelay);
+    tPill=setTimeout(function(){build();pill.classList.add('on')},pillDelay);
+    tMax=setTimeout(finish,20000);
+  }
+  function finish(){
+    if(!live)return;live=false;clearTimeout(tBar);clearTimeout(tPill);clearTimeout(tMax);clearInterval(tick);
+    if(!bar)return;
+    setW(1);bar.classList.add('done');pill.classList.remove('on');
+    setTimeout(function(){if(!live&&bar){bar.style.opacity='0'}},260);
+    setTimeout(function(){if(!live&&bar){bar.style.transition='none';setW(0);void bar.offsetWidth;bar.style.transition=''}},700);
+  }
+  /* first load of this page */
+  if(doc.readyState!=='complete'){start(200,700);window.addEventListener('load',finish,{once:true})}
+  /* next page after a click on an internal link */
+  doc.addEventListener('click',function(e){
+    if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest('a[href]');
+    if(!a||a.target&&a.target!=='_self'||a.hasAttribute('download'))return;
+    var u;try{u=new URL(a.href,location.href)}catch(x){return}
+    if(u.origin!==location.origin)return;
+    if(u.pathname===location.pathname&&u.search===location.search)return;
+    if(/\.(exe|msi|pdf|zip|ics|xml|png|jpe?g|webp|svg|gif|txt)$/i.test(u.pathname))return;
+    start(0,900);
+  },true);
+  /* coming back with the Back button must never leave the loader on screen */
+  window.addEventListener('pageshow',function(e){if(e.persisted)finish()});
+})();
