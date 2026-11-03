@@ -15,6 +15,12 @@ L = {
  'gst-tds-software-washim': 'Washim', 'gst-tds-software-buldhana': 'Buldhana', 'gst-tds-software-yavatmal': 'Yavatmal', 'gst-tds-software-wardha': 'Wardha',
  'gst-tds-software-bhandara': 'Bhandara', 'gst-tds-software-gondia': 'Gondia', 'gst-tds-software-chandrapur': 'Chandrapur', 'gst-tds-software-gadchiroli': 'Gadchiroli',
 }
+try:  # articles written in the CRM get a label automatically
+    import cms_posts
+    for _x in cms_posts.load_resources()['posts']:
+        L.setdefault(_x['slug'], _x['h1'].split(':')[0][:40])
+except Exception:
+    pass
 CITIES = [k for k in L if k.startswith('gst-tds-software-')]
 GST = ['taxpowergst', 'taxpower-gst-features', 'gst-return-filing-software', 'gstr-2b-itc-reconciliation-software', 'e-invoice-e-way-bill-software', 'gst-billing-software', 'gst-billing', 'gst-return']
 TDS = ['taxpowertds', 'taxpower-tds-features', 'tds-return-filing-software', 'form-16-form-16a-certificate-software', 'blog/tds-return-forms-24q-26q-27q-27eq-explained', 'blog/form-16-and-form-16a-explained']

@@ -2,6 +2,19 @@
 window.TAXPOWER_FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzMvBeJA32vGvU_G6QaLiJftogvJ5jdKdvJH039_Vzr3PA1CbOJLPFSie7lUq58VebqfQ/exec';
 (function () {
   'use strict';
+  // Every enquiry is also saved in the TaxPower CRM. This runs on its own, so the email
+  // delivery above is never delayed or affected if the CRM is unreachable.
+  const CRM_LEAD_ENDPOINT = 'https://crm.taxpower.co/api/public/lead';
+  const crmSent = new Set();
+  function sendToCrm(data, id) {
+    if (crmSent.has(id)) return;
+    crmSent.add(id);
+    try {
+      const copy = Object.assign({}, data);
+      delete copy.requestId;
+      fetch(CRM_LEAD_ENDPOINT, { method: 'POST', body: new URLSearchParams(copy), keepalive: true, credentials: 'omit' }).catch(function () {});
+    } catch (e) { /* ignore */ }
+  }
   const pending = new WeakMap();
   const requests = new WeakMap();
   window.sendDemoEnquiryToBackend = function (form) {
@@ -19,6 +32,7 @@ window.TAXPOWER_FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzMvBeJ
       requests.set(form, request);
     }
     data.requestId = request.id;
+    sendToCrm(data, request.id);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 30000);
     const promise = fetch(window.TAXPOWER_FORM_ENDPOINT, {

@@ -6,6 +6,8 @@ Set TAXPOWER_BASE_PATH=/repo-name/ to preview on a GitHub project page (default 
 from pathlib import Path
 from html import escape as esc
 import related
+import related as related_pages
+import cms_posts
 import json, os
 from urllib.parse import urlsplit
 from lxml import html
@@ -305,6 +307,7 @@ def tds_features_page():
         'description': meta['description'], 'url': BASE + 'taxpower-tds-features', 'publisher': {'@id': BASE + '#magnum'}}
 
 
+BUILTIN_POSTS = {x['slug'] for x in json.loads((ROOT / 'scripts/resource-pages.json').read_text())['posts']}
 SITEMAP_GROUPS = [
     ('Software', 'What TaxPower does', [
         ('taxpowergst', 'TaxPower GST', 'GST returns, reconciliation, e-invoice and e-way bill'), ('gst-billing', 'GST billing', 'Invoices, e-invoices and e-way bills'),
@@ -323,7 +326,8 @@ SITEMAP_GROUPS = [
         ('blog/gstr-1-vs-gstr-3b-difference', 'GSTR-1 vs GSTR-3B', 'How the two returns differ'), ('blog/gstr-2b-itc-reconciliation-checklist', 'GSTR-2B checklist', 'Steps for ITC matching'),
         ('blog/tds-return-forms-24q-26q-27q-27eq-explained', 'TDS forms explained', 'Which form for which payment'), ('blog/form-16-and-form-16a-explained', 'Form 16 & 16A explained', 'Who issues what'),
         ('blog/how-to-choose-gst-software', 'Choosing GST software', 'What to look for'),
-        ('blog/taxpower-new-desktop-icons-download-latest-setup', 'New desktop icons', 'Download the latest setup')]),
+        ('blog/taxpower-new-desktop-icons-download-latest-setup', 'New desktop icons', 'Download the latest setup')]
+        + [(x['slug'], x['h1'].split(':')[0][:40], x['category']) for x in cms_posts.load_resources()['posts'] if x['slug'] not in BUILTIN_POSTS]),
     ('Vidarbha', 'Dealer support near you', [('gst-tds-software-vidarbha', 'All Vidarbha', 'Sales and support across the region')] +
         [(f'gst-tds-software-{c}', c.title(), f'TaxPower in {c.title()}') for c in ['nagpur', 'amravati', 'akola', 'washim', 'buldhana', 'yavatmal', 'wardha', 'bhandara', 'gondia', 'chandrapur', 'gadchiroli']]),
     ('Company', 'About the dealer', [('home', 'Home', 'Main page'), ('aboutus', 'About us', 'Siddharth Enterprises and Magnum Infosystem')]),
@@ -405,7 +409,7 @@ def render(slug, body, meta, trail, extra):
 
 # ---------------------------------------------------------------- resource pages (trial, requirements, blog, due dates)
 import datetime as dt
-res = json.loads((ROOT / 'scripts/resource-pages.json').read_text())
+res = cms_posts.load_resources()
 PUBLISHED = res['published']
 posts_by_slug = {x['slug']: x for x in res['posts']}
 RES_LINKS = [('Free trial', 'free-trial'), ('System requirements', 'system-requirements'), ('GST & TDS due dates', 'gst-tds-due-dates'), ('Blog', 'blog')]
@@ -539,6 +543,8 @@ def post_page(x):
             related.append((NICE[r] + ' software', r))
         elif r == 'free-trial':
             related.append(('Free 30-day trial', r))
+        elif r in related_pages.L:
+            related.append((related_pages.L[r], r))
     body = (breadcrumb([('Home', 'home'), ('Blog', 'blog'), (x['h1'].split(':')[0], None)]) +
             f'<section class="lp-panel lp-hero"><span class="lp-kicker">{esc(x["category"])} · GUIDE</span><h1>{esc(x["h1"])}</h1>'
             f'<p class="lp-meta">By Siddharth Enterprises · Published {when} · Last updated {when} · {x["minutes"]} min read</p>'

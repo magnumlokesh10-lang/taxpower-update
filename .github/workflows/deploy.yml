@@ -1,0 +1,74 @@
+# Builds the site and publishes it to the live repo (taxpower.co) whenever source changes,
+# including every article published from the TaxPower CRM (content/blog/*.json).
+name: Build and publish taxpower.co
+
+on:
+  # Runs when the CRM publishes or removes a blog article (content/blog/*.json, asset/blog/*),
+  # and on demand from the "Actions" tab ("Run workflow"). Ordinary code pushes do not go live by themselves.
+  push:
+    branches: [main]
+    paths:
+      - 'content/**'
+      - 'asset/blog/**'
+  workflow_dispatch:
+
+concurrency:
+  group: publish-taxpower-co
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build tools
+        run: |
+          pip install lxml
+          npm install --no-save esbuild
+
+      - name: Build the site for the live domain
+        run: |
+          rm -rf "$RUNNER_TEMP/site"
+          mkdir "$RUNNER_TEMP/site"
+          tar --exclude=.git --exclude=node_modules --exclude=.github -cf - . | tar -xf - -C "$RUNNER_TEMP/site"
+          cd "$RUNNER_TEMP/site/scripts"
+          export PATH="$GITHUB_WORKSPACE/node_modules/.bin:$PATH"
+          python3 prune_blog.py
+          TAXPOWER_BASE_PATH=/ python3 build-pages.py
+          TAXPOWER_BASE_PATH=/ python3 build-landing-pages.py
+          find "$RUNNER_TEMP/site" -name __pycache__ -type d -prune -exec rm -rf {} +
+
+      - name: Check out the live repo
+        uses: actions/checkout@v4
+        with:
+          repository: magnumlokesh10-lang/taxpower.co
+          token: ${{ secrets.TAXPOWER_CO_TOKEN }}
+          path: live
+
+      - name: Copy the build into the live repo
+        run: |
+          rsync -a --delete \
+            --exclude='.git' --exclude='CNAME' --exclude='wrangler.jsonc' \
+            "$RUNNER_TEMP/site/" live/
+
+      - name: Commit and push if anything changed
+        working-directory: live
+        run: |
+          git config user.name "TaxPower site builder"
+          git config user.email "noreply@taxpower.co"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to publish."
+          else
+            git commit -m "Publish site update from ${GITHUB_SHA::7}"
+            git push origin HEAD:main
+          fi
