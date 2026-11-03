@@ -11,7 +11,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-BLOCK_TYPES = {'h2', 'p', 'list', 'steps', 'note', 'faq', 'links'}
+BLOCK_TYPES = {'h2', 'h3', 'p', 'list', 'steps', 'note', 'faq', 'links', 'table'}
 SLUG_RE = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 TIME_RE = re.compile(r'^([01]\d|2[0-3]):[0-5]\d$')
@@ -25,7 +25,17 @@ def _clean_block(b):
     if not isinstance(b, dict) or b.get('t') not in BLOCK_TYPES:
         return None
     t, v = b['t'], b.get('v')
-    if t in ('h2', 'p', 'note'):
+    if t == 'table':
+        head = [_text(h, 160) for h in (b.get('head') if isinstance(b.get('head'), list) else [])][:8]
+        rows = []
+        for r in (b.get('rows') if isinstance(b.get('rows'), list) else [])[:60]:
+            if isinstance(r, list):
+                cells = [_text(c, 400) for c in r][:len(head)]
+                cells += [''] * (len(head) - len(cells))
+                if any(cells):
+                    rows.append(cells)
+        return {'t': t, 'head': head, 'rows': rows} if head and any(head) and rows else None
+    if t in ('h2', 'h3', 'p', 'note'):
         v = _text(v)
         return {'t': t, 'v': v} if v else None
     if t in ('list', 'steps'):
@@ -36,7 +46,7 @@ def _clean_block(b):
         items = []
         for i in (v if isinstance(v, list) else []):
             if isinstance(i, dict) and _text(i.get('q'), 300) and _text(i.get('a'), 1500):
-                items.append({'q': _text(i['q'], 300), 'a': _text(i['a'], 1500)})
+                items.append({'q': re.sub(r'[*]', '', _text(i['q'], 300)), 'a': _text(i['a'], 1500)})
         return {'t': t, 'v': items} if items else None
     if t == 'links':
         items = []
@@ -59,7 +69,7 @@ def _normalise(raw, name, site_published):
     blocks = [c for c in (_clean_block(b) for b in raw.get('blocks', [])) if c]
     if not blocks:
         raise ValueError('article has no content')
-    words = sum(len(json.dumps(b['v']).split()) for b in blocks)
+    words = sum(len(json.dumps(b.get('v', [b.get('head'), b.get('rows')])).split()) for b in blocks)
     published = raw.get('published') if DATE_RE.match(str(raw.get('published', ''))) else site_published
     post = {
         'slug': 'blog/' + name,

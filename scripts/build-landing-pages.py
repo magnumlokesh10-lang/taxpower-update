@@ -4,6 +4,7 @@ Run after scripts/build-pages.py (python scripts/build-landing-pages.py).
 Set TAXPOWER_BASE_PATH=/repo-name/ to preview on a GitHub project page (default '/').
 """
 from pathlib import Path
+import re
 from html import escape as esc
 import related
 import related as related_pages
@@ -74,12 +75,32 @@ NAV_TDS = NAV.replace('<a href="taxpowertds" class="nav-item nav-item-org nav-it
 NAV_GST = NAV.replace('class="nav-item nav-item-org nav-item-always nav-dropdown-toggle"', 'class="nav-item nav-item-org nav-item-always nav-dropdown-toggle h-current" aria-current="page"', 1)
 
 
-def li(items):
-    return '<ul class="lp-bullets">' + ''.join(f'<li>{esc(i)}</li>' for i in items) + '</ul>'
+_INLINE = re.compile(r'\[([^\]\n]{1,160})\]\(([^)\s]{1,300})\)|\*\*([^*\n]+?)\*\*|(?<![*\w])\*([^*\n]+?)\*(?![*\w])')
 
 
-def faq_block(items, title='Frequently asked questions'):
-    rows = ''.join(f'<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in items)
+def rich(text):
+    """Escape text, then allow **bold**, *italic* and [label](page-or-https-link) written in the CRM."""
+    def sub(m):
+        if m.group(1) is not None:
+            href = m.group(2)
+            href = re.sub(r'^https?://(www\.)?taxpower\.co/?', '', href)
+            if re.match(r'^https?://', href):
+                return f'<a href="{esc(href, quote=True)}" rel="noopener" target="_blank">{m.group(1)}</a>'
+            if re.match(r'^[a-z0-9][a-z0-9/_\-#.]*$', href) or href == '':
+                return f'<a href="{href or "home"}">{m.group(1)}</a>'
+            return m.group(1)
+        if m.group(3) is not None:
+            return f'<strong>{m.group(3)}</strong>'
+        return f'<em>{m.group(4)}</em>'
+    return _INLINE.sub(sub, esc(text))
+
+
+def li(items, fmt=esc):
+    return '<ul class="lp-bullets">' + ''.join(f'<li>{fmt(i)}</li>' for i in items) + '</ul>'
+
+
+def faq_block(items, title='Frequently asked questions', fmt=esc):
+    rows = ''.join(f'<details><summary>{esc(q)}</summary><p>{fmt(a)}</p></details>' for q, a in items)
     ico = '<span class="fq-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span>'
     help_ = ''.join(f'<a href="tel:+91{p}">{p}</a>' for p in dealer['phones'])
     return (f'<section class="fq fq-teal" aria-labelledby="lp-faq-title"><div class="fq-head">{ico}<span class="fq-eyebrow">Questions</span>'
@@ -439,9 +460,9 @@ def cover_img(x, eager=False):
             f'decoding="async"{"" if eager else " loading=\"lazy\""}>')
 
 
-def table_html(head, rows):
-    th = ''.join(f'<th scope="col">{esc(h)}</th>' for h in head)
-    tr = ''.join('<tr>' + ''.join(f'<td>{esc(c)}</td>' for c in r) + '</tr>' for r in rows)
+def table_html(head, rows, fmt=esc):
+    th = ''.join(f'<th scope="col">{fmt(h)}</th>' for h in head)
+    tr = ''.join('<tr>' + ''.join(f'<td>{fmt(c)}</td>' for c in r) + '</tr>' for r in rows)
     return f'<div class="lp-table-wrap"><table class="lp-table"><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div>'
 
 
@@ -456,19 +477,21 @@ def blocks_html(blocks):
         t = b['t']
         if t == 'h2':
             buf.append(f'<h2>{esc(b["v"])}</h2>')
+        elif t == 'h3':
+            buf.append(f'<h3>{esc(b["v"])}</h3>')
         elif t == 'p':
-            buf.append(f'<p>{esc(b["v"])}</p>')
+            buf.append(f'<p>{rich(b["v"])}</p>')
         elif t == 'list':
-            buf.append(li(b['v']))
+            buf.append(li(b['v'], rich))
         elif t == 'steps':
-            buf.append('<ol class="lp-bullets">' + ''.join(f'<li>{esc(i)}</li>' for i in b['v']) + '</ol>')
+            buf.append('<ol class="lp-bullets">' + ''.join(f'<li>{rich(i)}</li>' for i in b['v']) + '</ol>')
         elif t == 'table':
-            buf.append(table_html(b['head'], b['rows']))
+            buf.append(table_html(b['head'], b['rows'], rich))
         elif t == 'note':
-            buf.append(f'<div class="lp-lang"><p>{esc(b["v"])}</p></div>')
+            buf.append(f'<div class="lp-lang"><p>{rich(b["v"])}</p></div>')
         elif t == 'faq':
             flush()
-            out.append(faq_block([(x['q'], x['a']) for x in b['v']]))
+            out.append(faq_block([(x['q'], x['a']) for x in b['v']], fmt=rich))
         elif t == 'links':
             buf.append(chips([(n, h) for n, h in b['v']]))
     flush()
