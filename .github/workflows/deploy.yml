@@ -32,7 +32,7 @@ jobs:
 
       - name: Install build tools
         run: |
-          pip install lxml
+          pip install lxml pillow
           npm install --no-save esbuild
 
       - name: Build the site for the live domain
