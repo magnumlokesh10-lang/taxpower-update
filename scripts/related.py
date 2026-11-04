@@ -58,5 +58,33 @@ def related_slugs(slug):
 
 def block(slug):
     chips = ''.join(f'<a href="{s}">{L[s]}</a>' for s in related_slugs(slug))
-    return (f'<section class="rel-strip" aria-label="Related pages"><div class="rel-inner"><span class="rel-kicker">Related pages</span>'
+    return guide_cards(slug) + (f'<section class="rel-strip" aria-label="Related pages"><div class="rel-inner"><span class="rel-kicker">Related pages</span>'
             f'<div class="rel-chips">{chips}</div></div></section>')
+
+
+# Articles written in the CRM can ask to be linked from chosen pages (CRM: "Show a link on these pages").
+FEATURED = {}
+try:
+    import cms_posts as _cp
+    for _post in _cp.load_resources()['posts']:
+        for _page in _post.get('link_from', []):
+            if _page in L and not _page.startswith('blog/') and _page != 'blog':
+                FEATURED.setdefault(_page, []).append(_post)
+    for _page, _posts in FEATURED.items():
+        _base = related_slugs(_page)
+        EXPLICIT[_page] = [p['slug'] for p in _posts] + [b for b in _base if b not in {p['slug'] for p in _posts}]
+except Exception:
+    pass
+
+
+def _esc(x):
+    return x.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+
+def guide_cards(slug):
+    cards = ''
+    for p in FEATURED.get(slug, [])[:2]:
+        cards += (f'<a class="rel-guide-card" href="{p["slug"]}"><span class="rel-guide-kicker">Guide</span>'
+                  f'<strong>{_esc(p["h1"])}</strong><span class="rel-guide-sum">{_esc((p.get("description") or "")[:150])}</span>'
+                  f'<span class="rel-guide-go">Read the guide &rarr;</span></a>')
+    return f'<section class="rel-guide" aria-label="Featured guide"><div class="rel-guide-in">{cards}</div></section>' if cards else ''

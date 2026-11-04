@@ -81,7 +81,9 @@ def _normalise(raw, name, site_published):
         'published': published,
         'summary': _text(raw.get('summary'), 400) or description,
         'blocks': blocks,
-        'related': [r for r in raw.get('related', []) if isinstance(r, str)][:6] or ['free-trial'],
+        'related': [r for r in raw.get('related', []) if isinstance(r, str) and not r.startswith('from:')][:6] or ['free-trial'],
+        # pages of the site that should show a link to this article (chosen in the CRM)
+        'link_from': [p for p in (raw.get('link_from') if isinstance(raw.get('link_from'), list) else []) if isinstance(p, str) and re.match(r'^[a-z0-9][a-z0-9\-]*$', p)][:12],
     }
     if TIME_RE.match(str(raw.get('time', ''))):
         post['time'] = raw['time']

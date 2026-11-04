@@ -319,3 +319,14 @@ html[data-theme=dark] .tp-ld-ic .t{stroke:#2a4b5c}
 /* footer buttons: same height, same top edge, even spacing */
 .footer-refined .footer-demo-button,.footer-demo-button,.footer-review-button{vertical-align:top;box-sizing:border-box;min-height:44px;margin:12px 8px 0 0;padding:10px 16px;border-radius:10px;font-size:13px;line-height:1.2}
 .footer-review-button{margin-left:0}
+
+/* featured guide card, chosen per page in the CRM */
+.rel-guide{position:relative;z-index:2;padding:8px 16px 0}.rel-guide-in{display:grid;gap:12px;max-width:1120px;margin:0 auto}
+.rel-guide-card{display:grid;gap:4px;padding:18px 22px;border:1px solid #cfe4ee;border-radius:18px;background:linear-gradient(120deg,#eaf6fd,#fff7ee);color:#103e50;text-decoration:none;box-shadow:0 8px 22px rgba(16,62,80,.07);transition:transform .2s,box-shadow .2s}
+.rel-guide-card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(16,62,80,.12)}
+.rel-guide-kicker{font:700 12px 'Plus Jakarta Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#c2571a}
+.rel-guide-card strong{font:700 19px/1.3 'Plus Jakarta Sans',sans-serif}
+.rel-guide-sum{color:#4f6b7a;font-size:14.5px;line-height:1.5}
+.rel-guide-go{margin-top:2px;font-weight:700;color:#087ba5;font-size:14px}
+html[data-theme=dark] .rel-guide-card{background:#12232c;border-color:#27424f;color:#e7f1f5}
+html[data-theme=dark] .rel-guide-sum{color:#a9c0ca}
