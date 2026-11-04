@@ -389,7 +389,7 @@ def render(slug, body, meta, trail, extra):
 <title>{t}</title>
 <link rel="canonical" href="{canonical}">
 <meta name="description" content="{d}">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="{meta.get('robots', 'index, follow, max-image-preview:large')}">
 <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="asset/swt_icon/taxpower_icon.png">
   <link rel="icon" type="image/png" sizes="96x96" href="asset/swt_icon/favicon-96.png">
@@ -508,6 +508,39 @@ def static_page(pg):
             + cta(pg['product'], pg['cta_label']) + HIGHLIGHTS + '</section>' + blocks_html(pg['blocks']) + contact_block())
     faqs = []
     return body, {'title': pg['title'], 'description': pg['description']}, [('Home', 'home'), (pg['h1'], pg['slug'])], {
+        '@type': 'WebPage', '@id': BASE + pg['slug'] + '#page', 'url': BASE + pg['slug']}
+
+
+def videos_page(pg):
+    data = json.loads((ROOT / 'scripts/training-videos.json').read_text())
+    vids = [v for v in data.get('videos', []) if isinstance(v, dict) and re.match(r'^[A-Za-z0-9_-]{11}$', str(v.get('youtube', ''))) and v.get('title')]
+    head = (breadcrumb([('Home', 'home'), ('Training videos', None)]) +
+            f'<section class="lp-panel lp-hero"><span class="lp-kicker">{esc(pg["kicker"])}</span><h1>{esc(pg["h1"])}</h1><p class="lp-lead">{esc(pg["lead"])}</p>'
+            + cta(pg['product'], pg['cta_label']) + HIGHLIGHTS + '</section>')
+    if vids:
+        groups = {}
+        for v in vids:
+            groups.setdefault(str(v.get('group') or 'Videos'), []).append(v)
+        sections = ''
+        for g, items in groups.items():
+            cards = ''.join(
+                f'<a class="lp-video" href="https://www.youtube.com/watch?v={v["youtube"]}" target="_blank" rel="noopener">'
+                f'<span class="lp-video-thumb"><img src="https://i.ytimg.com/vi/{v["youtube"]}/hqdefault.jpg" alt="" width="480" height="360" loading="lazy" decoding="async">'
+                f'<span class="lp-video-play" aria-hidden="true"></span></span><strong>{esc(v["title"])}</strong>'
+                + (f'<span class="lp-video-desc">{esc(v["description"])}</span>' if v.get('description') else '') + '</a>' for v in items)
+            sections += f'<section class="lp-panel lp-section"><h2>{esc(g)}</h2><div class="lp-video-grid">{cards}</div></section>'
+        body = head + sections + contact_block()
+        robots = None
+    else:
+        soon = ('<section class="lp-panel lp-section"><h2>Videos are on the way</h2>'
+                '<p>We are recording short training videos for TaxPower GST, Billing and TDS. Until they are ready, our team can show you the software live, in Marathi, Hindi or English.</p>'
+                + chips([('Book a free demo', 'demo-enquiry'), ('Start a free trial', 'free-trial'), ('Existing customer support', 'technical-support'), ('All GST features', 'taxpower-gst-features')]) + '</section>')
+        body = head + soon + contact_block()
+        robots = 'noindex, follow'
+    meta = {'title': pg['title'], 'description': pg['description']}
+    if robots:
+        meta['robots'] = robots
+    return body, meta, [('Home', 'home'), (pg['h1'], pg['slug'])], {
         '@type': 'WebPage', '@id': BASE + pg['slug'] + '#page', 'url': BASE + pg['slug']}
 
 
@@ -694,7 +727,7 @@ def wrap(slug, result):
 
 
 pages = [(hub['slug'],) + hub_page()] + [(c['slug'],) + city_page(c) for c in cities] + [(f['slug'],) + feature_page(f) for f in features] \
-    + [wrap(pg['slug'], blog_index(pg) if pg.get('type') == 'blog-index' else static_page(pg)) for pg in res['pages']] \
+    + [wrap(pg['slug'], blog_index(pg) if pg.get('type') == 'blog-index' else videos_page(pg) if pg.get('type') == 'videos' else static_page(pg)) for pg in res['pages']] \
     + [wrap(x['slug'], post_page(x)) for x in res['posts']] \
     + [wrap('gst-tds-due-dates', due_page())] \
     + [('taxpower-gst-features',) + gst_features_page()] \

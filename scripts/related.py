@@ -2,7 +2,7 @@
 L = {
  'home': 'Home', 'taxpowergst': 'TaxPower GST', 'taxpowertds': 'TaxPower TDS', 'gst-return': 'GST returns', 'gst-billing': 'GST billing',
  'pricing': 'Plans & pricing', 'downloads': 'Downloads', 'aboutus': 'About us', 'support': 'Demo & support FAQs', 'technical-support': 'Technical support',
- 'demo-enquiry': 'Contact & enquiries', 'free-trial': 'Free trial', 'system-requirements': 'System requirements',
+ 'demo-enquiry': 'Contact & enquiries', 'free-trial': 'Free trial', 'training-videos': 'Training videos', 'system-requirements': 'System requirements',
  'taxpower-gst-features': 'All GST features', 'taxpower-tds-features': 'All TDS features',
  'gst-return-filing-software': 'GST return filing', 'gstr-2b-itc-reconciliation-software': 'GSTR-2B ITC reconciliation',
  'e-invoice-e-way-bill-software': 'E-invoice & e-way bill', 'gst-billing-software': 'GST billing software',
@@ -25,13 +25,13 @@ CITIES = [k for k in L if k.startswith('gst-tds-software-')]
 GST = ['taxpowergst', 'taxpower-gst-features', 'gst-return-filing-software', 'gstr-2b-itc-reconciliation-software', 'e-invoice-e-way-bill-software', 'gst-billing-software', 'gst-billing', 'gst-return']
 TDS = ['taxpowertds', 'taxpower-tds-features', 'tds-return-filing-software', 'form-16-form-16a-certificate-software', 'blog/tds-return-forms-24q-26q-27q-27eq-explained', 'blog/form-16-and-form-16a-explained']
 BLOG = [k for k in L if k.startswith('blog/')] + ['blog', 'gst-tds-due-dates']
-HELP = ['free-trial', 'system-requirements', 'technical-support', 'demo-enquiry', 'downloads', 'support']
+HELP = ['free-trial', 'training-videos', 'system-requirements', 'technical-support', 'demo-enquiry', 'downloads', 'support']
 EXPLICIT = {
  'home': ['taxpowergst', 'taxpowertds', 'pricing', 'free-trial', 'downloads', 'blog', 'gst-tds-software-nagpur', 'aboutus'],
  'pricing': ['blog/taxpower-gst-tds-software-price-india', 'taxpowergst', 'taxpowertds', 'free-trial', 'system-requirements', 'demo-enquiry', 'taxpower-gst-features', 'taxpower-tds-features'],
  'downloads': ['system-requirements', 'technical-support', 'free-trial', 'taxpowergst', 'taxpowertds', 'pricing'],
  'aboutus': ['taxpowergst', 'taxpowertds', 'demo-enquiry', 'technical-support', 'gst-tds-software-vidarbha', 'pricing'],
- 'support': ['technical-support', 'demo-enquiry', 'free-trial', 'downloads', 'system-requirements', 'pricing'],
+ 'support': ['technical-support', 'training-videos', 'demo-enquiry', 'free-trial', 'downloads', 'system-requirements', 'pricing'],
  'technical-support': ['downloads', 'system-requirements', 'support', 'demo-enquiry', 'free-trial', 'pricing'],
  'demo-enquiry': ['free-trial', 'pricing', 'taxpowergst', 'taxpowertds', 'technical-support', 'aboutus'],
  'blog': ['gst-tds-due-dates', 'taxpowergst', 'taxpowertds', 'taxpower-gst-features', 'taxpower-tds-features', 'free-trial'],
