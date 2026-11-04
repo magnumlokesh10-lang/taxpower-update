@@ -316,3 +316,6 @@ html[data-theme=dark] .tp-ld-pill{background:#12303f;color:#e6f3f9;border-color:
 html[data-theme=dark] .tp-ld-ic .t{stroke:#2a4b5c}
 @media(max-width:760px){.tp-ld-pill{top:78px}}
 @media(prefers-reduced-motion:reduce){.tp-ld-ic svg{animation:none}.tp-ld-bar,.tp-ld-pill{transition:none}}
+/* footer buttons: same height, same top edge, even spacing */
+.footer-refined .footer-demo-button,.footer-demo-button,.footer-review-button{vertical-align:top;box-sizing:border-box;min-height:44px;margin:12px 8px 0 0;padding:10px 16px;border-radius:10px;font-size:13px;line-height:1.2}
+.footer-review-button{margin-left:0}
