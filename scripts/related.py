@@ -28,7 +28,7 @@ BLOG = [k for k in L if k.startswith('blog/')] + ['blog', 'gst-tds-due-dates']
 HELP = ['free-trial', 'system-requirements', 'technical-support', 'demo-enquiry', 'downloads', 'support']
 EXPLICIT = {
  'home': ['taxpowergst', 'taxpowertds', 'pricing', 'free-trial', 'downloads', 'blog', 'gst-tds-software-nagpur', 'aboutus'],
- 'pricing': ['taxpowergst', 'taxpowertds', 'free-trial', 'system-requirements', 'demo-enquiry', 'taxpower-gst-features', 'taxpower-tds-features'],
+ 'pricing': ['blog/taxpower-gst-tds-software-price-india', 'taxpowergst', 'taxpowertds', 'free-trial', 'system-requirements', 'demo-enquiry', 'taxpower-gst-features', 'taxpower-tds-features'],
  'downloads': ['system-requirements', 'technical-support', 'free-trial', 'taxpowergst', 'taxpowertds', 'pricing'],
  'aboutus': ['taxpowergst', 'taxpowertds', 'demo-enquiry', 'technical-support', 'gst-tds-software-vidarbha', 'pricing'],
  'support': ['technical-support', 'demo-enquiry', 'free-trial', 'downloads', 'system-requirements', 'pricing'],
