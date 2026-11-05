@@ -98,8 +98,10 @@
 .company-logo-marquee.is-animated:hover .company-logo-track,.company-logo-marquee.is-animated:focus-within .company-logo-track{animation-play-state:paused}
 @keyframes tp-logo-roll{to{transform:translateX(-50%)}}
 .company-logo-card{list-style:none;background:#fff;border:1px solid #e1ecf0;box-shadow:0 8px 22px rgba(19,58,76,.07)}
-.company-logo-card img{filter:grayscale(1);opacity:.78;transition:filter .3s ease,opacity .3s ease,transform .3s ease}
-.company-logo-card:hover img{filter:none;opacity:1}
+.company-logo-card.is-dark{background:#15303b;border-color:#15303b}
+.company-logo-marquee.is-animated .company-logo-track{animation-duration:70s}
+.company-logo-marquee.is-animated .company-logo-card{flex:0 0 200px;width:200px;height:116px;padding:16px 20px}
+@media(max-width:768px){.company-logo-marquee.is-animated .company-logo-card{flex-basis:156px;width:156px;height:96px;padding:14px 16px}.company-logo-marquee.is-animated .company-logo-track{animation-duration:55s}}
 .company-logo-card.is-placeholder{border:1.5px dashed #9ccbd4;background:rgba(255,255,255,.7);color:#7a98a0;font:600 13px 'Plus Jakarta Sans',sans-serif;text-align:center}
 @media(prefers-reduced-motion:reduce){
   .trusted-companies-section .company-logo-marquee.is-animated{overflow-x:auto}
@@ -107,4 +109,5 @@
 }
 html[data-theme="dark"] .trusted-kicker{background:#12373f;color:#7fd6e6}
 html[data-theme="dark"] .company-logo-card{background:#f4f8fa;border-color:#2a3b45}
+html[data-theme="dark"] .company-logo-card.is-dark{background:#15303b;border-color:#3d6470}
 html[data-theme="dark"] .company-logo-card.is-placeholder{background:#1a2a33;color:#8fa9b3;border-color:#3d6470}
