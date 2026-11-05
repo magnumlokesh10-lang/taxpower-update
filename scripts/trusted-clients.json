@@ -1,56 +1,11 @@
 [
  {
-  "n": 1,
-  "slug": "kargwal",
-  "name": "Kargwal",
-  "file": "asset/clients/01-kargwal.webp",
+  "n": 8,
+  "slug": "raymond",
+  "name": "Raymond",
+  "file": "asset/clients/08-raymond.webp",
   "w": 520,
-  "h": 202,
-  "dark": 0
- },
- {
-  "n": 2,
-  "slug": "parle-tableting",
-  "name": "Parle Tableting",
-  "file": "asset/clients/02-parle-tableting.webp",
-  "w": 200,
-  "h": 120,
-  "dark": 0
- },
- {
-  "n": 3,
-  "slug": "arrow-electricals",
-  "name": "Arrow Electricals",
-  "file": "asset/clients/03-arrow-electricals.webp",
-  "w": 173,
-  "h": 44,
-  "dark": 0
- },
- {
-  "n": 4,
-  "slug": "suruchi-international",
-  "name": "Suruchi International",
-  "file": "asset/clients/04-suruchi-international.webp",
-  "w": 190,
-  "h": 91,
-  "dark": 0
- },
- {
-  "n": 5,
-  "slug": "londe-jewellers",
-  "name": "Londe Jewellers",
-  "file": "asset/clients/05-londe-jewellers.webp",
-  "w": 167,
-  "h": 144,
-  "dark": 0
- },
- {
-  "n": 6,
-  "slug": "dspl",
-  "name": "DSPL",
-  "file": "asset/clients/06-dspl.webp",
-  "w": 294,
-  "h": 260,
+  "h": 140,
   "dark": 0
  },
  {
@@ -63,13 +18,103 @@
   "dark": 0
  },
  {
-  "n": 8,
-  "slug": "raymond",
-  "name": "Raymond",
-  "file": "asset/clients/08-raymond.webp",
-  "w": 520,
-  "h": 140,
+  "n": 5,
+  "slug": "londe-jewellers",
+  "name": "Londe Jewellers",
+  "file": "asset/clients/05-londe-jewellers.webp",
+  "w": 167,
+  "h": 144,
   "dark": 0
+ },
+ {
+  "n": 2,
+  "slug": "parle-tableting",
+  "name": "Parle Tableting",
+  "file": "asset/clients/02-parle-tableting.webp",
+  "w": 200,
+  "h": 120,
+  "dark": 0
+ },
+ {
+  "n": 4,
+  "slug": "suruchi-international",
+  "name": "Suruchi International",
+  "file": "asset/clients/04-suruchi-international.webp",
+  "w": 190,
+  "h": 91,
+  "dark": 0
+ },
+ {
+  "n": 15,
+  "slug": "quest2travel",
+  "name": "Quest2Travel",
+  "file": "asset/clients/15-quest2travel.webp",
+  "w": 468,
+  "h": 84,
+  "dark": 0
+ },
+ {
+  "n": 3,
+  "slug": "arrow-electricals",
+  "name": "Arrow Electricals",
+  "file": "asset/clients/03-arrow-electricals.webp",
+  "w": 173,
+  "h": 44,
+  "dark": 0
+ },
+ {
+  "n": 11,
+  "slug": "tembo",
+  "name": "Tembo",
+  "file": "asset/clients/11-tembo.webp",
+  "w": 400,
+  "h": 162,
+  "dark": 1
+ },
+ {
+  "n": 14,
+  "slug": "pitax",
+  "name": "Pitax Pvt Ltd",
+  "file": "asset/clients/14-pitax.webp",
+  "w": 520,
+  "h": 177,
+  "dark": 0
+ },
+ {
+  "n": 12,
+  "slug": "crux",
+  "name": "Crux",
+  "file": "asset/clients/12-crux.webp",
+  "w": 520,
+  "h": 158,
+  "dark": 0
+ },
+ {
+  "n": 1,
+  "slug": "kargwal",
+  "name": "Kargwal",
+  "file": "asset/clients/01-kargwal.webp",
+  "w": 520,
+  "h": 202,
+  "dark": 0
+ },
+ {
+  "n": 16,
+  "slug": "gondwana-engineers",
+  "name": "Gondwana Engineers Limited",
+  "file": "asset/clients/16-gondwana-engineers.webp",
+  "w": 520,
+  "h": 184,
+  "dark": 0
+ },
+ {
+  "n": 13,
+  "slug": "top-force-security",
+  "name": "Top Force Security Solutions",
+  "file": "asset/clients/13-top-force-security.webp",
+  "w": 374,
+  "h": 112,
+  "dark": 1
  },
  {
   "n": 9,
@@ -90,57 +135,12 @@
   "dark": 0
  },
  {
-  "n": 11,
-  "slug": "tembo",
-  "name": "Tembo",
-  "file": "asset/clients/11-tembo.webp",
-  "w": 400,
-  "h": 162,
-  "dark": 1
- },
- {
-  "n": 12,
-  "slug": "crux",
-  "name": "Crux",
-  "file": "asset/clients/12-crux.webp",
-  "w": 520,
-  "h": 158,
-  "dark": 0
- },
- {
-  "n": 13,
-  "slug": "top-force-security",
-  "name": "Top Force Security Solutions",
-  "file": "asset/clients/13-top-force-security.webp",
-  "w": 374,
-  "h": 112,
-  "dark": 1
- },
- {
-  "n": 14,
-  "slug": "pitax",
-  "name": "Pitax Pvt Ltd",
-  "file": "asset/clients/14-pitax.webp",
-  "w": 520,
-  "h": 177,
-  "dark": 0
- },
- {
-  "n": 15,
-  "slug": "quest2travel",
-  "name": "Quest2Travel",
-  "file": "asset/clients/15-quest2travel.webp",
-  "w": 468,
-  "h": 84,
-  "dark": 0
- },
- {
-  "n": 16,
-  "slug": "gondwana-engineers",
-  "name": "Gondwana Engineers Limited",
-  "file": "asset/clients/16-gondwana-engineers.webp",
-  "w": 520,
-  "h": 184,
+  "n": 6,
+  "slug": "dspl",
+  "name": "DSPL",
+  "file": "asset/clients/06-dspl.webp",
+  "w": 294,
+  "h": 260,
   "dark": 0
  },
  {
