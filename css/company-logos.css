@@ -99,9 +99,8 @@
 @keyframes tp-logo-roll{to{transform:translateX(-50%)}}
 .company-logo-card{list-style:none;background:#fff;border:1px solid #e1ecf0;box-shadow:0 8px 22px rgba(19,58,76,.07)}
 .company-logo-card.is-dark{background:#15303b;border-color:#15303b}
-.company-logo-marquee.is-animated .company-logo-track{animation-duration:70s}
 .company-logo-marquee.is-animated .company-logo-card{flex:0 0 200px;width:200px;height:116px;padding:16px 20px}
-@media(max-width:768px){.company-logo-marquee.is-animated .company-logo-card{flex-basis:156px;width:156px;height:96px;padding:14px 16px}.company-logo-marquee.is-animated .company-logo-track{animation-duration:55s}}
+@media(max-width:768px){.company-logo-marquee.is-animated .company-logo-card{flex-basis:156px;width:156px;height:96px;padding:14px 16px}.company-logo-marquee.is-animated .company-logo-track{animation-duration:calc(var(--dur,60s)*.8)}}
 .company-logo-card.is-placeholder{border:1.5px dashed #9ccbd4;background:rgba(255,255,255,.7);color:#7a98a0;font:600 13px 'Plus Jakarta Sans',sans-serif;text-align:center}
 @media(prefers-reduced-motion:reduce){
   .trusted-companies-section .company-logo-marquee.is-animated{overflow-x:auto}
@@ -114,8 +113,8 @@ html[data-theme="dark"] .company-logo-card.is-placeholder{background:#1a2a33;col
 
 /* Two-row logo wall, rows move in opposite directions */
 .trusted-companies-section .company-logo-marquee.is-animated{padding:10px 0}
-.company-logo-marquee.row-b .company-logo-track{animation-direction:reverse;animation-duration:85s}
-.company-logo-marquee.row-a .company-logo-track{animation-duration:75s}
+.company-logo-marquee.row-b .company-logo-track{animation-direction:reverse}
+.company-logo-marquee.is-animated .company-logo-track{animation-duration:var(--dur,60s)}
 .company-logo-marquee.is-animated .company-logo-card{transition:transform .25s ease,box-shadow .25s ease}
 .company-logo-marquee.is-animated .company-logo-card:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(0,128,153,.16)}
 .trusted-more{display:inline-flex;align-items:center;gap:10px;margin:16px auto 0;padding:10px 20px;border-radius:999px;background:#fff;border:1px solid #d6e8ed;box-shadow:0 6px 18px rgba(19,58,76,.07);color:#486273;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif}
