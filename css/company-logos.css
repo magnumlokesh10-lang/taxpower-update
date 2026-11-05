@@ -123,3 +123,4 @@ html[data-theme="dark"] .company-logo-card.is-placeholder{background:#1a2a33;col
 @media(max-width:640px){.trusted-more{margin-inline:16px;border-radius:18px;font-size:13px}}
 html[data-theme="dark"] .trusted-more{background:#17232b;border-color:#2a3b45;color:#b5c7d0}
 html[data-theme="dark"] .trusted-more strong{color:#7fd6e6}
+.trusted-title{max-width:880px;margin-inline:auto;text-wrap:balance}
