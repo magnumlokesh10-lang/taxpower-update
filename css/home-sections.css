@@ -371,3 +371,4 @@ html[data-theme=dark] [aria-labelledby=hxWhoTitle]::before{background:linear-gra
 .tp-stat .tp-lab{margin:9px 0 3px;font-size:15px}
 .tp-stat .tp-sub{font-size:13px;max-width:24ch;line-height:1.35}
 @media(max-width:640px){.tp-stat{padding:16px 12px}.tp-ico{width:36px;height:36px}}
+.hx-numhead{text-align:center;margin-inline:auto}.hx-numhead .hx-intro{margin-inline:auto}.hx-numhead+.tp-stats{margin-top:8px}

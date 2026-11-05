@@ -89,3 +89,22 @@
 @media(max-width:980px){.tp-stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.tp-stats{grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px}.tp-stats .tp-stat:last-child{grid-column:1/-1}}
 @media(prefers-reduced-motion:reduce){.tp-stat{transition:none}}
+
+/* Trusted clients: kicker pill, auto-scrolling logo row, placeholder cards */
+.trusted-kicker{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;padding:6px 14px;border-radius:999px;background:#e6f6f8;color:#0a7285;font:700 12px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.trusted-kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:#f28a1e}
+.trusted-companies-section .company-logo-marquee.is-animated{overflow:hidden;padding:18px 0 22px}
+.company-logo-marquee.is-animated .company-logo-track{margin:0;padding:0;list-style:none;gap:20px;padding-right:20px;animation:tp-logo-roll 42s linear infinite}
+.company-logo-marquee.is-animated:hover .company-logo-track,.company-logo-marquee.is-animated:focus-within .company-logo-track{animation-play-state:paused}
+@keyframes tp-logo-roll{to{transform:translateX(-50%)}}
+.company-logo-card{list-style:none;background:#fff;border:1px solid #e1ecf0;box-shadow:0 8px 22px rgba(19,58,76,.07)}
+.company-logo-card img{filter:grayscale(1);opacity:.78;transition:filter .3s ease,opacity .3s ease,transform .3s ease}
+.company-logo-card:hover img{filter:none;opacity:1}
+.company-logo-card.is-placeholder{border:1.5px dashed #9ccbd4;background:rgba(255,255,255,.7);color:#7a98a0;font:600 13px 'Plus Jakarta Sans',sans-serif;text-align:center}
+@media(prefers-reduced-motion:reduce){
+  .trusted-companies-section .company-logo-marquee.is-animated{overflow-x:auto}
+  .company-logo-marquee.is-animated .company-logo-track{animation:none}
+}
+html[data-theme="dark"] .trusted-kicker{background:#12373f;color:#7fd6e6}
+html[data-theme="dark"] .company-logo-card{background:#f4f8fa;border-color:#2a3b45}
+html[data-theme="dark"] .company-logo-card.is-placeholder{background:#1a2a33;color:#8fa9b3;border-color:#3d6470}
