@@ -111,3 +111,16 @@ html[data-theme="dark"] .trusted-kicker{background:#12373f;color:#7fd6e6}
 html[data-theme="dark"] .company-logo-card{background:#f4f8fa;border-color:#2a3b45}
 html[data-theme="dark"] .company-logo-card.is-dark{background:#15303b;border-color:#3d6470}
 html[data-theme="dark"] .company-logo-card.is-placeholder{background:#1a2a33;color:#8fa9b3;border-color:#3d6470}
+
+/* Two-row logo wall, rows move in opposite directions */
+.trusted-companies-section .company-logo-marquee.is-animated{padding:10px 0}
+.company-logo-marquee.row-b .company-logo-track{animation-direction:reverse;animation-duration:85s}
+.company-logo-marquee.row-a .company-logo-track{animation-duration:75s}
+.company-logo-marquee.is-animated .company-logo-card{transition:transform .25s ease,box-shadow .25s ease}
+.company-logo-marquee.is-animated .company-logo-card:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(0,128,153,.16)}
+.trusted-more{display:inline-flex;align-items:center;gap:10px;margin:16px auto 0;padding:10px 20px;border-radius:999px;background:#fff;border:1px solid #d6e8ed;box-shadow:0 6px 18px rgba(19,58,76,.07);color:#486273;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif}
+.trusted-more strong{color:#0a7285;font-weight:800}
+.trusted-more-dot{flex:none;width:9px;height:9px;border-radius:50%;background:#2bb673;box-shadow:0 0 0 4px rgba(43,182,115,.18)}
+@media(max-width:640px){.trusted-more{margin-inline:16px;border-radius:18px;font-size:13px}}
+html[data-theme="dark"] .trusted-more{background:#17232b;border-color:#2a3b45;color:#b5c7d0}
+html[data-theme="dark"] .trusted-more strong{color:#7fd6e6}
