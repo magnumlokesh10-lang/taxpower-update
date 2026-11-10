@@ -330,3 +330,16 @@ html[data-theme=dark] .tp-ld-ic .t{stroke:#2a4b5c}
 .rel-guide-go{margin-top:2px;font-weight:700;color:#087ba5;font-size:14px}
 html[data-theme=dark] .rel-guide-card{background:#12232c;border-color:#27424f;color:#e7f1f5}
 html[data-theme=dark] .rel-guide-sum{color:#a9c0ca}
+
+/* Floating WhatsApp button, bottom-left (Quick Enquiry and Back-to-top stay on the right) */
+.wa-float{position:fixed;left:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:1000;display:inline-flex;align-items:center;gap:9px;height:50px;padding:0 18px 0 14px;border-radius:999px;background:#25d366;color:#fff;font:700 15px/1 'Plus Jakarta Sans',sans-serif;text-decoration:none;box-shadow:0 10px 24px rgba(18,140,74,.35);transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.wa-float svg{width:26px;height:26px;flex:none}
+.wa-float:hover{background:#1ebe5b;color:#fff;transform:translateY(-2px);box-shadow:0 14px 28px rgba(18,140,74,.42)}
+.wa-float:focus-visible{outline:3px solid #0b3b4f;outline-offset:3px}
+@media(max-width:760px){
+  .wa-float{left:14px;bottom:calc(96px + env(safe-area-inset-bottom,0px));width:50px;padding:0;justify-content:center}
+  .wa-float span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  body:has(.tp-plan-in-view) .wa-float{bottom:calc(176px + env(safe-area-inset-bottom,0px))}
+  body.more-open .wa-float{display:none}
+}
+@media print{.wa-float{display:none}}
