@@ -743,3 +743,5 @@ for slug, body, meta, faqs, trail, extra in pages:
 print('Built', len(pages), 'standalone landing pages.')
 import faq_schema
 faq_schema.run()
+import inject_gtag
+inject_gtag.run()
