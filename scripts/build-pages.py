@@ -153,6 +153,12 @@ for route,meta in config.items():
 landing=json.loads((ROOT/'scripts/landing-pages.json').read_text())
 landing_slugs=[landing['hub']['slug']]+[c['slug'] for c in landing['cities']]+[f['slug'] for f in landing['features']]+[x['slug'] for x in json.loads((ROOT/'scripts/resource-pages.json').read_text())['pages']]+[x['slug'] for x in cms_posts.load_resources()['posts']]+['gst-tds-due-dates','taxpower-gst-features','taxpower-tds-features','sitemap']
 canonical_routes=[r for r,m in config.items() if not m.get('canonical')]
-(ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>'+BASE+r+'</loc></url>\n' for r in canonical_routes+landing_slugs)+'</urlset>\n')
+# Pages that carry a noindex tag stay out of the sitemap (training-videos is noindex until it has videos).
+import json as _json
+try:
+    _noindex = set() if _json.loads((ROOT/'scripts'/'training-videos.json').read_text(encoding='utf-8')).get('videos') else {'training-videos'}
+except Exception:
+    _noindex = {'training-videos'}
+(ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>'+BASE+r+'</loc></url>\n' for r in canonical_routes+landing_slugs if r not in _noindex)+'</urlset>\n')
 (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'sitemap.xml\n')
 print('Built',len(config),'routes with static content, metadata, headings and schema.')
